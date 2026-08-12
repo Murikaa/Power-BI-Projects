@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bank of Claude — Portfolio Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080B12;
+  --surface: #10141F;
+  --surface-2: #171D2C;
+  --surface-3: #1E2536;
+  --border: #262E44;
+  --border-soft: #1B2233;
+  --text: #E9ECF5;
+  --text-dim: #9099B0;
+  --text-faint: #5D6478;
+  --teal: #2DD4BF;
+  --teal-dim: rgba(45,212,191,0.14);
+  --violet: #8B8CF8;
+  --violet-dim: rgba(139,140,248,0.14);
+  --amber: #FBBF24;
+  --amber-dim: rgba(251,191,36,0.14);
+  --rose: #FB7185;
+  --rose-dim: rgba(251,113,133,0.14);
+  --blue: #60A5FA;
+  --blue-dim: rgba(96,165,250,0.14);
+  --grad-teal: linear-gradient(135deg, #2DD4BF 0%, #22A8E0 100%);
+  --grad-violet: linear-gradient(135deg, #8B8CF8 0%, #C084FC 100%);
+  --grad-rose: linear-gradient(135deg, #FB7185 0%, #F43F5E 100%);
+  --grad-amber: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
+  --radius: 14px;
+  --radius-sm: 8px;
+  --shadow-card: 0 1px 2px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.02) inset;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13.5px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+.num, .mono { font-family: "JetBrains Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+.display { font-family: "Space Grotesk", sans-serif; letter-spacing: -0.02em; }
+
+/* ============ APP SHELL ============ */
+.app { display: flex; min-height: 100vh; width: 100%; }
+
+/* ============ SIDEBAR ============ */
+.sidebar {
+  width: 232px; flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border-soft);
+  display: flex; flex-direction: column;
+  position: fixed; top: 0; bottom: 0; left: 0; z-index: 200;
+  transition: transform .2s ease;
+}
+.sidebar-brand {
+  padding: 22px 20px 18px;
+  display: flex; align-items: center; gap: 10px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.sidebar-brand .mark {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: var(--grad-teal);
+  display: flex; align-items: center; justify-content: center;
+  font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 15px; color: #06201C;
+  flex-shrink: 0;
+}
+.sidebar-brand .name { font-family: "Space Grotesk", sans-serif; font-weight: 600; font-size: 15px; letter-spacing: -0.01em; }
+.sidebar-brand .sub { font-size: 10px; color: var(--text-faint); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 1px; }
+
+.sidebar-nav { flex: 1; padding: 14px 12px; overflow-y: auto; }
+.nav-item {
+  display: flex; align-items: center; gap: 11px;
+  width: 100%; padding: 10px 12px; margin-bottom: 2px;
+  background: transparent; border: none; border-radius: var(--radius-sm);
+  color: var(--text-dim); cursor: pointer; text-align: left;
+  font-family: "Inter", sans-serif; font-size: 13px; font-weight: 500;
+  transition: background .12s, color .12s;
+}
+.nav-item .ico { width: 17px; height: 17px; flex-shrink: 0; opacity: 0.85; }
+.nav-item:hover { background: var(--surface-2); color: var(--text); }
+.nav-item.active { background: var(--teal-dim); color: var(--teal); }
+.nav-item.active .ico { opacity: 1; }
+.nav-section-label {
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-faint); padding: 14px 12px 6px; font-weight: 600;
+}
+.sidebar-footer {
+  padding: 14px 20px; border-top: 1px solid var(--border-soft);
+  font-size: 10.5px; color: var(--text-faint);
+}
+.sidebar-footer .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--teal); margin-right: 6px; box-shadow: 0 0 6px var(--teal); }
+
+/* ============ MAIN ============ */
+.main { flex: 1; margin-left: 232px; min-width: 0; display: flex; flex-direction: column; }
+
+/* ============ TOP BAR ============ */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(8,11,18,0.85); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-soft);
+  padding: 14px 28px;
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  flex-wrap: wrap;
+}
+.topbar-title h1 { font-family: "Space Grotesk", sans-serif; font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
+.topbar-title p { font-size: 11.5px; color: var(--text-dim); margin-top: 2px; }
+.topbar-controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+.seg-pills { display: flex; background: var(--surface-2); border-radius: 10px; padding: 3px; gap: 2px; border: 1px solid var(--border-soft); }
+.seg-pill {
+  padding: 6px 13px; border-radius: 7px; border: none; background: transparent;
+  color: var(--text-dim); font-size: 12px; font-weight: 500; cursor: pointer;
+  font-family: "JetBrains Mono", monospace; transition: all .12s;
+}
+.seg-pill.active { background: var(--teal); color: #06201C; font-weight: 600; }
+.seg-pill:hover:not(.active) { color: var(--text); }
+
+.topbar-ticker { display: flex; gap: 22px; align-items: center; }
+.ticker-item { text-align: right; }
+.ticker-item .tl { font-size: 9.5px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.08em; }
+.ticker-item .tv { font-family: "JetBrains Mono", monospace; font-size: 14px; font-weight: 500; }
+.ticker-item .tv.teal { color: var(--teal); }
+.ticker-item .tv.rose { color: var(--rose); }
+
+.menu-toggle { display: none; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); width: 34px; height: 34px; align-items: center; justify-content: center; cursor: pointer; }
+
+/* ============ CONTENT AREA ============ */
+.content { padding: 22px 28px 60px; }
+.page { display: none; }
+.page.active { display: block; animation: fadeUp .3s ease; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+.page-head { margin-bottom: 18px; }
+.page-head .eyebrow { font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 4px; }
+.page-head h2 { font-family: "Space Grotesk", sans-serif; font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+.page-head p { color: var(--text-dim); font-size: 12.5px; margin-top: 5px; max-width: 720px; }
+
+/* ============ BENTO GRID ============ */
+.grid { display: grid; gap: 14px; margin-bottom: 14px; }
+.grid.g12 { grid-template-columns: repeat(12, 1fr); }
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-7 { grid-column: span 7; }
+.span-8 { grid-column: span 8; }
+.span-9 { grid-column: span 9; }
+.span-12 { grid-column: span 12; }
+
+/* ============ CARD ============ */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 16px 18px;
+  position: relative;
+  overflow: hidden;
+}
+.card.glow-teal::before, .card.glow-violet::before, .card.glow-rose::before, .card.glow-amber::before {
+  content: ""; position: absolute; top: -40px; right: -40px; width: 120px; height: 120px;
+  border-radius: 50%; filter: blur(40px); opacity: 0.18; pointer-events: none;
+}
+.card.glow-teal::before { background: var(--teal); }
+.card.glow-violet::before { background: var(--violet); }
+.card.glow-rose::before { background: var(--rose); }
+.card.glow-amber::before { background: var(--amber); }
+
+.card-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; gap: 10px; }
+.card-head h3 { font-family: "Space Grotesk", sans-serif; font-size: 14.5px; font-weight: 600; letter-spacing: -0.005em; }
+.card-head .badge { font-size: 9.5px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-faint); white-space: nowrap; }
+.card-sub { font-size: 11px; color: var(--text-dim); margin-top: -8px; margin-bottom: 12px; }
+
+/* ============ KPI CARDS ============ */
+.kpi-card { padding: 14px 16px; }
+.kpi-card .kl { font-size: 10px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-faint); font-weight: 600; margin-bottom: 8px; display: flex; justify-content: space-between; align-items:center; }
+.kpi-card .kv { font-family: "Space Grotesk", sans-serif; font-size: 25px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; }
+.kpi-card .kv .unit { font-size: 12px; color: var(--text-dim); font-family: "Inter"; font-weight: 400; margin-left: 3px; }
+.kpi-card .kchange { font-family: "JetBrains Mono", monospace; font-size: 10.5px; margin-top: 8px; display: flex; align-items: center; gap: 4px; }
+.kpi-card .kchange.up { color: var(--teal); }
+.kpi-card .kchange.down { color: var(--rose); }
+.kpi-card .kchange.flat { color: var(--text-faint); }
+.kpi-card .sparkline { position: absolute; bottom: 0; left: 0; right: 0; height: 30px; opacity: 0.5; }
+
+/* ============ TABLES ============ */
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+table th, table td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--border-soft); }
+table th { font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); font-weight: 600; position: sticky; top: 0; background: var(--surface); }
+table td.num { text-align: right; font-family: "JetBrains Mono", monospace; }
+table tr:hover td { background: var(--surface-2); }
+.table-scroll { max-height: 380px; overflow: auto; }
+.table-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+.table-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ============ BARS ============ */
+.bar-cell { display: flex; align-items: center; gap: 8px; }
+.bar-track { flex: 1; height: 5px; background: var(--surface-3); border-radius: 3px; position: relative; min-width: 36px; overflow: hidden; }
+.bar-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3px; }
+.bar-fill.teal { background: var(--grad-teal); }
+.bar-fill.rose { background: var(--grad-rose); }
+.bar-fill.amber { background: var(--grad-amber); }
+.bar-fill.violet { background: var(--grad-violet); }
+
+/* ============ FILTER CHIPS (local, per-page) ============ */
+.chip-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+.chip-row label { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); font-weight: 600; margin-right: 2px; }
+.chip-row select {
+  font-family: "JetBrains Mono", monospace; font-size: 11.5px;
+  padding: 7px 10px; background: var(--surface-2); border: 1px solid var(--border);
+  color: var(--text); border-radius: var(--radius-sm); cursor: pointer;
+}
+.chip-row select:focus { outline: 1px solid var(--teal); }
+.chip-btn {
+  font-family: "Inter"; font-size: 11.5px; font-weight: 500;
+  padding: 7px 13px; background: var(--surface-2); color: var(--text-dim);
+  border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer;
+}
+.chip-btn:hover { color: var(--text); border-color: var(--text-faint); }
+.chip-btn.primary { background: var(--teal); color: #06201C; border-color: var(--teal); font-weight: 600; }
+.chip-btn.primary:hover { opacity: 0.9; }
+
+/* ============ CHARTS ============ */
+.chart-svg { width: 100%; display: block; overflow: visible; }
+.axis-label { font-size: 9.5px; fill: var(--text-faint); font-family: "JetBrains Mono", monospace; }
+.grid-line { stroke: var(--border-soft); stroke-width: 1; }
+.chart-legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 10.5px; color: var(--text-dim); margin-top: 10px; }
+.chart-legend .sw { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+
+/* ============ TOOLTIP ============ */
+.tooltip {
+  position: fixed; pointer-events: none;
+  background: var(--surface-3); color: var(--text);
+  border: 1px solid var(--border); padding: 9px 12px; font-size: 11.5px;
+  font-family: "JetBrains Mono", monospace; border-radius: 8px;
+  z-index: 500; opacity: 0; transition: opacity .1s; max-width: 280px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+.tooltip.visible { opacity: 1; }
+.tooltip .tt-label { color: var(--teal); font-size: 9.5px; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; font-weight: 600; }
+
+/* ============ CALLOUTS / INSIGHTS ============ */
+.insight {
+  padding: 16px 18px; border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(45,212,191,0.08), rgba(139,140,248,0.05));
+  border: 1px solid var(--border);
+  position: relative;
+}
+.insight .il { font-size: 10px; letter-spacing: 0.09em; text-transform: uppercase; color: var(--teal); font-weight: 700; margin-bottom: 8px; }
+.insight p { font-size: 13.5px; line-height: 1.55; color: var(--text); }
+.insight .num-hl { color: var(--teal); font-weight: 600; font-family: "JetBrains Mono", monospace; }
+.insight .num-hl.warn { color: var(--rose); }
+
+/* ============ GAMBLER / STAT CARDS ============ */
+.stat-tile { padding: 14px 16px; border-radius: var(--radius-sm); background: var(--surface-2); border: 1px solid var(--border-soft); }
+.stat-tile.hl { border-color: var(--rose); background: linear-gradient(135deg, rgba(251,113,133,0.08), transparent); }
+.stat-tile .tl { font-size: 10px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-faint); font-weight: 600; }
+.stat-tile .tv { font-family: "Space Grotesk", sans-serif; font-size: 25px; font-weight: 600; margin-top: 6px; }
+.stat-tile .td { font-size: 10.5px; color: var(--text-dim); margin-top: 3px; }
+.stat-tile .meta { display: flex; justify-content: space-between; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border-soft); font-family: "JetBrains Mono", monospace; font-size: 10.5px; color: var(--text-dim); }
+
+/* ============ RADIAL GAUGE GRID ============ */
+.gauge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
+.gauge-tile { text-align: center; padding: 10px; }
+.gauge-tile .gl { font-size: 10.5px; color: var(--text-dim); margin-top: 6px; font-weight: 600; }
+.gauge-tile .gv { font-family: "JetBrains Mono", monospace; font-size: 10px; color: var(--text-faint); margin-top: 2px; }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 1100px) {
+  .span-3 { grid-column: span 6; }
+  .span-4 { grid-column: span 6; }
+  .span-5 { grid-column: span 6; }
+  .span-7 { grid-column: span 12; }
+  .span-8 { grid-column: span 12; }
+  .span-9 { grid-column: span 12; }
+}
+@media (max-width: 860px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); box-shadow: 20px 0 60px rgba(0,0,0,0.5); }
+  .main { margin-left: 0; }
+  .menu-toggle { display: flex; }
+  .grid.g12 > * { grid-column: span 12 !important; }
+  .topbar { padding: 12px 16px; }
+  .content { padding: 16px; }
+  .topbar-ticker { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+  html { scroll-behavior: auto; }
+}
+
+</style>
+</head>
+<body>
+<div class="app">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="mark">B</div>
+      <div>
+        <div class="name">Bank of Claude</div>
+        <div class="sub">Portfolio Dashboard</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Portfolio</div>
+      <button class="nav-item active" data-page="overview"><span class="ico">◈</span>Overview</button>
+      <button class="nav-item" data-page="composition"><span class="ico">◫</span>Composition</button>
+      <button class="nav-item" data-page="risk"><span class="ico">◬</span>Risk</button>
+      <div class="nav-section-label">Lifecycle</div>
+      <button class="nav-item" data-page="origination"><span class="ico">◔</span>Origination</button>
+      <button class="nav-item" data-page="payments"><span class="ico">◷</span>Payments</button>
+      <button class="nav-item" data-page="collections"><span class="ico">◭</span>Collections</button>
+      <div class="nav-section-label">Insights</div>
+      <button class="nav-item" data-page="behavior"><span class="ico">◉</span>Behavior</button>
+      <button class="nav-item" data-page="league"><span class="ico">◪</span>League tables</button>
+    </nav>
+    <div class="sidebar-footer">
+      <span class="dot"></span>Live snapshot · <span id="sbAsOf"></span>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <button class="menu-toggle" id="menuToggle">☰</button>
+      <div class="topbar-title">
+        <h1 id="pageTitle">Overview</h1>
+        <p id="pageSub">Reporting period snapshot</p>
+      </div>
+      <div class="topbar-controls">
+        <div class="seg-pills" id="segPills">
+          <button class="seg-pill active" data-seg="ALL">ALL</button>
+          <button class="seg-pill" data-seg="RB">RB</button>
+          <button class="seg-pill" data-seg="SML">SML</button>
+          <button class="seg-pill" data-seg="SMM">SMM</button>
+          <button class="seg-pill" data-seg="CB">CB</button>
+        </div>
+        <div class="topbar-ticker">
+          <div class="ticker-item"><div class="tl">Exposure</div><div class="tv teal num" id="tkExposure">—</div></div>
+          <div class="ticker-item"><div class="tl">Stage-3</div><div class="tv rose num" id="tkStage3">—</div></div>
+          <div class="ticker-item"><div class="tl">Loans</div><div class="tv num" id="tkLoans">—</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ===================== OVERVIEW ===================== -->
+      <section class="page active" id="page-overview">
+        <div class="grid g12" id="ovKpiRow"></div>
+
+        <div class="grid g12">
+          <div class="card glow-teal span-8">
+            <div class="card-head">
+              <div><h3>Exposure & risk migration</h3><div class="card-sub" style="margin-top:4px">Gross exposure with Stage-3 share overlay, 31 months</div></div>
+              <span class="badge" id="ovAreaBadge">GEL</span>
+            </div>
+            <svg class="chart-svg" id="ovAreaChart" viewBox="0 0 1000 300"></svg>
+          </div>
+          <div class="card glow-violet span-4">
+            <div class="card-head"><h3>Segment split</h3><span class="badge">Latest exposure</span></div>
+            <svg class="chart-svg" id="ovDonut" viewBox="0 0 300 260"></svg>
+            <div class="chart-legend" id="ovDonutLegend"></div>
+          </div>
+        </div>
+
+        <div class="grid g12">
+          <div class="card span-5">
+            <div class="card-head"><h3>Stage migration (zoomed)</h3><span class="badge">Stage 2+3 share</span></div>
+            <svg class="chart-svg" id="ovStageChart" viewBox="0 0 500 240"></svg>
+          </div>
+          <div class="card span-4">
+            <div class="card-head"><h3>Top products by exposure</h3><span class="badge">Latest</span></div>
+            <div id="ovTopProducts"></div>
+          </div>
+          <div class="card span-3 glow-amber">
+            <div class="card-head"><h3>Notable</h3></div>
+            <div id="ovCallout"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== COMPOSITION ===================== -->
+      <section class="page" id="page-composition">
+        <div class="chip-row">
+          <label>Product</label>
+          <select id="cSegFilterProduct"><option value="">All</option></select>
+          <label>Sector</label>
+          <select id="cSegFilterSector"><option value="">All</option></select>
+          <button class="chip-btn primary" id="cApply">Apply</button>
+          <button class="chip-btn" id="cReset">Reset</button>
+        </div>
+        <div class="grid g12">
+          <div class="card span-6">
+            <div class="card-head"><h3>By product</h3><span class="badge" id="cProductBadge"></span></div>
+            <div id="cProductTable"></div>
+          </div>
+          <div class="card span-6">
+            <div class="card-head"><h3>By sector</h3><span class="badge" id="cSectorBadge"></span></div>
+            <div id="cSectorTable"></div>
+          </div>
+        </div>
+        <div class="grid g12">
+          <div class="card span-5">
+            <div class="card-head"><h3>By region</h3><span class="badge">Business geography</span></div>
+            <svg class="chart-svg" id="cRegionChart" viewBox="0 0 480 320"></svg>
+          </div>
+          <div class="card span-3">
+            <div class="card-head"><h3>Currency mix</h3></div>
+            <svg class="chart-svg" id="cCcyDonut" viewBox="0 0 260 220"></svg>
+            <div class="chart-legend" id="cCcyLegend"></div>
+          </div>
+          <div class="card span-4">
+            <div class="card-head"><h3>CIG grade trend</h3><span class="badge">Last 6 months</span></div>
+            <svg class="chart-svg" id="cCigHeatmap" viewBox="0 0 420 320"></svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== RISK ===================== -->
+      <section class="page" id="page-risk">
+        <div class="grid g12">
+          <div class="card span-7">
+            <div class="card-head"><h3>Sector risk vs. size</h3><span class="badge">Bubble = exposure · Y = Stage-3 rate</span></div>
+            <svg class="chart-svg" id="rBubble" viewBox="0 0 700 380"></svg>
+          </div>
+          <div class="card span-5">
+            <div class="card-head"><h3>PD model vs realized</h3><span class="badge">By internal risk group</span></div>
+            <svg class="chart-svg" id="rPdChart" viewBox="0 0 460 380"></svg>
+          </div>
+        </div>
+        <div class="grid g12">
+          <div class="card span-4">
+            <div class="card-head"><h3>Collateral coverage</h3><span class="badge">Median ratio, by segment</span></div>
+            <div class="gauge-grid" id="rGauges"></div>
+          </div>
+          <div class="card span-4">
+            <div class="card-head"><h3>Collateral composition</h3></div>
+            <div id="rCollTable"></div>
+          </div>
+          <div class="card span-4">
+            <div class="card-head"><h3>LTV distribution</h3><span class="badge">Mortgages</span></div>
+            <svg class="chart-svg" id="rLtvChart" viewBox="0 0 380 300"></svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== ORIGINATION ===================== -->
+      <section class="page" id="page-origination">
+        <div class="grid g12">
+          <div class="card span-7">
+            <div class="card-head"><h3>Applications & approval rate</h3><span class="badge">Monthly</span></div>
+            <svg class="chart-svg" id="oFunnel" viewBox="0 0 700 320"></svg>
+          </div>
+          <div class="card span-5">
+            <div class="card-head"><h3>Rejection reasons</h3><span class="badge">All-time</span></div>
+            <div id="oRejectTable"></div>
+          </div>
+        </div>
+        <div class="grid g12">
+          <div class="card span-8">
+            <div class="card-head"><h3>Vintage outcomes</h3><span class="badge">Terminal state today, by origination month</span></div>
+            <svg class="chart-svg" id="oVintage" viewBox="0 0 1200 320" preserveAspectRatio="none"></svg>
+          </div>
+          <div class="card span-4">
+            <div class="card-head"><h3>Committee mix</h3></div>
+            <div id="oCommitteeTable"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== PAYMENTS (NEW) ===================== -->
+      <section class="page" id="page-payments">
+        <div class="grid g12" id="pKpiRow"></div>
+        <div class="grid g12">
+          <div class="card span-8">
+            <div class="card-head">
+              <div><h3>Collection rate by segment</h3><div class="card-sub" style="margin-top:4px">Interest vs principal — the split reveals the bullet-loan effect</div></div>
+            </div>
+            <div id="pCollBySegment"></div>
+          </div>
+          <div class="card span-4">
+            <div class="card-head"><h3>Payment behavior</h3><span class="badge">Deal-months</span></div>
+            <svg class="chart-svg" id="pStatusDonut" viewBox="0 0 260 220"></svg>
+            <div class="chart-legend" id="pStatusLegend"></div>
+          </div>
+        </div>
+        <div class="grid g12">
+          <div class="card glow-teal span-12">
+            <div class="card-head">
+              <div><h3>Scheduled vs. actually paid</h3><div class="card-sub" style="margin-top:4px">Monthly cash due vs monthly cash received — the gap above the line is prepayment, the gap below is shortfall</div></div>
+              <span class="badge">GEL / month</span>
+            </div>
+            <svg class="chart-svg" id="pScheduleChart" viewBox="0 0 1200 340"></svg>
+          </div>
+        </div>
+        <div class="grid g12">
+          <div class="card span-12">
+            <div class="card-head"><h3>Prepayment vs shortfall over time</h3><span class="badge">Monthly GEL</span></div>
+            <svg class="chart-svg" id="pBehaviorChart" viewBox="0 0 1200 260"></svg>
+          </div>
+        </div>
+        <div class="grid g12">
+          <div class="card span-6">
+            <div class="card-head"><h3>Principal: scheduled vs paid</h3></div>
+            <svg class="chart-svg" id="pPrincipalChart" viewBox="0 0 560 260"></svg>
+          </div>
+          <div class="card span-6">
+            <div class="card-head"><h3>Interest: scheduled vs paid</h3></div>
+            <svg class="chart-svg" id="pInterestChart" viewBox="0 0 560 260"></svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== COLLECTIONS ===================== -->
+      <section class="page" id="page-collections">
+        <div class="grid g12">
+          <div class="card span-7">
+            <div class="card-head"><h3>Monthly write-offs</h3><span class="badge">Gross vs net of allowance</span></div>
+            <svg class="chart-svg" id="colWriteoff" viewBox="0 0 700 300"></svg>
+          </div>
+          <div class="card span-5">
+            <div class="card-head"><h3>Recovery rate by segment</h3></div>
+            <div id="colRecoveryTable"></div>
+            <div style="margin-top:14px">
+              <svg class="chart-svg" id="colRecoveryTs" viewBox="0 0 460 140"></svg>
+            </div>
+          </div>
+        </div>
+        <div class="grid g12">
+          <div class="card span-5">
+            <div class="card-head"><h3>Write-offs by sector</h3><span class="badge">Cumulative</span></div>
+            <div id="colSectorTable"></div>
+          </div>
+          <div class="card span-7">
+            <div class="card-head"><h3>Restructuring activity</h3><span class="badge">By level, monthly</span></div>
+            <svg class="chart-svg" id="colRest" viewBox="0 0 820 300" preserveAspectRatio="none"></svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== BEHAVIOR ===================== -->
+      <section class="page" id="page-behavior">
+        <div class="grid g12">
+          <div class="card span-12 glow-rose">
+            <div class="card-head">
+              <div><h3>Do gamblers default more?</h3><div class="card-sub" style="margin-top:4px">Retail clients segmented by observed net betting flow vs baseline retail clients with none</div></div>
+            </div>
+            <div class="grid g12" style="margin-bottom:14px" id="behGamblerCards"></div>
+            <div id="behInsight"></div>
+          </div>
+        </div>
+        <div class="grid g12">
+          <div class="card span-7">
+            <div class="card-head"><h3>FX rates</h3><span class="badge">GEL per unit</span></div>
+            <svg class="chart-svg" id="behFx" viewBox="0 0 700 260"></svg>
+          </div>
+          <div class="card span-5">
+            <div class="card-head"><h3>Committee approval mix</h3></div>
+            <div id="behCommittee"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== LEAGUE ===================== -->
+      <section class="page" id="page-league">
+        <div class="grid g12">
+          <div class="card span-12">
+            <div class="card-head"><h3>Top 30 bankers by book size</h3><span class="badge">Click a column to sort</span></div>
+            <div id="lgTable"></div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const DATA = {"meta":{"period_start":"2024-01-31","period_end":"2026-07-31","n_months":31,"total_deals_created":29565,"total_applications":39912,"total_clients":6800,"segments":["ALL","RB","SML","SMM","CB"]},"kpi":{"ALL":{"active_loans_latest":10005,"active_loans_start":10005,"gross_exposure_latest":911173170.5000001,"gross_exposure_start":590415766.38,"allowance_latest":38838235.42,"coverage_latest":0.04262442823979089,"stage3_share_latest":0.08135932033983008,"stage3_share_start":0.057971014492753624,"npl_ratio_latest":0.08394049770805888,"write_offs_total_gel":11698627.700000001,"recoveries_total_gel":1760741.77,"avg_ticket_latest":62421.963230384805,"avg_pd_latest":0.014087546226886556},"RB":{"active_loans_latest":2495,"active_loans_start":2496,"gross_exposure_latest":2593524.88,"gross_exposure_start":2723105.1,"allowance_latest":113311.81,"coverage_latest":0.04369027298477276,"stage3_share_latest":0.07615230460921844,"stage3_share_start":0.07051282051282051,"npl_ratio_latest":0.08674694880891215,"write_offs_total_gel":102489.42000000001,"recoveries_total_gel":16145.25,"avg_ticket_latest":893.9530781563125,"avg_pd_latest":0.010447655310621242},"SML":{"active_loans_latest":2505,"active_loans_start":2504,"gross_exposure_latest":11918251.92,"gross_exposure_start":11850623.25,"allowance_latest":545359.75,"coverage_latest":0.04575836738983782,"stage3_share_latest":0.08263473053892216,"stage3_share_start":0.060303514376996804,"npl_ratio_latest":0.0899827161901441,"write_offs_total_gel":334205.53,"recoveries_total_gel":69566.3,"avg_ticket_latest":3362.347632734531,"avg_pd_latest":0.015285069860279443},"SMM":{"active_loans_latest":2501,"active_loans_start":2504,"gross_exposure_latest":95281236.32,"gross_exposure_start":85740411.64,"allowance_latest":3871969.2800000003,"coverage_latest":0.04063726951438869,"stage3_share_latest":0.07477009196321471,"stage3_share_start":0.06908945686900958,"npl_ratio_latest":0.07600573260487684,"write_offs_total_gel":2082470.0799999998,"recoveries_total_gel":364867.61000000004,"avg_ticket_latest":26136.557257097164,"avg_pd_latest":0.015618272690923632},"CB":{"active_loans_latest":2504,"active_loans_start":2501,"gross_exposure_latest":801380157.38,"gross_exposure_start":490101626.39000005,"allowance_latest":34307594.58,"coverage_latest":0.042810636455192334,"stage3_share_latest":0.09185303514376997,"stage3_share_start":0.03198720511795282,"npl_ratio_latest":0.08478496951077079,"write_offs_total_gel":9179462.67,"recoveries_total_gel":1310162.6099999999,"avg_ticket_latest":219053.96113019172,"avg_pd_latest":0.014987460063897763}},"timeseries":{"ALL":{"months":["2024-01-31","2024-02-29","2024-03-31","2024-04-30","2024-05-31","2024-06-30","2024-07-31","2024-08-31","2024-09-30","2024-10-31","2024-11-30","2024-12-31","2025-01-31","2025-02-28","2025-03-31","2025-04-30","2025-05-31","2025-06-30","2025-07-31","2025-08-31","2025-09-30","2025-10-31","2025-11-30","2025-12-31","2026-01-31","2026-02-28","2026-03-31","2026-04-30","2026-05-31","2026-06-30","2026-07-31"],"exposure":[590415766.38,585870338.63,587730054.67,585827909.27,584969259.62,583488899.48,581954500.31,590999620.79,595316525.08,604911519.52,619696537.82,623493722.5,633458365.13,642146760.96,655950087.88,672514072.98,684529996.29,699614089.35,717054379.24,739559845.38,758373990.23,777786425.16,792272014.58,799134182.99,816008589.13,833296090.82,851059808.82,868049805.04,883808887.13,895722042.24,911173170.5],"allowance":[18272915.53,19049006.22,18524085.64,19366484.46,20149917.29,21122337.12,21956310.45,22879072.52,23601600.75,23851172.98,24651549.42,25474003.9,25563295.17,26360287.03,26587253.1,27746367.01,28466664.64,29551726.07,30262042.83,31528794.12,32193822.4,32524119.23,33378857.01,33573170.57,34452950.79,35371933.31,36862147.78,36663656.26,37667379.82,38463186.13,38838235.42],"n_loans":[10005,10005,10005,10005,10005,10005,10005,10005,10005,10005,10005,10005,10005,10005,10005,10005,10005,10005,10005,10005,10005,10005,10005,10005,10005,10005,10005,10005,10005,10005,10005],"stage1_exp":[560449771.27,550578801.94,549325404.76,541433009.95,538860933.15,535178448.27,529831524.43,538593376.1,540886488.44,550296679.98,562165168.57,564417170.75,574682044.46,580306186.3,589853152.02,603045925.11,612048310.75,625203500.29,642677861.31,661201808.69,678501841.67,699791417.78,708836325.49,716704462.86,731646481.5,750083850.28,763133623.29,780677150.52,791585787.0,803657674.33,818770014.44],"stage2_exp":[6170762.2299999995,9484657.79,14714968.41,16243293.06,15198280.05,13526187.12,14361547.290000001,12714599.46,12202104.67,13369193.65,12682174.44,11860731.74,13244122.6,15125389.89,18324386.18,18637024.45,18093530.25,18997341.61,16067599.02,16963571.59,16721469.23,15084258.58,17524617.04,18389344.08,16469816.110000001,15145750.66,15734419.96,17640652.09,18554554.45,18060242.05,15918826.63],"stage3_exp":[23795232.88,25806878.9,23689681.5,28151606.259999998,30910046.419999998,34784264.09,37761428.59,39691645.23,42227931.97,41245645.89,44849194.81,47215820.01,45532198.07,46715184.77,47772549.68,50831123.42,54388155.29,55413247.45,58308918.91,61394465.1,63150679.33,62910748.8,65911072.05,64040376.05,67892291.52,68066489.88,72191765.57,69732002.43,73668545.68,74004125.86,76484329.43]},"RB":{"months":["2024-01-31","2024-02-29","2024-03-31","2024-04-30","2024-05-31","2024-06-30","2024-07-31","2024-08-31","2024-09-30","2024-10-31","2024-11-30","2024-12-31","2025-01-31","2025-02-28","2025-03-31","2025-04-30","2025-05-31","2025-06-30","2025-07-31","2025-08-31","2025-09-30","2025-10-31","2025-11-30","2025-12-31","2026-01-31","2026-02-28","2026-03-31","2026-04-30","2026-05-31","2026-06-30","2026-07-31"],"exposure":[2723105.1,2717116.58,2700965.25,2678595.63,2664015.77,2650491.42,2650772.36,2655091.9,2645246.87,2657982.47,2660105.07,2657072.07,2659013.19,2630309.67,2666450.65,2641239.51,2627111.07,2635640.31,2655227.59,2652167.75,2649066.5,2657345.6,2649591.33,2610823.4,2600845.25,2582526.66,2546304.15,2576404.77,2598449.31,2555938.91,2593524.88],"allowance":[116181.8,118385.12,115564.48,116433.36,117775.49,113263.32,113885.7,107408.51,110264.54,110487.37,112256.49,107768.51,107371.39,109980.45,115098.0,112842.59,113705.31,110918.36,114789.95,114045.31999999999,113356.86,115265.31,110888.34,107194.15,106810.28,103888.24,108858.63,113230.77,112542.57,111671.14,113311.81],"n_loans":[2496,2497,2496,2495,2494,2492,2495,2499,2496,2493,2493,2495,2496,2495,2497,2495,2495,2495,2499,2496,2496,2494,2498,2497,2498,2496,2496,2496,2500,2493,2495],"stage1_exp":[2427236.25,2417275.1,2401597.5,2370847.89,2351477.86,2366240.6,2358600.03,2353585.64,2363805.46,2398343.64,2381362.59,2386661.68,2406405.2,2356798.22,2360485.69,2345576.15,2325921.18,2334069.29,2342003.13,2341940.65,2329893.6,2346537.25,2365563.51,2330856.6,2303420.82,2306235.45,2253032.18,2278828.24,2299782.25,2236817.55,2297813.17],"stage2_exp":[71292.55,81733.54000000001,89853.88,95986.37,106787.91,78416.88,86758.03,104046.17,84123.13,56666.08,77885.77,76457.79000000001,53776.28,70698.26,86024.72,79508.59,81323.58,86350.68000000001,78190.33,76532.26,86610.8,76079.54,60696.22,69574.68,78861.84,75467.93000000001,74153.51,76125.13,73696.68,89047.84,70731.34],"stage3_exp":[224576.3,218107.94,209513.87,211761.37,205750.0,205833.94,205414.3,197460.09,197318.28,202972.75,200856.71,193952.6,198831.71,202813.19,219940.24,216154.77,219866.31,215220.34,235034.13,233694.84,232562.1,234728.81,223331.6,210392.12,218562.59,200823.28,219118.46,221451.4,224970.38,230073.52,224980.37]},"SML":{"months":["2024-01-31","2024-02-29","2024-03-31","2024-04-30","2024-05-31","2024-06-30","2024-07-31","2024-08-31","2024-09-30","2024-10-31","2024-11-30","2024-12-31","2025-01-31","2025-02-28","2025-03-31","2025-04-30","2025-05-31","2025-06-30","2025-07-31","2025-08-31","2025-09-30","2025-10-31","2025-11-30","2025-12-31","2026-01-31","2026-02-28","2026-03-31","2026-04-30","2026-05-31","2026-06-30","2026-07-31"],"exposure":[11850623.25,11754668.86,11776232.97,11795658.16,11708123.11,11691446.28,11585539.98,11655428.48,11531420.7,11559021.06,11590490.29,11595842.89,11680835.41,11624318.7,11613182.73,11638086.86,11642545.55,11691216.7,11740587.34,11900419.2,11919759.37,12001890.18,11906074.48,11884656.85,11917173.88,11866034.2,11991973.84,12024874.290000001,11970589.92,11862651.13,11918251.92],"allowance":[451058.97,470512.33,489537.98,483780.18,494396.31,499668.7,494814.57,507087.36,510516.42,526046.15,538170.49,530646.92,542141.23,552271.85,544120.87,544867.36,543369.83,539208.53,536391.78,526351.63,527267.5,523066.0,502182.61,511376.18,497360.56,505808.98,514127.66,529400.95,533632.68,546375.95,545359.75],"n_loans":[2504,2503,2504,2505,2506,2508,2505,2501,2504,2507,2507,2505,2504,2505,2503,2505,2505,2505,2501,2504,2504,2506,2502,2503,2502,2504,2504,2504,2500,2507,2505],"stage1_exp":[10788223.49,10630834.85,10605837.93,10629669.9,10583610.38,10525258.92,10409638.31,10476577.32,10291394.99,10285574.43,10312313.28,10332450.44,10328741.45,10271970.39,10301379.84,10328629.28,10322308.29,10440940.41,10458965.78,10694929.14,10705622.52,10763360.5,10760680.28,10669859.35,10707764.36,10644817.48,10696045.75,10659876.7,10665470.95,10579275.28,10576376.07],"stage2_exp":[311511.16000000003,292208.35,274682.92,264640.9,230747.61,253064.43,262460.14,243432.74,302927.07,306274.25,248777.69,239707.98,282341.56,264145.84,197856.91999999998,200881.23,218924.83,188848.75,248303.16999999998,230373.79,213865.44,218646.68,191341.13,246497.2,297471.7,279153.06,283142.35,303369.09,262248.62,224230.4,269439.17],"stage3_exp":[750888.6,831625.66,895712.12,901347.36,893765.12,913122.93,913441.53,935418.42,937098.64,967172.38,1029399.32,1023684.47,1069752.4,1088202.47,1113945.97,1108576.35,1101312.43,1061427.54,1033318.39,975116.27,1000271.41,1019883.0,954053.07,968300.3,911937.82,942063.66,1012785.74,1061628.5,1042870.35,1059145.45,1072436.68]},"SMM":{"months":["2024-01-31","2024-02-29","2024-03-31","2024-04-30","2024-05-31","2024-06-30","2024-07-31","2024-08-31","2024-09-30","2024-10-31","2024-11-30","2024-12-31","2025-01-31","2025-02-28","2025-03-31","2025-04-30","2025-05-31","2025-06-30","2025-07-31","2025-08-31","2025-09-30","2025-10-31","2025-11-30","2025-12-31","2026-01-31","2026-02-28","2026-03-31","2026-04-30","2026-05-31","2026-06-30","2026-07-31"],"exposure":[85740411.64,85427770.05,85992745.56,86540611.16,87208489.29,86459334.14,86182909.9,86847634.75,87102845.39,87204346.29,87845823.14,88345771.18,88790737.48,88269264.16,89564961.13,89969309.53,90505916.09,90704642.68,91973378.47,92858412.53,92178844.01,92892836.34,92277523.7,92355256.21,93494760.29,93811872.54,94270804.28,95304858.01,94620931.87,93904332.63,95281236.32],"allowance":[3558841.47,3619695.65,3622127.54,3786022.11,3817183.8,3717893.45,3589739.2,3634846.02,3714420.28,3898147.12,3968790.68,4038925.2199999997,3943546.6,3927443.91,3922547.21,3914582.37,4042195.53,4074477.75,3984673.97,3982801.92,3897371.4,3943852.16,4229765.57,4266193.99,4298946.34,4052086.8,3880561.02,3940607.97,3978999.13,3904842.02,3871969.28],"n_loans":[2504,2503,2501,2504,2501,2505,2503,2504,2503,2501,2500,2502,2503,2505,2505,2503,2503,2500,2504,2502,2502,2501,2501,2501,2503,2502,2501,2501,2502,2500,2501],"stage1_exp":[78728861.64,77555389.21,77318132.34,77578086.51,78033975.62,77739991.78,76853175.89,77619237.99,78175399.1,78191640.32,79324204.05,79610091.4,79673583.69,79190831.53,79564139.96,80212793.08,80559096.14,81016752.09,82283217.62,82848042.55,82653202.17,83632611.01,82178173.39,82742253.63,84290014.01,84608259.02,85333156.13,85897732.37,85464536.17,84127650.93,85451054.77],"stage2_exp":[1035724.82,1917818.12,2824240.29,2378077.99,2206358.3,2043742.85,2668096.52,2627407.54,2193832.66,1926052.52,1512904.53,1887174.92,2274494.37,1968270.94,2939332.33,2517147.99,1936028.55,1993928.71,2037066.03,2247455.16,2018838.46,1678826.77,1798548.64,1310502.32,771635.7999999999,1351710.7,1778333.8,2060895.23,1856729.46,2539530.91,2588261.38],"stage3_exp":[5975825.18,5954562.72,5850372.93,6584446.66,6968155.37,6675599.51,6661637.49,6600989.22,6733613.63,7086653.45,7008714.56,6848504.86,6842659.42,7110161.69,7061488.84,7239368.46,8010791.4,7693961.88,7653094.82,7762914.82,7506803.38,7581398.56,8300801.67,8302500.26,8433110.48,7851902.82,7159314.35,7346230.41,7299666.24,7237150.79,7241920.17]},"CB":{"months":["2024-01-31","2024-02-29","2024-03-31","2024-04-30","2024-05-31","2024-06-30","2024-07-31","2024-08-31","2024-09-30","2024-10-31","2024-11-30","2024-12-31","2025-01-31","2025-02-28","2025-03-31","2025-04-30","2025-05-31","2025-06-30","2025-07-31","2025-08-31","2025-09-30","2025-10-31","2025-11-30","2025-12-31","2026-01-31","2026-02-28","2026-03-31","2026-04-30","2026-05-31","2026-06-30","2026-07-31"],"exposure":[490101626.39,485970783.14,487260110.89,484813044.32,483388631.45,482687627.64,481535278.07,489841465.66,494037012.12,503490169.7,517600119.32,520895036.36,530327779.05,539622868.43,552105493.37,568265437.08,579754423.58,594582589.66,610685185.84,632148845.9,651626320.35,670234353.04,685438825.07,692283446.53,707995809.71,725035657.42,742250726.55,758143667.97,774618916.03,787399119.57,801380157.38],"allowance":[14146833.29,14840413.12,14296855.64,14980248.81,15720561.69,16791511.65,17757870.98,18629730.63,19266399.51,19316492.34,20032331.76,20796663.25,20970235.95,21770590.82,22005487.02,23174074.69,23767393.97,24827121.43,25626187.13,26905595.25,27655826.64,27941935.76,28536020.49,28688406.25,29549833.61,30710149.29,32358600.47,32080416.57,33042205.44,33900297.02,34307594.58],"n_loans":[2501,2502,2504,2501,2504,2500,2502,2501,2502,2504,2505,2503,2502,2500,2500,2502,2502,2505,2501,2503,2503,2504,2504,2504,2502,2503,2504,2504,2503,2505,2504],"stage1_exp":[468505449.89,459975302.78,458999836.99,450854405.65,447891869.29,444546956.97,440210110.2,448143975.15,450055888.89,459421121.59,470147288.65,472087967.23,482273314.12,488486586.16,497627146.53,510158926.6,518840985.14,531411738.5,547593674.78,565316896.35,582813123.38,603048909.02,613531908.31,620961493.28,634345282.31,652524538.33,664851389.23,681840713.21,693155997.63,706713930.57,720444770.43],"stage2_exp":[4752233.7,7192897.78,11526191.32,13504587.8,12654386.23,11150962.96,11344232.6,9739713.01,9621221.81,11080200.8,10842606.45,9657391.05,10633510.39,12822274.85,15101172.209999999,15839486.64,15857253.29,16728213.47,13704039.49,14409210.38,14402154.53,13110705.59,15474031.05,16762769.879999999,15321846.77,13439418.97,13598790.3,15200262.64,16361879.69,15207432.9,12990394.74],"stage3_exp":[16843942.8,18802582.58,16734082.58,20454050.87,22842375.93,26989707.71,29980935.27,31957777.5,34359901.42,32988847.31,36610224.22,39149678.08,37420954.54,38314007.42,39377174.63,42267023.84,45056185.15,46442637.69,49387471.57,52422739.17,54411042.44,54074738.43,56432885.71,54559183.37,58328680.63,59071700.12,63800547.02,61102692.12,65101038.71,65477756.1,67944992.21]}},"latest":{"ALL":{"by_product":[{"LOAN_PRODUCT":"Corporate Term Loan","exposure":320878880.5,"allowance":12925999.42,"n":2353,"stage3_exp":24259760.34,"avg_pd":0.012582022949426263},{"LOAN_PRODUCT":"Developer","exposure":271726155.05,"allowance":15162941.7,"n":2087,"stage3_exp":35237013.69,"avg_pd":0.020009439386679446},{"LOAN_PRODUCT":"Working Capital","exposure":150089495.16,"allowance":4404045.47,"n":1026,"stage3_exp":4679763.27,"avg_pd":0.011667933723196881},{"LOAN_PRODUCT":"Trade Finance","exposure":144264868.2,"allowance":5370271.33,"n":1007,"stage3_exp":10330228.21,"avg_pd":0.012093247269116186},{"LOAN_PRODUCT":"Agro","exposure":21316341.47,"allowance":847611.16,"n":901,"stage3_exp":1717721.91,"avg_pd":0.019745283018867923},{"LOAN_PRODUCT":"Mortgage","exposure":1192686.73,"allowance":57912.03,"n":968,"stage3_exp":125796.73,"avg_pd":0.012317561983471073},{"LOAN_PRODUCT":"Auto Loan","exposure":658731.03,"allowance":28244.47,"n":728,"stage3_exp":64873.490000000005,"avg_pd":0.009789423076923076},{"LOAN_PRODUCT":"Digital","exposure":594874.88,"allowance":24724.07,"n":416,"stage3_exp":44326.12000000001,"avg_pd":0.00895889423076923},{"LOAN_PRODUCT":"Consumer","exposure":451137.48,"allowance":16485.77,"n":519,"stage3_exp":24845.67,"avg_pd":0.009371868978805395}],"by_sector":[{"SECTOR":"Real Estate & Construction","exposure":259799772.34,"allowance":15268726.9,"n":2324,"stage3_exp":37730490.34,"avg_pd":0.023596901893287434},{"SECTOR":"Manufacturing & Industry","exposure":167214765.11,"allowance":5771484.57,"n":1215,"stage3_exp":11522804.470000003,"avg_pd":0.008520493827160493},{"SECTOR":"Trade & Distribution","exposure":127627594.77,"allowance":4703056.18,"n":977,"stage3_exp":8549278.329999998,"avg_pd":0.013785568065506654},{"SECTOR":"Financial & Professional Services","exposure":93909357.27,"allowance":3977016.41,"n":829,"stage3_exp":6404579.99,"avg_pd":0.00888854041013269},{"SECTOR":"Transportation & Logistics","exposure":92951895.08,"allowance":3389264.68,"n":912,"stage3_exp":5321579.970000001,"avg_pd":0.013481907894736843},{"SECTOR":"Energy & Utilities","exposure":83901220.4,"allowance":3031394.86,"n":582,"stage3_exp":3315461.29,"avg_pd":0.008514432989690722},{"SECTOR":"Tourism & Hospitality","exposure":38639827.17,"allowance":1038506.79,"n":361,"stage3_exp":498038.8,"avg_pd":0.01380747922437673},{"SECTOR":"Healthcare & Pharmaceuticals","exposure":28538918.13,"allowance":875238.86,"n":151,"stage3_exp":1566065.0299999998,"avg_pd":0.00897615894039735},{"SECTOR":"Agriculture & Agro-processing","exposure":13784667.96,"allowance":608398.8200000001,"n":585,"stage3_exp":1331137.46,"avg_pd":0.0246591452991453},{"SECTOR":"Retail/Household (Consumer)","exposure":4445981.59,"allowance":162115.26,"n":1778,"stage3_exp":223738.15999999997,"avg_pd":0.00814066366704162},{"SECTOR":"IT & Digital Services","exposure":313629.7,"allowance":12002.7,"n":234,"stage3_exp":20811.88,"avg_pd":0.008305128205128205},{"SECTOR":"Education","exposure":45540.98,"allowance":1029.39,"n":57,"stage3_exp":343.71,"avg_pd":0.008478947368421053}],"by_region":[{"REGION_BUSINESS":"Tbilisi","exposure":288601703.71,"allowance":12753106.27,"n":3121,"stage3_exp":26721672.0,"avg_pd":0.013832265299583466},{"REGION_BUSINESS":"Adjara","exposure":88088569.46,"allowance":3952935.39,"n":981,"stage3_exp":8248876.590000001,"avg_pd":0.014747910295616716},{"REGION_BUSINESS":"Imereti","exposure":87310350.2,"allowance":3761721.39,"n":1021,"stage3_exp":6532729.97,"avg_pd":0.015183839373163564},{"REGION_BUSINESS":"Kvemo Kartli","exposure":78872724.76,"allowance":3069339.05,"n":855,"stage3_exp":4798242.22,"avg_pd":0.01267578947368421},{"REGION_BUSINESS":"Samegrelo-Zemo Svaneti","exposure":65890095.82,"allowance":2664092.15,"n":677,"stage3_exp":5739344.989999998,"avg_pd":0.014379025110782866},{"REGION_BUSINESS":"Abkhazia (Nominal)","exposure":62177632.29,"allowance":2535208.15,"n":696,"stage3_exp":4910335.61,"avg_pd":0.014555172413793104},{"REGION_BUSINESS":"Kakheti","exposure":59062271.25,"allowance":2315443.29,"n":611,"stage3_exp":4810877.29,"avg_pd":0.012390671031096562},{"REGION_BUSINESS":"Shida Kartli","exposure":50057453.26,"allowance":2593354.31,"n":585,"stage3_exp":5484275.61,"avg_pd":0.014892991452991455},{"REGION_BUSINESS":"Samtskhe-Javakheti","exposure":44491011.54,"allowance":2089712.44,"n":481,"stage3_exp":4061293.61,"avg_pd":0.016455509355509355},{"REGION_BUSINESS":"Mtskheta-Mtianeti","exposure":34726342.54,"allowance":1195256.11,"n":406,"stage3_exp":1803531.9500000002,"avg_pd":0.01243768472906404},{"REGION_BUSINESS":"Guria","exposure":33272455.76,"allowance":1193180.0,"n":366,"stage3_exp":2307318.54,"avg_pd":0.014566939890710383},{"REGION_BUSINESS":"Racha-Lechkhumi","exposure":18622559.91,"allowance":714886.87,"n":205,"stage3_exp":1065831.05,"avg_pd":0.012306341463414635}],"by_ccy":[{"CCY":"USD","exposure":493092764.8,"allowance":14061863.91,"n":3543,"stage3_exp":43371521.67,"avg_pd":0.01372320067739204},{"CCY":"GEL","exposure":271776154.48,"allowance":20751507.27,"n":5413,"stage3_exp":21963286.26,"avg_pd":0.014289728431553668},{"CCY":"EUR","exposure":146304251.22,"allowance":4024864.24,"n":1049,"stage3_exp":11149521.5,"avg_pd":0.014274833174451858}],"by_cig":[{"CIG_GRADE":"A2","exposure":128239160.46,"allowance":2611741.33,"n":1294,"stage3_exp":141916.0,"avg_pd":0.0017214064914992271},{"CIG_GRADE":"B1","exposure":106334590.66,"allowance":2355176.37,"n":1139,"stage3_exp":1422440.1099999999,"avg_pd":0.003335206321334504},{"CIG_GRADE":"B3","exposure":104843786.46,"allowance":2102705.94,"n":1012,"stage3_exp":596959.67,"avg_pd":0.005403063241106719},{"CIG_GRADE":"E3","exposure":92571348.9,"allowance":16412159.49,"n":1027,"stage3_exp":51789375.41,"avg_pd":0.052357448880233685},{"CIG_GRADE":"C2","exposure":88367223.69,"allowance":2621661.86,"n":809,"stage3_exp":4289347.35,"avg_pd":0.008958467243510506},{"CIG_GRADE":"D1","exposure":65815971.04,"allowance":1656703.49,"n":662,"stage3_exp":1254496.31,"avg_pd":0.014640634441087614},{"CIG_GRADE":"A1","exposure":61634645.339999996,"allowance":1217001.64,"n":1001,"stage3_exp":0.0,"avg_pd":0.0016750249750249748},{"CIG_GRADE":"D3","exposure":57234607.57,"allowance":1509850.74,"n":521,"stage3_exp":1207595.9000000001,"avg_pd":0.025231669865642993},{"CIG_GRADE":"E2","exposure":50480342.98,"allowance":1733551.04,"n":489,"stage3_exp":2297948.3000000003,"avg_pd":0.044190388548057256},{"CIG_GRADE":"A3","exposure":45806023.56,"allowance":969995.69,"n":560,"stage3_exp":375515.50000000006,"avg_pd":0.0031351785714285713},{"CIG_GRADE":"B2","exposure":35314422.71,"allowance":1354938.31,"n":431,"stage3_exp":2628166.4899999998,"avg_pd":0.005057772621809745},{"CIG_GRADE":"C1","exposure":26463061.3,"allowance":1021511.27,"n":334,"stage3_exp":1373413.14,"avg_pd":0.008716766467065868},{"CIG_GRADE":"C3","exposure":19643668.45,"allowance":858270.88,"n":315,"stage3_exp":2338188.37,"avg_pd":0.013708888888888889},{"CIG_GRADE":"D2","exposure":16918941.490000002,"allowance":1013431.45,"n":225,"stage3_exp":2771733.3800000004,"avg_pd":0.020955555555555554},{"CIG_GRADE":"E1","exposure":11505375.89,"allowance":1399535.92,"n":186,"stage3_exp":3997233.5,"avg_pd":0.034566129032258065}],"by_segment":[{"LOAN_SEGMENT":"CB","exposure":801380157.38,"allowance":34307594.58,"n":2504,"stage3_exp":67944992.21,"avg_pd":0.014987460063897763},{"LOAN_SEGMENT":"SMM","exposure":95281236.32,"allowance":3871969.28,"n":2501,"stage3_exp":7241920.169999999,"avg_pd":0.015618272690923628},{"LOAN_SEGMENT":"SML","exposure":11918251.92,"allowance":545359.75,"n":2505,"stage3_exp":1072436.68,"avg_pd":0.01528506986027944},{"LOAN_SEGMENT":"RB","exposure":2593524.88,"allowance":113311.81,"n":2495,"stage3_exp":224980.37000000002,"avg_pd":0.010447655310621242}]},"RB":{"by_product":[{"LOAN_PRODUCT":"Mortgage","exposure":1083888.82,"allowance":53521.97,"n":923,"stage3_exp":116418.54000000001,"avg_pd":0.012142795232936076},{"LOAN_PRODUCT":"Auto Loan","exposure":583879.36,"allowance":24105.61,"n":687,"stage3_exp":51071.84,"avg_pd":0.009754148471615721},{"LOAN_PRODUCT":"Digital","exposure":516616.18,"allowance":20747.97,"n":390,"stage3_exp":34006.46,"avg_pd":0.008979230769230769},{"LOAN_PRODUCT":"Consumer","exposure":409140.52,"allowance":14936.26,"n":495,"stage3_exp":23483.53,"avg_pd":0.009406262626262627}],"by_sector":[{"SECTOR":"Retail/Household (Consumer)","exposure":1625537.57,"allowance":68567.75,"n":1589,"stage3_exp":139036.27,"avg_pd":0.00813096286972939},{"SECTOR":"Real Estate & Construction","exposure":298677.13,"allowance":18668.94,"n":269,"stage3_exp":42001.74,"avg_pd":0.02259628252788104},{"SECTOR":"IT & Digital Services","exposure":280070.36,"allowance":10579.98,"n":222,"stage3_exp":16662.29,"avg_pd":0.00841891891891892},{"SECTOR":"Transportation & Logistics","exposure":197886.88,"allowance":8073.53,"n":229,"stage3_exp":14737.17,"avg_pd":0.013087336244541484},{"SECTOR":"Financial & Professional Services","exposure":109433.24,"allowance":4807.5,"n":81,"stage3_exp":9434.869999999999,"avg_pd":0.01018888888888889},{"SECTOR":"Education","exposure":41033.63,"allowance":958.99,"n":55,"stage3_exp":343.71,"avg_pd":0.008656363636363636},{"SECTOR":"Tourism & Hospitality","exposure":40886.07,"allowance":1655.12,"n":50,"stage3_exp":2764.3199999999997,"avg_pd":0.01802}],"by_region":[{"REGION_BUSINESS":"Tbilisi","exposure":795534.68,"allowance":33139.55,"n":775,"stage3_exp":64028.95,"avg_pd":0.010707612903225805},{"REGION_BUSINESS":"Adjara","exposure":277584.55,"allowance":14754.84,"n":260,"stage3_exp":34586.54,"avg_pd":0.011529999999999999},{"REGION_BUSINESS":"Imereti","exposure":249916.86000000002,"allowance":9368.56,"n":244,"stage3_exp":22472.61,"avg_pd":0.009434836065573769},{"REGION_BUSINESS":"Kvemo Kartli","exposure":235357.21,"allowance":8872.36,"n":212,"stage3_exp":17897.17,"avg_pd":0.009933018867924527},{"REGION_BUSINESS":"Abkhazia (Nominal)","exposure":181231.83,"allowance":7401.26,"n":167,"stage3_exp":10427.510000000002,"avg_pd":0.010051497005988024},{"REGION_BUSINESS":"Samegrelo-Zemo Svaneti","exposure":175417.63,"allowance":8535.45,"n":167,"stage3_exp":15148.48,"avg_pd":0.011111377245508982},{"REGION_BUSINESS":"Shida Kartli","exposure":165329.09,"allowance":10947.32,"n":148,"stage3_exp":26924.98,"avg_pd":0.012304054054054053},{"REGION_BUSINESS":"Kakheti","exposure":159958.93,"allowance":6584.06,"n":166,"stage3_exp":11432.73,"avg_pd":0.009563253012048193},{"REGION_BUSINESS":"Samtskhe-Javakheti","exposure":125471.94,"allowance":4280.77,"n":117,"stage3_exp":8051.99,"avg_pd":0.011972649572649574},{"REGION_BUSINESS":"Mtskheta-Mtianeti","exposure":100461.82,"allowance":2927.92,"n":101,"stage3_exp":2025.31,"avg_pd":0.007685148514851485},{"REGION_BUSINESS":"Guria","exposure":83902.75,"allowance":4092.25,"n":90,"stage3_exp":9058.530000000002,"avg_pd":0.008204444444444443},{"REGION_BUSINESS":"Racha-Lechkhumi","exposure":43357.59,"allowance":2407.4700000000003,"n":48,"stage3_exp":2925.5699999999997,"avg_pd":0.010514583333333334}],"by_ccy":[{"CCY":"USD","exposure":1439595.41,"allowance":42783.82,"n":885,"stage3_exp":129690.86,"avg_pd":0.01011491525423729},{"CCY":"GEL","exposure":765610.88,"allowance":59343.39,"n":1350,"stage3_exp":60872.52999999999,"avg_pd":0.010737851851851853},{"CCY":"EUR","exposure":388318.59,"allowance":11184.6,"n":260,"stage3_exp":34416.979999999996,"avg_pd":0.010073461538461538}],"by_cig":[{"CIG_GRADE":"E3","exposure":288066.24,"allowance":51204.06,"n":225,"stage3_exp":166091.1,"avg_pd":0.03929244444444444},{"CIG_GRADE":"B1","exposure":285922.72,"allowance":6078.5,"n":282,"stage3_exp":313.5,"avg_pd":0.002650354609929078},{"CIG_GRADE":"A1","exposure":278252.43,"allowance":5292.26,"n":343,"stage3_exp":0.0,"avg_pd":0.001478134110787172},{"CIG_GRADE":"A2","exposure":264173.18,"allowance":5187.19,"n":247,"stage3_exp":244.89,"avg_pd":0.0014838056680161944},{"CIG_GRADE":"C2","exposure":229053.38,"allowance":6614.71,"n":189,"stage3_exp":9104.619999999999,"avg_pd":0.00705978835978836},{"CIG_GRADE":"B3","exposure":226387.21,"allowance":6420.28,"n":230,"stage3_exp":5222.92,"avg_pd":0.004287391304347826},{"CIG_GRADE":"A3","exposure":185712.37,"allowance":4724.87,"n":166,"stage3_exp":3900.6200000000003,"avg_pd":0.0026837349397590363},{"CIG_GRADE":"D1","exposure":153657.58,"allowance":3845.9,"n":141,"stage3_exp":3136.27,"avg_pd":0.01155177304964539},{"CIG_GRADE":"B2","exposure":136221.39,"allowance":3676.5299999999997,"n":119,"stage3_exp":4543.3,"avg_pd":0.004092436974789916},{"CIG_GRADE":"D3","exposure":131524.27,"allowance":6140.07,"n":122,"stage3_exp":8753.18,"avg_pd":0.0218844262295082},{"CIG_GRADE":"E2","exposure":122428.15,"allowance":3728.16,"n":123,"stage3_exp":3549.4900000000002,"avg_pd":0.030929268292682926},{"CIG_GRADE":"C1","exposure":95761.49,"allowance":2934.72,"n":94,"stage3_exp":3782.09,"avg_pd":0.007367021276595745},{"CIG_GRADE":"C3","exposure":84073.43000000001,"allowance":1885.14,"n":95,"stage3_exp":704.8,"avg_pd":0.011569473684210525},{"CIG_GRADE":"E1","exposure":65286.31,"allowance":2730.48,"n":60,"stage3_exp":7749.41,"avg_pd":0.024721666666666666},{"CIG_GRADE":"D2","exposure":47004.73,"allowance":2848.94,"n":59,"stage3_exp":7884.179999999999,"avg_pd":0.016515254237288134}],"by_segment":[{"LOAN_SEGMENT":"CB","exposure":801380157.38,"allowance":34307594.58,"n":2504,"stage3_exp":67944992.21,"avg_pd":0.014987460063897763},{"LOAN_SEGMENT":"SMM","exposure":95281236.32,"allowance":3871969.28,"n":2501,"stage3_exp":7241920.169999999,"avg_pd":0.015618272690923628},{"LOAN_SEGMENT":"SML","exposure":11918251.92,"allowance":545359.75,"n":2505,"stage3_exp":1072436.68,"avg_pd":0.01528506986027944},{"LOAN_SEGMENT":"RB","exposure":2593524.88,"allowance":113311.81,"n":2495,"stage3_exp":224980.37000000002,"avg_pd":0.010447655310621242}]},"SML":{"by_product":[{"LOAN_PRODUCT":"Corporate Term Loan","exposure":3382931.94,"allowance":144992.91,"n":698,"stage3_exp":263266.21,"avg_pd":0.012534527220630374},{"LOAN_PRODUCT":"Developer","exposure":3145156.84,"allowance":175547.67,"n":610,"stage3_exp":387373.37000000005,"avg_pd":0.01835655737704918},{"LOAN_PRODUCT":"Agro","exposure":2353176.32,"allowance":126909.22,"n":446,"stage3_exp":269135.32,"avg_pd":0.02122219730941704},{"LOAN_PRODUCT":"Working Capital","exposure":1426518.02,"allowance":46928.799999999996,"n":326,"stage3_exp":68855.83,"avg_pd":0.01190521472392638},{"LOAN_PRODUCT":"Trade Finance","exposure":1306563.56,"allowance":36926.62,"n":289,"stage3_exp":48944.31,"avg_pd":0.011841522491349482},{"LOAN_PRODUCT":"Mortgage","exposure":108797.91,"allowance":4390.06,"n":45,"stage3_exp":9378.189999999999,"avg_pd":0.015902222222222224},{"LOAN_PRODUCT":"Digital","exposure":78258.7,"allowance":3976.1,"n":26,"stage3_exp":10319.66,"avg_pd":0.008653846153846154},{"LOAN_PRODUCT":"Auto Loan","exposure":74851.67,"allowance":4138.86,"n":41,"stage3_exp":13801.650000000001,"avg_pd":0.010380487804878049},{"LOAN_PRODUCT":"Consumer","exposure":41996.96,"allowance":1549.51,"n":24,"stage3_exp":1362.14,"avg_pd":0.0086625}],"by_sector":[{"SECTOR":"Real Estate & Construction","exposure":3130071.41,"allowance":181751.96,"n":619,"stage3_exp":379355.7700000001,"avg_pd":0.022018739903069465},{"SECTOR":"Manufacturing & Industry","exposure":1862708.93,"allowance":74313.85,"n":396,"stage3_exp":140191.56,"avg_pd":0.009386363636363637},{"SECTOR":"Agriculture & Agro-processing","exposure":1577583.29,"allowance":95459.45,"n":295,"stage3_exp":214874.58000000005,"avg_pd":0.026459661016949153},{"SECTOR":"Trade & Distribution","exposure":1415603.01,"allowance":48532.35,"n":298,"stage3_exp":67932.90000000001,"avg_pd":0.013879194630872484},{"SECTOR":"Financial & Professional Services","exposure":1255192.69,"allowance":43365.43,"n":241,"stage3_exp":89024.82,"avg_pd":0.008104979253112033},{"SECTOR":"Transportation & Logistics","exposure":827242.34,"allowance":30224.78,"n":201,"stage3_exp":50738.46000000001,"avg_pd":0.013199004975124377},{"SECTOR":"Energy & Utilities","exposure":771047.07,"allowance":30873.26,"n":170,"stage3_exp":57436.94,"avg_pd":0.009469411764705882},{"SECTOR":"Tourism & Hospitality","exposure":464145.15,"allowance":13499.67,"n":95,"stage3_exp":23662.989999999998,"avg_pd":0.012636842105263156},{"SECTOR":"Retail/Household (Consumer)","exposure":387768.25,"allowance":16149.949999999999,"n":130,"stage3_exp":28479.15,"avg_pd":0.008642307692307692},{"SECTOR":"Healthcare & Pharmaceuticals","exposure":188823.09,"allowance":9695.93,"n":46,"stage3_exp":16589.920000000002,"avg_pd":0.008243478260869564},{"SECTOR":"IT & Digital Services","exposure":33559.340000000004,"allowance":1422.72,"n":12,"stage3_exp":4149.59,"avg_pd":0.0062},{"SECTOR":"Education","exposure":4507.35,"allowance":70.4,"n":2,"stage3_exp":0.0,"avg_pd":0.0036}],"by_region":[{"REGION_BUSINESS":"Tbilisi","exposure":3791411.13,"allowance":188996.46,"n":803,"stage3_exp":366132.02999999997,"avg_pd":0.015004358655043586},{"REGION_BUSINESS":"Imereti","exposure":1205445.86,"allowance":61844.49,"n":269,"stage3_exp":118613.82,"avg_pd":0.018378810408921933},{"REGION_BUSINESS":"Adjara","exposure":1190860.01,"allowance":59828.19,"n":256,"stage3_exp":103654.26,"avg_pd":0.01625625},{"REGION_BUSINESS":"Kvemo Kartli","exposure":984346.7,"allowance":36250.5,"n":204,"stage3_exp":71360.85999999999,"avg_pd":0.013003431372549019},{"REGION_BUSINESS":"Abkhazia (Nominal)","exposure":852101.39,"allowance":42924.95,"n":172,"stage3_exp":104887.82,"avg_pd":0.014738953488372092},{"REGION_BUSINESS":"Samegrelo-Zemo Svaneti","exposure":736706.4,"allowance":36617.24,"n":153,"stage3_exp":88755.56,"avg_pd":0.01733137254901961},{"REGION_BUSINESS":"Kakheti","exposure":713181.99,"allowance":23752.53,"n":148,"stage3_exp":41305.62,"avg_pd":0.013096621621621621},{"REGION_BUSINESS":"Shida Kartli","exposure":668191.36,"allowance":28265.14,"n":138,"stage3_exp":58919.11000000001,"avg_pd":0.015362318840579712},{"REGION_BUSINESS":"Samtskhe-Javakheti","exposure":574406.38,"allowance":17874.65,"n":117,"stage3_exp":34369.33,"avg_pd":0.016266666666666665},{"REGION_BUSINESS":"Mtskheta-Mtianeti","exposure":519701.01,"allowance":26256.69,"n":106,"stage3_exp":49889.69999999999,"avg_pd":0.014234905660377358},{"REGION_BUSINESS":"Guria","exposure":401176.84,"allowance":13183.62,"n":82,"stage3_exp":16917.72,"avg_pd":0.015109756097560973},{"REGION_BUSINESS":"Racha-Lechkhumi","exposure":280722.85,"allowance":9565.29,"n":57,"stage3_exp":17630.850000000002,"avg_pd":0.010284210526315788}],"by_ccy":[{"CCY":"USD","exposure":6044992.92,"allowance":184720.71,"n":838,"stage3_exp":564802.36,"avg_pd":0.01446073985680191},{"CCY":"GEL","exposure":3824834.36,"allowance":304094.97,"n":1391,"stage3_exp":337047.7,"avg_pd":0.015669805895039537},{"CCY":"EUR","exposure":2048424.64,"allowance":56544.07,"n":276,"stage3_exp":170586.62,"avg_pd":0.015848913043478262}],"by_cig":[{"CIG_GRADE":"A2","exposure":1788012.14,"allowance":35395.76,"n":365,"stage3_exp":0.0,"avg_pd":0.0017517808219178082},{"CIG_GRADE":"B1","exposure":1480044.18,"allowance":27968.91,"n":289,"stage3_exp":0.0,"avg_pd":0.003730103806228374},{"CIG_GRADE":"E3","exposure":1312594.69,"allowance":267355.4,"n":271,"stage3_exp":811781.95,"avg_pd":0.05515535055350553},{"CIG_GRADE":"B3","exposure":1172836.55,"allowance":25641.329999999998,"n":241,"stage3_exp":5299.42,"avg_pd":0.005615767634854772},{"CIG_GRADE":"A1","exposure":1045732.61,"allowance":21332.47,"n":245,"stage3_exp":0.0,"avg_pd":0.0018595918367346938},{"CIG_GRADE":"D1","exposure":902371.72,"allowance":18969.920000000002,"n":177,"stage3_exp":13921.0,"avg_pd":0.01612768361581921},{"CIG_GRADE":"C2","exposure":890407.85,"allowance":19812.22,"n":196,"stage3_exp":5932.92,"avg_pd":0.009186224489795919},{"CIG_GRADE":"D3","exposure":631537.82,"allowance":28321.91,"n":133,"stage3_exp":67304.76000000001,"avg_pd":0.026986466165413534},{"CIG_GRADE":"E2","exposure":630308.33,"allowance":21261.35,"n":122,"stage3_exp":32890.91,"avg_pd":0.04679672131147541},{"CIG_GRADE":"A3","exposure":517136.55,"allowance":14938.369999999999,"n":117,"stage3_exp":13044.24,"avg_pd":0.003235897435897436},{"CIG_GRADE":"B2","exposure":404060.97,"allowance":15053.68,"n":85,"stage3_exp":20512.4,"avg_pd":0.005587058823529412},{"CIG_GRADE":"C1","exposure":331454.73,"allowance":11799.15,"n":78,"stage3_exp":14994.51,"avg_pd":0.009207692307692307},{"CIG_GRADE":"D2","exposure":312533.2,"allowance":16745.74,"n":65,"stage3_exp":42988.72,"avg_pd":0.020772307692307694},{"CIG_GRADE":"C3","exposure":274244.94,"allowance":11573.710000000001,"n":71,"stage3_exp":18586.86,"avg_pd":0.014461971830985914},{"CIG_GRADE":"E1","exposure":224975.64,"allowance":9189.83,"n":50,"stage3_exp":25178.989999999998,"avg_pd":0.038267999999999996}],"by_segment":[{"LOAN_SEGMENT":"CB","exposure":801380157.38,"allowance":34307594.58,"n":2504,"stage3_exp":67944992.21,"avg_pd":0.014987460063897763},{"LOAN_SEGMENT":"SMM","exposure":95281236.32,"allowance":3871969.28,"n":2501,"stage3_exp":7241920.169999999,"avg_pd":0.015618272690923628},{"LOAN_SEGMENT":"SML","exposure":11918251.92,"allowance":545359.75,"n":2505,"stage3_exp":1072436.68,"avg_pd":0.01528506986027944},{"LOAN_SEGMENT":"RB","exposure":2593524.88,"allowance":113311.81,"n":2495,"stage3_exp":224980.37000000002,"avg_pd":0.010447655310621242}]},"SMM":{"by_product":[{"LOAN_PRODUCT":"Developer","exposure":27509862.3,"allowance":1348733.86,"n":686,"stage3_exp":2868705.58,"avg_pd":0.020208309037900874},{"LOAN_PRODUCT":"Corporate Term Loan","exposure":25911793.64,"allowance":1082118.16,"n":720,"stage3_exp":1822731.15,"avg_pd":0.012477777777777779},{"LOAN_PRODUCT":"Agro","exposure":18963165.15,"allowance":720701.9400000001,"n":455,"stage3_exp":1448586.59,"avg_pd":0.018297582417582416},{"LOAN_PRODUCT":"Working Capital","exposure":11762840.35,"allowance":355518.69,"n":319,"stage3_exp":579020.04,"avg_pd":0.011942633228840125},{"LOAN_PRODUCT":"Trade Finance","exposure":11133574.88,"allowance":364896.63,"n":321,"stage3_exp":522876.81,"avg_pd":0.01270809968847352}],"by_sector":[{"SECTOR":"Real Estate & Construction","exposure":25802835.71,"allowance":1349367.85,"n":670,"stage3_exp":2937075.25,"avg_pd":0.02378865671641791},{"SECTOR":"Manufacturing & Industry","exposure":13160178.9,"allowance":425412.1,"n":370,"stage3_exp":730971.69,"avg_pd":0.007997837837837838},{"SECTOR":"Trade & Distribution","exposure":12752161.72,"allowance":443296.89,"n":342,"stage3_exp":771280.46,"avg_pd":0.014896198830409357},{"SECTOR":"Agriculture & Agro-processing","exposure":12207084.67,"allowance":512939.37,"n":290,"stage3_exp":1116262.88,"avg_pd":0.022827586206896552},{"SECTOR":"Transportation & Logistics","exposure":8242188.59,"allowance":355422.99,"n":220,"stage3_exp":663749.78,"avg_pd":0.012563636363636362},{"SECTOR":"Financial & Professional Services","exposure":8016401.53,"allowance":289346.98,"n":224,"stage3_exp":418066.51,"avg_pd":0.008200446428571428},{"SECTOR":"Energy & Utilities","exposure":7406069.16,"allowance":245790.62,"n":185,"stage3_exp":301480.41000000003,"avg_pd":0.0074270270270270266},{"SECTOR":"Tourism & Hospitality","exposure":3769347.69,"allowance":133428.86,"n":105,"stage3_exp":187531.01,"avg_pd":0.016076190476190477},{"SECTOR":"Retail/Household (Consumer)","exposure":2432675.77,"allowance":77397.56,"n":59,"stage3_exp":56222.74,"avg_pd":0.007296610169491525},{"SECTOR":"Healthcare & Pharmaceuticals","exposure":1492292.58,"allowance":39566.06,"n":36,"stage3_exp":59279.44,"avg_pd":0.009883333333333334}],"by_region":[{"REGION_BUSINESS":"Tbilisi","exposure":29585100.02,"allowance":994756.66,"n":754,"stage3_exp":1749427.2999999998,"avg_pd":0.014944694960212201},{"REGION_BUSINESS":"Imereti","exposure":10339385.78,"allowance":426298.97000000003,"n":270,"stage3_exp":857868.2499999999,"avg_pd":0.016461481481481483},{"REGION_BUSINESS":"Kvemo Kartli","exposure":8296571.19,"allowance":337061.34,"n":221,"stage3_exp":657899.98,"avg_pd":0.01429683257918552},{"REGION_BUSINESS":"Adjara","exposure":7457084.71,"allowance":282875.81,"n":204,"stage3_exp":554867.9600000001,"avg_pd":0.01635490196078431},{"REGION_BUSINESS":"Samegrelo-Zemo Svaneti","exposure":6924686.05,"allowance":358321.38,"n":187,"stage3_exp":621843.28,"avg_pd":0.014486096256684492},{"REGION_BUSINESS":"Abkhazia (Nominal)","exposure":6915853.25,"allowance":322362.77,"n":183,"stage3_exp":651845.51,"avg_pd":0.01659016393442623},{"REGION_BUSINESS":"Kakheti","exposure":5831075.11,"allowance":286494.15,"n":156,"stage3_exp":504632.51000000007,"avg_pd":0.015074358974358973},{"REGION_BUSINESS":"Shida Kartli","exposure":5595051.97,"allowance":311636.02999999997,"n":156,"stage3_exp":579182.1000000001,"avg_pd":0.017376923076923075},{"REGION_BUSINESS":"Mtskheta-Mtianeti","exposure":4345890.72,"allowance":99833.22,"n":103,"stage3_exp":122760.29999999999,"avg_pd":0.014118446601941746},{"REGION_BUSINESS":"Samtskhe-Javakheti","exposure":4331873.4799999995,"allowance":180808.33,"n":123,"stage3_exp":297994.8,"avg_pd":0.017460975609756096},{"REGION_BUSINESS":"Guria","exposure":3739508.5,"allowance":170408.86,"n":98,"stage3_exp":394357.01999999996,"avg_pd":0.01716938775510204},{"REGION_BUSINESS":"Racha-Lechkhumi","exposure":1919155.54,"allowance":101111.76,"n":46,"stage3_exp":249241.16,"avg_pd":0.016534782608695654}],"by_ccy":[{"CCY":"USD","exposure":52771042.17,"allowance":1437803.76,"n":927,"stage3_exp":4225115.869999999,"avg_pd":0.015106688241639698},{"CCY":"GEL","exposure":28458333.2,"allowance":2077157.13,"n":1344,"stage3_exp":2102721.84,"avg_pd":0.015856845238095236},{"CCY":"EUR","exposure":14051860.95,"allowance":357008.39,"n":230,"stage3_exp":914082.46,"avg_pd":0.01628608695652174}],"by_cig":[{"CIG_GRADE":"A2","exposure":13541889.61,"allowance":269268.95,"n":346,"stage3_exp":20775.87,"avg_pd":0.0018557803468208093},{"CIG_GRADE":"B1","exposure":10940088.57,"allowance":231473.61,"n":288,"stage3_exp":110295.29,"avg_pd":0.0037024305555555556},{"CIG_GRADE":"B3","exposure":10154910.17,"allowance":220052.78,"n":276,"stage3_exp":116231.69,"avg_pd":0.005959057971014493},{"CIG_GRADE":"E3","exposure":9394669.05,"allowance":1835230.06,"n":246,"stage3_exp":5735697.13,"avg_pd":0.05895691056910569},{"CIG_GRADE":"C2","exposure":8714360.88,"allowance":166915.29,"n":219,"stage3_exp":64244.99,"avg_pd":0.010410958904109589},{"CIG_GRADE":"A1","exposure":7171271.19,"allowance":132178.34,"n":200,"stage3_exp":0.0,"avg_pd":0.001808},{"CIG_GRADE":"D1","exposure":6671354.82,"allowance":204267.27,"n":175,"stage3_exp":332809.36000000004,"avg_pd":0.015377714285714286},{"CIG_GRADE":"A3","exposure":5235940.82,"allowance":109114.63,"n":139,"stage3_exp":12232.56,"avg_pd":0.0034899280575539566},{"CIG_GRADE":"D3","exposure":4927140.07,"allowance":127960.2,"n":126,"stage3_exp":119477.59000000001,"avg_pd":0.026334920634920635},{"CIG_GRADE":"E2","exposure":4831383.63,"allowance":117045.03,"n":123,"stage3_exp":93734.77,"avg_pd":0.05238048780487805},{"CIG_GRADE":"B2","exposure":4426754.11,"allowance":128763.37,"n":119,"stage3_exp":187475.78,"avg_pd":0.005782352941176471},{"CIG_GRADE":"C3","exposure":3060347.83,"allowance":98963.86,"n":80,"stage3_exp":148712.18,"avg_pd":0.0148925},{"CIG_GRADE":"C1","exposure":2752381.92,"allowance":96907.63,"n":72,"stage3_exp":169558.65,"avg_pd":0.008845833333333334},{"CIG_GRADE":"E1","exposure":1788104.43,"allowance":54536.72,"n":42,"stage3_exp":44569.56,"avg_pd":0.04719285714285714},{"CIG_GRADE":"D2","exposure":1670639.22,"allowance":79291.54000000001,"n":50,"stage3_exp":86104.75000000001,"avg_pd":0.02255}],"by_segment":[{"LOAN_SEGMENT":"CB","exposure":801380157.38,"allowance":34307594.58,"n":2504,"stage3_exp":67944992.21,"avg_pd":0.014987460063897763},{"LOAN_SEGMENT":"SMM","exposure":95281236.32,"allowance":3871969.28,"n":2501,"stage3_exp":7241920.169999999,"avg_pd":0.015618272690923628},{"LOAN_SEGMENT":"SML","exposure":11918251.92,"allowance":545359.75,"n":2505,"stage3_exp":1072436.68,"avg_pd":0.01528506986027944},{"LOAN_SEGMENT":"RB","exposure":2593524.88,"allowance":113311.81,"n":2495,"stage3_exp":224980.37000000002,"avg_pd":0.010447655310621242}]},"CB":{"by_product":[{"LOAN_PRODUCT":"Corporate Term Loan","exposure":291584154.92,"allowance":11698888.35,"n":935,"stage3_exp":22173762.98,"avg_pd":0.012697754010695186},{"LOAN_PRODUCT":"Developer","exposure":241071135.91,"allowance":13638660.17,"n":791,"stage3_exp":31980934.740000002,"avg_pd":0.021111630847029078},{"LOAN_PRODUCT":"Working Capital","exposure":136900136.79,"allowance":4001597.98,"n":381,"stage3_exp":4031887.3999999994,"avg_pd":0.01123490813648294},{"LOAN_PRODUCT":"Trade Finance","exposure":131824729.76,"allowance":4968448.08,"n":397,"stage3_exp":9758407.09,"avg_pd":0.01177934508816121}],"by_sector":[{"SECTOR":"Real Estate & Construction","exposure":230568188.09,"allowance":13718938.15,"n":766,"stage3_exp":34372057.58,"avg_pd":0.02505587467362924},{"SECTOR":"Manufacturing & Industry","exposure":152191877.28,"allowance":5271758.62,"n":449,"stage3_exp":10651641.220000003,"avg_pd":0.008187527839643651},{"SECTOR":"Trade & Distribution","exposure":113459830.04,"allowance":4211226.94,"n":337,"stage3_exp":7710064.97,"avg_pd":0.01257566765578635},{"SECTOR":"Financial & Professional Services","exposure":84528329.81,"allowance":3639496.5,"n":283,"stage3_exp":5888053.79,"avg_pd":0.009728268551236749},{"SECTOR":"Transportation & Logistics","exposure":83684577.27,"allowance":2995543.38,"n":262,"stage3_exp":4592354.56,"avg_pd":0.014814885496183205},{"SECTOR":"Energy & Utilities","exposure":75724104.17,"allowance":2754730.98,"n":227,"stage3_exp":2956543.94,"avg_pd":0.00868546255506608},{"SECTOR":"Tourism & Hospitality","exposure":34365448.26,"allowance":889923.14,"n":111,"stage3_exp":284080.48,"avg_pd":0.010765765765765767},{"SECTOR":"Healthcare & Pharmaceuticals","exposure":26857802.46,"allowance":825976.87,"n":69,"stage3_exp":1490195.67,"avg_pd":0.008991304347826086}],"by_region":[{"REGION_BUSINESS":"Tbilisi","exposure":254429657.88,"allowance":11536213.6,"n":789,"stage3_exp":24542083.720000003,"avg_pd":0.01464550063371356},{"REGION_BUSINESS":"Adjara","exposure":79163040.19,"allowance":3595476.55,"n":261,"stage3_exp":7555767.83,"avg_pd":0.015218007662835249},{"REGION_BUSINESS":"Imereti","exposure":75515601.7,"allowance":3264209.37,"n":238,"stage3_exp":5533775.290000001,"avg_pd":0.0160172268907563},{"REGION_BUSINESS":"Kvemo Kartli","exposure":69356449.66,"allowance":2687154.85,"n":218,"stage3_exp":4051084.21,"avg_pd":0.013393119266055045},{"REGION_BUSINESS":"Samegrelo-Zemo Svaneti","exposure":58053285.74,"allowance":2260618.08,"n":170,"stage3_exp":5013597.67,"avg_pd":0.014814117647058821},{"REGION_BUSINESS":"Abkhazia (Nominal)","exposure":54228445.82,"allowance":2162519.17,"n":174,"stage3_exp":4143174.7700000005,"avg_pd":0.01655574712643678},{"REGION_BUSINESS":"Kakheti","exposure":52358055.22,"allowance":1998612.55,"n":141,"stage3_exp":4253506.430000001,"avg_pd":0.012009219858156029},{"REGION_BUSINESS":"Shida Kartli","exposure":43628880.84,"allowance":2242505.82,"n":143,"stage3_exp":4819249.420000001,"avg_pd":0.01440979020979021},{"REGION_BUSINESS":"Samtskhe-Javakheti","exposure":39459259.74,"allowance":1886748.69,"n":124,"stage3_exp":3720877.4899999998,"avg_pd":0.019866129032258064},{"REGION_BUSINESS":"Mtskheta-Mtianeti","exposure":29760288.990000002,"allowance":1066238.28,"n":96,"stage3_exp":1628856.6400000001,"avg_pd":0.01365},{"REGION_BUSINESS":"Guria","exposure":29047867.67,"allowance":1005495.27,"n":96,"stage3_exp":1886985.27,"avg_pd":0.017411458333333334},{"REGION_BUSINESS":"Racha-Lechkhumi","exposure":16379323.93,"allowance":601802.35,"n":54,"stage3_exp":796033.47,"avg_pd":0.01243148148148148}],"by_ccy":[{"CCY":"USD","exposure":432837134.3,"allowance":12396555.62,"n":893,"stage3_exp":38451912.58,"avg_pd":0.015170884658454646},{"CCY":"GEL","exposure":238727376.04,"allowance":18310911.78,"n":1328,"stage3_exp":19462644.190000005,"avg_pd":0.014868900602409637},{"CCY":"EUR","exposure":129815647.04,"allowance":3600127.18,"n":283,"stage3_exp":10030435.44,"avg_pd":0.014965017667844523}],"by_cig":[{"CIG_GRADE":"A2","exposure":112645085.53,"allowance":2301889.43,"n":336,"stage3_exp":120895.24,"avg_pd":0.001724702380952381},{"CIG_GRADE":"B1","exposure":93628535.19,"allowance":2089655.35,"n":280,"stage3_exp":1311831.3199999998,"avg_pd":0.003239642857142857},{"CIG_GRADE":"B3","exposure":93289652.53,"allowance":1850591.55,"n":265,"stage3_exp":470205.64,"avg_pd":0.0055988679245283016},{"CIG_GRADE":"E3","exposure":81576018.92,"allowance":14258369.97,"n":285,"stage3_exp":45075805.230000004,"avg_pd":0.054315087719298244},{"CIG_GRADE":"C2","exposure":78533401.58,"allowance":2428319.64,"n":205,"stage3_exp":4210064.82,"avg_pd":0.008939512195121952},{"CIG_GRADE":"D1","exposure":58088586.92,"allowance":1429620.4,"n":169,"stage3_exp":904629.68,"avg_pd":0.014897041420118343},{"CIG_GRADE":"A1","exposure":53139389.11,"allowance":1058198.57,"n":213,"stage3_exp":0.0,"avg_pd":0.0016549295774647887},{"CIG_GRADE":"D3","exposure":51544405.41,"allowance":1347428.56,"n":140,"stage3_exp":1012060.37,"avg_pd":0.02548857142857143},{"CIG_GRADE":"E2","exposure":44896222.87,"allowance":1591516.5,"n":121,"stage3_exp":2167773.13,"avg_pd":0.046717355371900825},{"CIG_GRADE":"A3","exposure":39867233.82,"allowance":841217.82,"n":138,"stage3_exp":346338.08,"avg_pd":0.0032355072463768116},{"CIG_GRADE":"B2","exposure":30347386.240000002,"allowance":1207444.73,"n":108,"stage3_exp":2415635.01,"avg_pd":0.004906481481481482},{"CIG_GRADE":"C1","exposure":23283463.16,"allowance":909869.77,"n":90,"stage3_exp":1185077.89,"avg_pd":0.009597777777777778},{"CIG_GRADE":"C3","exposure":16225002.25,"allowance":745848.17,"n":69,"stage3_exp":2170184.53,"avg_pd":0.014507246376811592},{"CIG_GRADE":"D2","exposure":14888764.34,"allowance":914545.23,"n":51,"stage3_exp":2634755.73,"avg_pd":0.024762745098039215},{"CIG_GRADE":"E1","exposure":9427009.51,"allowance":1333078.8900000001,"n":34,"stage3_exp":3919735.54,"avg_pd":0.030897058823529413}],"by_segment":[{"LOAN_SEGMENT":"CB","exposure":801380157.38,"allowance":34307594.58,"n":2504,"stage3_exp":67944992.21,"avg_pd":0.014987460063897763},{"LOAN_SEGMENT":"SMM","exposure":95281236.32,"allowance":3871969.28,"n":2501,"stage3_exp":7241920.169999999,"avg_pd":0.015618272690923628},{"LOAN_SEGMENT":"SML","exposure":11918251.92,"allowance":545359.75,"n":2505,"stage3_exp":1072436.68,"avg_pd":0.01528506986027944},{"LOAN_SEGMENT":"RB","exposure":2593524.88,"allowance":113311.81,"n":2495,"stage3_exp":224980.37000000002,"avg_pd":0.010447655310621242}]}},"writeoff_ts":{"ALL":[{"wo_month":"2022-01","n":2,"gross":36197.2,"net":20772.64},{"wo_month":"2022-02","n":2,"gross":29511.440000000002,"net":14001.710000000001},{"wo_month":"2022-03","n":1,"gross":17816.98,"net":10215.94},{"wo_month":"2022-04","n":5,"gross":209294.91,"net":88324.35},{"wo_month":"2022-06","n":4,"gross":57881.52,"net":26805.469999999998},{"wo_month":"2022-07","n":5,"gross":302638.69,"net":142285.53},{"wo_month":"2022-08","n":4,"gross":177297.94,"net":55174.270000000004},{"wo_month":"2022-09","n":5,"gross":66698.04000000001,"net":31897.74},{"wo_month":"2022-10","n":4,"gross":155545.9,"net":81004.9},{"wo_month":"2022-11","n":4,"gross":133133.61000000002,"net":71604.23},{"wo_month":"2023-01","n":7,"gross":29172.44,"net":15017.7},{"wo_month":"2023-02","n":5,"gross":175673.65,"net":92379.76},{"wo_month":"2023-03","n":5,"gross":177886.78999999998,"net":67777.55},{"wo_month":"2023-04","n":9,"gross":328123.44,"net":147337.64},{"wo_month":"2023-05","n":9,"gross":53497.28999999999,"net":28095.07},{"wo_month":"2023-06","n":3,"gross":8562.55,"net":3953.6400000000003},{"wo_month":"2023-07","n":8,"gross":156653.85,"net":70068.66},{"wo_month":"2023-08","n":8,"gross":27050.52,"net":12222.27},{"wo_month":"2023-09","n":9,"gross":671917.45,"net":257012.77000000002},{"wo_month":"2023-10","n":9,"gross":179492.71,"net":72196.56},{"wo_month":"2023-11","n":8,"gross":96909.62999999999,"net":43692.85},{"wo_month":"2023-12","n":3,"gross":42546.369999999995,"net":19182.760000000002},{"wo_month":"2024-01","n":14,"gross":126173.35,"net":56970.58},{"wo_month":"2024-02","n":8,"gross":142176.67,"net":80654.8},{"wo_month":"2024-03","n":8,"gross":407222.16,"net":184424.25},{"wo_month":"2024-04","n":6,"gross":120835.23,"net":52515.46},{"wo_month":"2024-05","n":12,"gross":374148.23000000004,"net":197002.16999999998},{"wo_month":"2024-06","n":10,"gross":194797.93,"net":84153.78},{"wo_month":"2024-07","n":11,"gross":235466.95,"net":115107.55},{"wo_month":"2024-08","n":6,"gross":123256.03,"net":63872.659999999996},{"wo_month":"2024-09","n":14,"gross":147163.75,"net":62877.689999999995},{"wo_month":"2024-10","n":6,"gross":46976.6,"net":25303.36},{"wo_month":"2024-11","n":8,"gross":316944.01,"net":123374.48999999999},{"wo_month":"2024-12","n":7,"gross":224797.96000000002,"net":80091.26},{"wo_month":"2025-01","n":8,"gross":128564.4,"net":74152.18},{"wo_month":"2025-02","n":7,"gross":117591.06000000001,"net":54611.19},{"wo_month":"2025-03","n":10,"gross":237987.40999999997,"net":95036.61},{"wo_month":"2025-04","n":8,"gross":176554.69999999998,"net":84549.67},{"wo_month":"2025-05","n":11,"gross":297314.77,"net":132125.56},{"wo_month":"2025-06","n":8,"gross":162412.26,"net":71435.64},{"wo_month":"2025-07","n":8,"gross":398394.15,"net":154392.64},{"wo_month":"2025-08","n":9,"gross":272536.63,"net":85055.91},{"wo_month":"2025-09","n":10,"gross":140675.07,"net":69822.61},{"wo_month":"2025-10","n":5,"gross":76400.01999999999,"net":35896.450000000004},{"wo_month":"2025-11","n":8,"gross":35080.77,"net":16451.89},{"wo_month":"2025-12","n":15,"gross":368547.25,"net":161781.83},{"wo_month":"2026-01","n":13,"gross":502419.72000000003,"net":230481.13},{"wo_month":"2026-02","n":12,"gross":597171.61,"net":286662.57},{"wo_month":"2026-03","n":11,"gross":448352.91,"net":170994.78},{"wo_month":"2026-04","n":12,"gross":763858.9299999999,"net":368752.9},{"wo_month":"2026-05","n":10,"gross":397923.87,"net":175642.24},{"wo_month":"2026-06","n":14,"gross":699868.72,"net":313493.74},{"wo_month":"2026-07","n":9,"gross":283511.66000000003,"net":111291.23000000001}],"RB":[{"wo_month":"2022-02","n":1,"gross":1700.63,"net":867.86},{"wo_month":"2022-04","n":1,"gross":388.91,"net":187.37},{"wo_month":"2022-06","n":1,"gross":544.49,"net":213.59},{"wo_month":"2022-07","n":1,"gross":1021.77,"net":551.74},{"wo_month":"2022-09","n":1,"gross":1362.69,"net":678.47},{"wo_month":"2022-10","n":2,"gross":2552.3500000000004,"net":1145.6399999999999},{"wo_month":"2022-11","n":1,"gross":937.91,"net":415.11},{"wo_month":"2023-01","n":3,"gross":2211.79,"net":1051.35},{"wo_month":"2023-02","n":1,"gross":451.6,"net":201.4},{"wo_month":"2023-03","n":2,"gross":1902.56,"net":855.37},{"wo_month":"2023-05","n":5,"gross":3967.0699999999997,"net":2211.27},{"wo_month":"2023-07","n":4,"gross":3918.81,"net":1444.54},{"wo_month":"2023-09","n":5,"gross":4456.08,"net":2261.46},{"wo_month":"2023-10","n":4,"gross":3077.65,"net":1399.89},{"wo_month":"2023-11","n":2,"gross":1614.06,"net":923.1800000000001},{"wo_month":"2023-12","n":1,"gross":1733.64,"net":797.75},{"wo_month":"2024-01","n":5,"gross":2871.65,"net":1442.36},{"wo_month":"2024-02","n":5,"gross":2446.2599999999998,"net":1081.87},{"wo_month":"2024-03","n":2,"gross":1147.6899999999998,"net":618.93},{"wo_month":"2024-04","n":1,"gross":383.1,"net":150.5},{"wo_month":"2024-05","n":4,"gross":1676.4,"net":776.05},{"wo_month":"2024-06","n":5,"gross":3115.95,"net":1178.11},{"wo_month":"2024-07","n":4,"gross":2067.8,"net":1137.58},{"wo_month":"2024-08","n":2,"gross":1641.94,"net":664.12},{"wo_month":"2024-09","n":3,"gross":1754.25,"net":816.29},{"wo_month":"2024-10","n":4,"gross":3143.75,"net":1267.3},{"wo_month":"2024-11","n":3,"gross":3357.9900000000002,"net":1309.21},{"wo_month":"2024-12","n":3,"gross":3046.05,"net":1584.29},{"wo_month":"2025-01","n":4,"gross":3812.7999999999997,"net":1526.6},{"wo_month":"2025-02","n":3,"gross":2353.79,"net":1121.3000000000002},{"wo_month":"2025-03","n":3,"gross":1797.5500000000002,"net":978.3000000000001},{"wo_month":"2025-04","n":2,"gross":2121.54,"net":1085.6399999999999},{"wo_month":"2025-05","n":4,"gross":4040.14,"net":1946.23},{"wo_month":"2025-06","n":2,"gross":1559.6000000000001,"net":560.41},{"wo_month":"2025-07","n":1,"gross":734.3,"net":358.73},{"wo_month":"2025-08","n":2,"gross":2623.9300000000003,"net":1333.6399999999999},{"wo_month":"2025-09","n":2,"gross":1045.55,"net":401.11},{"wo_month":"2025-10","n":3,"gross":2983.28,"net":1313.75},{"wo_month":"2025-11","n":2,"gross":1703.04,"net":681.5},{"wo_month":"2025-12","n":5,"gross":4669.5,"net":1800.3899999999999},{"wo_month":"2026-01","n":3,"gross":2769.71,"net":982.57},{"wo_month":"2026-02","n":3,"gross":2312.26,"net":992.21},{"wo_month":"2026-03","n":2,"gross":1259.95,"net":609.9100000000001},{"wo_month":"2026-04","n":3,"gross":2991.26,"net":1296.0900000000001},{"wo_month":"2026-05","n":3,"gross":1265.5,"net":533.19},{"wo_month":"2026-06","n":2,"gross":1947.92,"net":927.4000000000001},{"wo_month":"2026-07","n":4,"gross":2002.96,"net":1052.91}],"SML":[{"wo_month":"2022-01","n":1,"gross":2230.42,"net":669.13},{"wo_month":"2022-04","n":2,"gross":6693.39,"net":3365.09},{"wo_month":"2022-06","n":1,"gross":2895.21,"net":1401.83},{"wo_month":"2022-07","n":2,"gross":6238.72,"net":2936.98},{"wo_month":"2022-08","n":3,"gross":9234.15,"net":3753.2200000000003},{"wo_month":"2022-09","n":1,"gross":3302.57,"net":1948.88},{"wo_month":"2022-11","n":1,"gross":3527.64,"net":1373.08},{"wo_month":"2023-01","n":3,"gross":7662.27,"net":4319.16},{"wo_month":"2023-02","n":2,"gross":8074.97,"net":3809.0200000000004},{"wo_month":"2023-03","n":1,"gross":3795.42,"net":2007.32},{"wo_month":"2023-04","n":5,"gross":15551.53,"net":8029.34},{"wo_month":"2023-05","n":2,"gross":5848.469999999999,"net":3106.3199999999997},{"wo_month":"2023-06","n":3,"gross":8562.55,"net":3953.6400000000003},{"wo_month":"2023-07","n":2,"gross":4143.76,"net":1700.26},{"wo_month":"2023-08","n":6,"gross":14241.77,"net":6624.73},{"wo_month":"2023-10","n":2,"gross":6129.57,"net":2900.95},{"wo_month":"2023-11","n":2,"gross":6702.58,"net":3844.16},{"wo_month":"2023-12","n":1,"gross":3851.7,"net":1341.04},{"wo_month":"2024-01","n":6,"gross":20868.21,"net":10270.67},{"wo_month":"2024-02","n":1,"gross":2649.42,"net":807.28},{"wo_month":"2024-03","n":1,"gross":2605.97,"net":1125.46},{"wo_month":"2024-04","n":2,"gross":5398.799999999999,"net":2229.55},{"wo_month":"2024-05","n":3,"gross":10838.27,"net":4952.969999999999},{"wo_month":"2024-06","n":1,"gross":2709.11,"net":999.56},{"wo_month":"2024-07","n":3,"gross":9691.509999999998,"net":3678.0299999999997},{"wo_month":"2024-08","n":2,"gross":4759.08,"net":2265.7200000000003},{"wo_month":"2024-09","n":4,"gross":11389.18,"net":4098.48},{"wo_month":"2024-12","n":1,"gross":2141.1,"net":684.24},{"wo_month":"2025-01","n":2,"gross":6554.370000000001,"net":3328.54},{"wo_month":"2025-02","n":2,"gross":4645.3,"net":2348.01},{"wo_month":"2025-03","n":4,"gross":11088.6,"net":5396.92},{"wo_month":"2025-04","n":3,"gross":9888.4,"net":5527.7},{"wo_month":"2025-05","n":2,"gross":6654.42,"net":3188.15},{"wo_month":"2025-06","n":2,"gross":5163.629999999999,"net":2344.66},{"wo_month":"2025-07","n":2,"gross":5844.49,"net":2554.99},{"wo_month":"2025-08","n":4,"gross":10701.93,"net":3796.12},{"wo_month":"2025-09","n":5,"gross":12031.3,"net":5719.93},{"wo_month":"2025-10","n":1,"gross":2940.99,"net":1415.35},{"wo_month":"2025-11","n":4,"gross":14359.759999999998,"net":6259.23},{"wo_month":"2025-12","n":3,"gross":8889.32,"net":4138.79},{"wo_month":"2026-01","n":4,"gross":10420.32,"net":4530.49},{"wo_month":"2026-02","n":3,"gross":9658.83,"net":4232.27},{"wo_month":"2026-03","n":3,"gross":10198.900000000001,"net":4127.02},{"wo_month":"2026-04","n":1,"gross":3053.43,"net":1702.09},{"wo_month":"2026-05","n":3,"gross":4988.38,"net":2268.95},{"wo_month":"2026-06","n":2,"gross":5385.82,"net":2324.63}],"SMM":[{"wo_month":"2022-01","n":1,"gross":33966.78,"net":20103.51},{"wo_month":"2022-02","n":1,"gross":27810.81,"net":13133.85},{"wo_month":"2022-03","n":1,"gross":17816.98,"net":10215.94},{"wo_month":"2022-04","n":1,"gross":13338.61,"net":7754.54},{"wo_month":"2022-06","n":2,"gross":54441.82,"net":25190.05},{"wo_month":"2022-09","n":3,"gross":62032.78,"net":29270.39},{"wo_month":"2022-10","n":1,"gross":20944.42,"net":6976.31},{"wo_month":"2022-11","n":1,"gross":30356.09,"net":12689.77},{"wo_month":"2023-01","n":1,"gross":19298.38,"net":9647.19},{"wo_month":"2023-02","n":1,"gross":35271.23,"net":15412.79},{"wo_month":"2023-03","n":1,"gross":37988.63,"net":15905.76},{"wo_month":"2023-04","n":2,"gross":26688.2,"net":14923.75},{"wo_month":"2023-05","n":2,"gross":43681.75,"net":22777.48},{"wo_month":"2023-07","n":1,"gross":22924.24,"net":13096.75},{"wo_month":"2023-08","n":2,"gross":12808.75,"net":5597.54},{"wo_month":"2023-10","n":2,"gross":43416.92,"net":21830.71},{"wo_month":"2023-11","n":4,"gross":88592.98999999999,"net":38925.509999999995},{"wo_month":"2023-12","n":1,"gross":36961.03,"net":17043.97},{"wo_month":"2024-01","n":2,"gross":38686.41,"net":19425.14},{"wo_month":"2024-02","n":1,"gross":14324.94,"net":7198.88},{"wo_month":"2024-03","n":2,"gross":45467.26,"net":24317.95},{"wo_month":"2024-04","n":2,"gross":48856.92,"net":23784.48},{"wo_month":"2024-05","n":2,"gross":25195.850000000002,"net":11810.83},{"wo_month":"2024-06","n":3,"gross":64407.72,"net":30980.4},{"wo_month":"2024-07","n":3,"gross":57271.479999999996,"net":20945.33},{"wo_month":"2024-08","n":1,"gross":32420.04,"net":17209.85},{"wo_month":"2024-09","n":7,"gross":134020.32,"net":57962.92},{"wo_month":"2024-10","n":2,"gross":43832.85,"net":24036.059999999998},{"wo_month":"2024-11","n":2,"gross":63506.5,"net":27679.269999999997},{"wo_month":"2024-12","n":2,"gross":41636.16,"net":14598.18},{"wo_month":"2025-01","n":1,"gross":29606.93,"net":17525.66},{"wo_month":"2025-02","n":1,"gross":29974.9,"net":14338.67},{"wo_month":"2025-03","n":2,"gross":29983.989999999998,"net":13520.11},{"wo_month":"2025-04","n":2,"gross":35000.61,"net":15743.39},{"wo_month":"2025-05","n":3,"gross":71408.44,"net":36887.67},{"wo_month":"2025-06","n":3,"gross":26103.879999999997,"net":13251.34},{"wo_month":"2025-07","n":3,"gross":51176.149999999994,"net":21399.95},{"wo_month":"2025-08","n":1,"gross":37373.54,"net":11735.56},{"wo_month":"2025-09","n":2,"gross":58097.83,"net":24657.92},{"wo_month":"2025-11","n":2,"gross":19017.97,"net":9511.16},{"wo_month":"2025-12","n":3,"gross":42842.42999999999,"net":21417.12},{"wo_month":"2026-01","n":4,"gross":88884.73999999999,"net":51406.48},{"wo_month":"2026-02","n":2,"gross":25444.78,"net":12219.220000000001},{"wo_month":"2026-03","n":3,"gross":83757.94,"net":30556.61},{"wo_month":"2026-05","n":1,"gross":21605.86,"net":11189.59},{"wo_month":"2026-06","n":5,"gross":101073.1,"net":46772.13},{"wo_month":"2026-07","n":3,"gross":93150.13,"net":40161.770000000004}],"CB":[{"wo_month":"2022-04","n":1,"gross":188874.0,"net":77017.35},{"wo_month":"2022-07","n":2,"gross":295378.19999999995,"net":138796.81},{"wo_month":"2022-08","n":1,"gross":168063.79,"net":51421.05},{"wo_month":"2022-10","n":1,"gross":132049.13,"net":72882.95},{"wo_month":"2022-11","n":1,"gross":98311.97,"net":57126.27},{"wo_month":"2023-02","n":1,"gross":131875.85,"net":72956.55},{"wo_month":"2023-03","n":1,"gross":134200.18,"net":49009.1},{"wo_month":"2023-04","n":2,"gross":285883.70999999996,"net":124384.55},{"wo_month":"2023-07","n":1,"gross":125667.04,"net":53827.11},{"wo_month":"2023-09","n":4,"gross":667461.37,"net":254751.31},{"wo_month":"2023-10","n":1,"gross":126868.57,"net":46065.01},{"wo_month":"2024-01","n":1,"gross":63747.08,"net":25832.41},{"wo_month":"2024-02","n":1,"gross":122756.05,"net":71566.77},{"wo_month":"2024-03","n":3,"gross":358001.24,"net":158361.91},{"wo_month":"2024-04","n":1,"gross":66196.41,"net":26350.93},{"wo_month":"2024-05","n":3,"gross":336437.71,"net":179462.32},{"wo_month":"2024-06","n":1,"gross":124565.15,"net":50995.71},{"wo_month":"2024-07","n":1,"gross":166436.16,"net":89346.61},{"wo_month":"2024-08","n":1,"gross":84434.97,"net":43732.97},{"wo_month":"2024-11","n":3,"gross":250079.52,"net":94386.01000000001},{"wo_month":"2024-12","n":1,"gross":177974.65,"net":63224.55},{"wo_month":"2025-01","n":1,"gross":88590.3,"net":51771.38},{"wo_month":"2025-02","n":1,"gross":80617.07,"net":36803.21},{"wo_month":"2025-03","n":1,"gross":195117.27,"net":75141.28},{"wo_month":"2025-04","n":1,"gross":129544.15,"net":62192.94},{"wo_month":"2025-05","n":2,"gross":215211.77000000002,"net":90103.51},{"wo_month":"2025-06","n":1,"gross":129585.15,"net":55279.23},{"wo_month":"2025-07","n":2,"gross":340639.20999999996,"net":130078.97},{"wo_month":"2025-08","n":2,"gross":221837.22999999998,"net":68190.59},{"wo_month":"2025-09","n":1,"gross":69500.39,"net":39043.65},{"wo_month":"2025-10","n":1,"gross":70475.75,"net":33167.35},{"wo_month":"2025-12","n":4,"gross":312146.0,"net":134425.53},{"wo_month":"2026-01","n":2,"gross":400344.95,"net":173561.59},{"wo_month":"2026-02","n":4,"gross":559755.74,"net":269218.87},{"wo_month":"2026-03","n":3,"gross":353136.12,"net":135701.24},{"wo_month":"2026-04","n":8,"gross":757814.24,"net":365754.72000000003},{"wo_month":"2026-05","n":3,"gross":370064.13,"net":161650.51},{"wo_month":"2026-06","n":5,"gross":591461.88,"net":263469.58},{"wo_month":"2026-07","n":2,"gross":188358.57,"net":70076.55}]},"ccy_mix":{"ALL":[{"CCY":"USD","exposure":493092764.8,"allowance":14061863.91,"n":3543,"stage3_exp":43371521.67,"avg_pd":0.01372320067739204},{"CCY":"GEL","exposure":271776154.48,"allowance":20751507.27,"n":5413,"stage3_exp":21963286.26,"avg_pd":0.014289728431553668},{"CCY":"EUR","exposure":146304251.22,"allowance":4024864.24,"n":1049,"stage3_exp":11149521.5,"avg_pd":0.014274833174451858}],"RB":[{"CCY":"USD","exposure":1439595.41,"allowance":42783.82,"n":885,"stage3_exp":129690.86,"avg_pd":0.01011491525423729},{"CCY":"GEL","exposure":765610.88,"allowance":59343.39,"n":1350,"stage3_exp":60872.52999999999,"avg_pd":0.010737851851851853},{"CCY":"EUR","exposure":388318.59,"allowance":11184.6,"n":260,"stage3_exp":34416.979999999996,"avg_pd":0.010073461538461538}],"SML":[{"CCY":"USD","exposure":6044992.92,"allowance":184720.71,"n":838,"stage3_exp":564802.36,"avg_pd":0.01446073985680191},{"CCY":"GEL","exposure":3824834.36,"allowance":304094.97,"n":1391,"stage3_exp":337047.7,"avg_pd":0.015669805895039537},{"CCY":"EUR","exposure":2048424.64,"allowance":56544.07,"n":276,"stage3_exp":170586.62,"avg_pd":0.015848913043478262}],"SMM":[{"CCY":"USD","exposure":52771042.17,"allowance":1437803.76,"n":927,"stage3_exp":4225115.869999999,"avg_pd":0.015106688241639698},{"CCY":"GEL","exposure":28458333.2,"allowance":2077157.13,"n":1344,"stage3_exp":2102721.84,"avg_pd":0.015856845238095236},{"CCY":"EUR","exposure":14051860.95,"allowance":357008.39,"n":230,"stage3_exp":914082.46,"avg_pd":0.01628608695652174}],"CB":[{"CCY":"USD","exposure":432837134.3,"allowance":12396555.62,"n":893,"stage3_exp":38451912.58,"avg_pd":0.015170884658454646},{"CCY":"GEL","exposure":238727376.04,"allowance":18310911.78,"n":1328,"stage3_exp":19462644.190000005,"avg_pd":0.014868900602409637},{"CCY":"EUR","exposure":129815647.04,"allowance":3600127.18,"n":283,"stage3_exp":10030435.44,"avg_pd":0.014965017667844523}]},"vintages":[{"orig_month":"2020-01","originated":300,"still_open":11,"matured":170,"paid_off":65,"refinanced":46,"written_off":8},{"orig_month":"2020-02","originated":306,"still_open":11,"matured":155,"paid_off":76,"refinanced":57,"written_off":7},{"orig_month":"2020-03","originated":304,"still_open":9,"matured":151,"paid_off":70,"refinanced":61,"written_off":13},{"orig_month":"2020-04","originated":308,"still_open":11,"matured":168,"paid_off":78,"refinanced":43,"written_off":8},{"orig_month":"2020-05","originated":314,"still_open":16,"matured":164,"paid_off":74,"refinanced":52,"written_off":8},{"orig_month":"2020-06","originated":320,"still_open":14,"matured":167,"paid_off":60,"refinanced":60,"written_off":19},{"orig_month":"2020-07","originated":313,"still_open":10,"matured":153,"paid_off":84,"refinanced":56,"written_off":10},{"orig_month":"2020-08","originated":328,"still_open":12,"matured":167,"paid_off":73,"refinanced":68,"written_off":8},{"orig_month":"2020-09","originated":325,"still_open":19,"matured":172,"paid_off":76,"refinanced":46,"written_off":12},{"orig_month":"2020-10","originated":318,"still_open":13,"matured":176,"paid_off":72,"refinanced":48,"written_off":9},{"orig_month":"2020-11","originated":318,"still_open":15,"matured":170,"paid_off":72,"refinanced":58,"written_off":3},{"orig_month":"2020-12","originated":326,"still_open":20,"matured":177,"paid_off":68,"refinanced":51,"written_off":10},{"orig_month":"2021-01","originated":326,"still_open":33,"matured":155,"paid_off":76,"refinanced":55,"written_off":7},{"orig_month":"2021-02","originated":321,"still_open":19,"matured":170,"paid_off":76,"refinanced":41,"written_off":15},{"orig_month":"2021-03","originated":321,"still_open":21,"matured":161,"paid_off":67,"refinanced":61,"written_off":11},{"orig_month":"2021-04","originated":329,"still_open":22,"matured":165,"paid_off":73,"refinanced":58,"written_off":11},{"orig_month":"2021-05","originated":333,"still_open":20,"matured":170,"paid_off":71,"refinanced":63,"written_off":9},{"orig_month":"2021-06","originated":323,"still_open":26,"matured":171,"paid_off":62,"refinanced":57,"written_off":7},{"orig_month":"2021-07","originated":331,"still_open":17,"matured":169,"paid_off":77,"refinanced":59,"written_off":9},{"orig_month":"2021-08","originated":345,"still_open":31,"matured":161,"paid_off":91,"refinanced":56,"written_off":6},{"orig_month":"2021-09","originated":332,"still_open":22,"matured":170,"paid_off":85,"refinanced":42,"written_off":13},{"orig_month":"2021-10","originated":350,"still_open":35,"matured":169,"paid_off":73,"refinanced":59,"written_off":14},{"orig_month":"2021-11","originated":331,"still_open":24,"matured":163,"paid_off":84,"refinanced":57,"written_off":3},{"orig_month":"2021-12","originated":345,"still_open":29,"matured":174,"paid_off":75,"refinanced":59,"written_off":8},{"orig_month":"2022-01","originated":342,"still_open":32,"matured":163,"paid_off":86,"refinanced":50,"written_off":11},{"orig_month":"2022-02","originated":349,"still_open":27,"matured":168,"paid_off":69,"refinanced":75,"written_off":10},{"orig_month":"2022-03","originated":336,"still_open":43,"matured":158,"paid_off":67,"refinanced":59,"written_off":9},{"orig_month":"2022-04","originated":347,"still_open":42,"matured":162,"paid_off":75,"refinanced":58,"written_off":10},{"orig_month":"2022-05","originated":351,"still_open":40,"matured":174,"paid_off":71,"refinanced":62,"written_off":4},{"orig_month":"2022-06","originated":344,"still_open":50,"matured":158,"paid_off":72,"refinanced":57,"written_off":7},{"orig_month":"2022-07","originated":360,"still_open":49,"matured":167,"paid_off":76,"refinanced":61,"written_off":7},{"orig_month":"2022-08","originated":342,"still_open":48,"matured":151,"paid_off":78,"refinanced":54,"written_off":11},{"orig_month":"2022-09","originated":342,"still_open":51,"matured":149,"paid_off":79,"refinanced":56,"written_off":7},{"orig_month":"2022-10","originated":352,"still_open":54,"matured":162,"paid_off":68,"refinanced":62,"written_off":6},{"orig_month":"2022-11","originated":353,"still_open":62,"matured":163,"paid_off":62,"refinanced":62,"written_off":4},{"orig_month":"2022-12","originated":364,"still_open":65,"matured":147,"paid_off":69,"refinanced":77,"written_off":6},{"orig_month":"2023-01","originated":348,"still_open":62,"matured":142,"paid_off":84,"refinanced":53,"written_off":7},{"orig_month":"2023-02","originated":351,"still_open":77,"matured":161,"paid_off":64,"refinanced":45,"written_off":4},{"orig_month":"2023-03","originated":351,"still_open":52,"matured":154,"paid_off":78,"refinanced":58,"written_off":9},{"orig_month":"2023-04","originated":364,"still_open":79,"matured":151,"paid_off":65,"refinanced":61,"written_off":8},{"orig_month":"2023-05","originated":364,"still_open":79,"matured":148,"paid_off":75,"refinanced":60,"written_off":2},{"orig_month":"2023-06","originated":347,"still_open":74,"matured":135,"paid_off":78,"refinanced":51,"written_off":9},{"orig_month":"2023-07","originated":260,"still_open":57,"matured":106,"paid_off":44,"refinanced":49,"written_off":4},{"orig_month":"2023-08","originated":263,"still_open":57,"matured":101,"paid_off":50,"refinanced":49,"written_off":6},{"orig_month":"2023-09","originated":273,"still_open":66,"matured":112,"paid_off":57,"refinanced":34,"written_off":4},{"orig_month":"2023-10","originated":246,"still_open":69,"matured":103,"paid_off":40,"refinanced":30,"written_off":4},{"orig_month":"2023-11","originated":248,"still_open":85,"matured":82,"paid_off":41,"refinanced":39,"written_off":1},{"orig_month":"2023-12","originated":268,"still_open":82,"matured":88,"paid_off":54,"refinanced":41,"written_off":3},{"orig_month":"2024-01","originated":2643,"still_open":647,"matured":1073,"paid_off":398,"refinanced":500,"written_off":25},{"orig_month":"2024-02","originated":299,"still_open":106,"matured":89,"paid_off":58,"refinanced":42,"written_off":4},{"orig_month":"2024-03","originated":295,"still_open":91,"matured":105,"paid_off":54,"refinanced":43,"written_off":2},{"orig_month":"2024-04","originated":304,"still_open":99,"matured":90,"paid_off":68,"refinanced":46,"written_off":1},{"orig_month":"2024-05","originated":295,"still_open":102,"matured":94,"paid_off":49,"refinanced":47,"written_off":3},{"orig_month":"2024-06","originated":344,"still_open":139,"matured":103,"paid_off":47,"refinanced":54,"written_off":1},{"orig_month":"2024-07","originated":340,"still_open":141,"matured":99,"paid_off":47,"refinanced":53,"written_off":0},{"orig_month":"2024-08","originated":380,"still_open":159,"matured":100,"paid_off":69,"refinanced":52,"written_off":0},{"orig_month":"2024-09","originated":393,"still_open":158,"matured":127,"paid_off":53,"refinanced":55,"written_off":0},{"orig_month":"2024-10","originated":390,"still_open":191,"matured":95,"paid_off":44,"refinanced":60,"written_off":0},{"orig_month":"2024-11","originated":393,"still_open":180,"matured":91,"paid_off":60,"refinanced":62,"written_off":0},{"orig_month":"2024-12","originated":394,"still_open":230,"matured":76,"paid_off":46,"refinanced":42,"written_off":0},{"orig_month":"2025-01","originated":391,"still_open":222,"matured":72,"paid_off":41,"refinanced":56,"written_off":0},{"orig_month":"2025-02","originated":356,"still_open":197,"matured":81,"paid_off":40,"refinanced":38,"written_off":0},{"orig_month":"2025-03","originated":379,"still_open":228,"matured":63,"paid_off":39,"refinanced":49,"written_off":0},{"orig_month":"2025-04","originated":368,"still_open":229,"matured":49,"paid_off":45,"refinanced":45,"written_off":0},{"orig_month":"2025-05","originated":406,"still_open":260,"matured":58,"paid_off":42,"refinanced":46,"written_off":0},{"orig_month":"2025-06","originated":423,"still_open":295,"matured":30,"paid_off":49,"refinanced":49,"written_off":0},{"orig_month":"2025-07","originated":393,"still_open":286,"matured":39,"paid_off":32,"refinanced":36,"written_off":0},{"orig_month":"2025-08","originated":397,"still_open":302,"matured":20,"paid_off":40,"refinanced":35,"written_off":0},{"orig_month":"2025-09","originated":423,"still_open":332,"matured":18,"paid_off":33,"refinanced":40,"written_off":0},{"orig_month":"2025-10","originated":449,"still_open":354,"matured":20,"paid_off":34,"refinanced":41,"written_off":0},{"orig_month":"2025-11","originated":397,"still_open":320,"matured":11,"paid_off":28,"refinanced":38,"written_off":0},{"orig_month":"2025-12","originated":411,"still_open":357,"matured":2,"paid_off":30,"refinanced":22,"written_off":0},{"orig_month":"2026-01","originated":416,"still_open":374,"matured":0,"paid_off":19,"refinanced":23,"written_off":0},{"orig_month":"2026-02","originated":363,"still_open":330,"matured":0,"paid_off":12,"refinanced":21,"written_off":0},{"orig_month":"2026-03","originated":386,"still_open":348,"matured":0,"paid_off":22,"refinanced":16,"written_off":0},{"orig_month":"2026-04","originated":398,"still_open":374,"matured":0,"paid_off":16,"refinanced":8,"written_off":0},{"orig_month":"2026-05","originated":364,"still_open":353,"matured":0,"paid_off":5,"refinanced":6,"written_off":0},{"orig_month":"2026-06","originated":365,"still_open":361,"matured":0,"paid_off":2,"refinanced":2,"written_off":0},{"orig_month":"2026-07","originated":378,"still_open":378,"matured":0,"paid_off":0,"refinanced":0,"written_off":0}],"funnel":[{"app_month":"2024-01","total":2755,"accepted":2643,"rejected":112},{"app_month":"2024-02","total":421,"accepted":299,"rejected":122},{"app_month":"2024-03","total":435,"accepted":295,"rejected":140},{"app_month":"2024-04","total":423,"accepted":304,"rejected":119},{"app_month":"2024-05","total":415,"accepted":295,"rejected":120},{"app_month":"2024-06","total":465,"accepted":344,"rejected":121},{"app_month":"2024-07","total":478,"accepted":340,"rejected":138},{"app_month":"2024-08","total":518,"accepted":380,"rejected":138},{"app_month":"2024-09","total":540,"accepted":393,"rejected":147},{"app_month":"2024-10","total":512,"accepted":390,"rejected":122},{"app_month":"2024-11","total":528,"accepted":393,"rejected":135},{"app_month":"2024-12","total":522,"accepted":394,"rejected":128},{"app_month":"2025-01","total":514,"accepted":391,"rejected":123},{"app_month":"2025-02","total":465,"accepted":356,"rejected":109},{"app_month":"2025-03","total":498,"accepted":379,"rejected":119},{"app_month":"2025-04","total":492,"accepted":368,"rejected":124},{"app_month":"2025-05","total":523,"accepted":406,"rejected":117},{"app_month":"2025-06","total":551,"accepted":423,"rejected":128},{"app_month":"2025-07","total":511,"accepted":393,"rejected":118},{"app_month":"2025-08","total":524,"accepted":397,"rejected":127},{"app_month":"2025-09","total":540,"accepted":423,"rejected":117},{"app_month":"2025-10","total":589,"accepted":449,"rejected":140},{"app_month":"2025-11","total":528,"accepted":397,"rejected":131},{"app_month":"2025-12","total":544,"accepted":411,"rejected":133},{"app_month":"2026-01","total":541,"accepted":416,"rejected":125},{"app_month":"2026-02","total":489,"accepted":363,"rejected":126},{"app_month":"2026-03","total":508,"accepted":386,"rejected":122},{"app_month":"2026-04","total":535,"accepted":398,"rejected":137},{"app_month":"2026-05","total":488,"accepted":364,"rejected":124},{"app_month":"2026-06","total":488,"accepted":365,"rejected":123},{"app_month":"2026-07","total":505,"accepted":378,"rejected":127}],"reject_reasons":{"Insufficient collateral":1766,"Incomplete documentation":1749,"High existing leverage":1734,"Adverse credit history":1721,"Negative EBITDA":1692,"Weak repayment capacity":1685},"committee":[{"COMMITTEE":1,"n":14892,"ac":10987,"rj":3905},{"COMMITTEE":2,"n":15708,"ac":12471,"rj":3237},{"COMMITTEE":3,"n":9312,"ac":6107,"rj":3205}],"sector_risk":[{"SECTOR":"Real Estate & Construction","n":2324.0,"exposure":259799772.34,"stage3_rate_by_exp":0.1452291124051568,"avg_pd":0.023596901893287437,"coverage":0.05877113271684401},{"SECTOR":"Agriculture & Agro-processing","n":585.0,"exposure":13784667.96,"stage3_rate_by_exp":0.09656652331870894,"avg_pd":0.024659145299145303,"coverage":0.0441359067745002},{"SECTOR":"Manufacturing & Industry","n":1215.0,"exposure":167214765.11,"stage3_rate_by_exp":0.06891020934915573,"avg_pd":0.008520493827160493,"coverage":0.03451540039662948},{"SECTOR":"Financial & Professional Services","n":829.0,"exposure":93909357.27000001,"stage3_rate_by_exp":0.0681995934823205,"avg_pd":0.00888854041013269,"coverage":0.0423495221947439},{"SECTOR":"Trade & Distribution","n":977.0,"exposure":127627594.76999998,"stage3_rate_by_exp":0.06698612745469981,"avg_pd":0.013785568065506655,"coverage":0.03684983790907807},{"SECTOR":"IT & Digital Services","n":234.0,"exposure":313629.69999999995,"stage3_rate_by_exp":0.06635812871038682,"avg_pd":0.008305128205128205,"coverage":0.03827029136590062},{"SECTOR":"Transportation & Logistics","n":912.0,"exposure":92951895.08000001,"stage3_rate_by_exp":0.05725090344225825,"avg_pd":0.013481907894736843,"coverage":0.036462566761904035},{"SECTOR":"Healthcare & Pharmaceuticals","n":151.0,"exposure":28538918.13,"stage3_rate_by_exp":0.054874716093521375,"avg_pd":0.00897615894039735,"coverage":0.030668256449425547},{"SECTOR":"Retail/Household (Consumer)","n":1778.0,"exposure":4445981.59,"stage3_rate_by_exp":0.0503236811648606,"avg_pd":0.00814066366704162,"coverage":0.03646332237736504},{"SECTOR":"Energy & Utilities","n":582.0,"exposure":83901220.39999999,"stage3_rate_by_exp":0.03951624629765219,"avg_pd":0.008514432989690722,"coverage":0.036130521648526585},{"SECTOR":"Tourism & Hospitality","n":361.0,"exposure":38639827.17,"stage3_rate_by_exp":0.012889260549971554,"avg_pd":0.013807479224376733,"coverage":0.026876589934809483},{"SECTOR":"Education","n":57.0,"exposure":45540.98,"stage3_rate_by_exp":0.007547268416270356,"avg_pd":0.008478947368421053,"coverage":0.02260359790237276}],"pd_by_riskgroup":[{"PD_RISK_GROUP":1,"n":2074,"exposure":181624814.9,"avg_pd":0.0014729508196721312,"stage3_rate":0.017357762777242044},{"PD_RISK_GROUP":2,"n":1811,"exposure":166129427.83,"avg_pd":0.0029231363887355054,"stage3_rate":0.03368304803975704},{"PD_RISK_GROUP":3,"n":1581,"exposure":148761651.1,"avg_pd":0.004950664136622391,"stage3_rate":0.03795066413662239},{"PD_RISK_GROUP":4,"n":1259,"exposure":113570734.92,"avg_pd":0.008719777601270849,"stage3_rate":0.05877680698967434},{"PD_RISK_GROUP":5,"n":1129,"exposure":98470901.26,"avg_pd":0.014516386182462355,"stage3_rate":0.09743135518157661},{"PD_RISK_GROUP":6,"n":852,"exposure":79974462.8,"avg_pd":0.024706572769953052,"stage3_rate":0.13615023474178403},{"PD_RISK_GROUP":7,"n":706,"exposure":64060831.1,"avg_pd":0.0434957507082153,"stage3_rate":0.22662889518413598},{"PD_RISK_GROUP":8,"n":593,"exposure":58580346.59,"avg_pd":0.07697301854974704,"stage3_rate":0.33220910623946037}],"cig_recent":{"months":["2026-02-28","2026-03-31","2026-04-30","2026-05-31","2026-06-30","2026-07-31"],"grades":["A1","A2","A3","B1","B2","B3","C1","C2","C3","D1","D2","D3","E1","E2","E3"],"counts":[[976,1300,526,1190,446,993,345,794,330,670,236,511,187,480,1021],[997,1309,535,1172,429,1004,327,798,329,662,249,515,176,483,1020],[1001,1311,552,1151,431,1013,336,789,335,649,225,536,186,479,1011],[1001,1300,564,1171,422,1021,326,794,328,651,223,520,197,479,1008],[994,1322,556,1155,429,1021,337,786,337,638,224,516,188,488,1014],[1001,1294,560,1139,431,1012,334,809,315,662,225,521,186,489,1027]]},"ltv_distribution":{"<30%":105,"30-50%":403,"50-70%":404,"70-90%":56,"90-110%":0,"110-200%":0,">200%":0},"collateral_by_segment":[{"LOAN_SEGMENT":"CB","n":2504.0,"avg_coverage_ratio":1.2632635957998857,"real_estate_share":0.9418819169523359,"auto_share":0.0,"guarantee_share":0.014582223870610226},{"LOAN_SEGMENT":"RB","n":2495.0,"avg_coverage_ratio":1.5189934226887225,"real_estate_share":0.7825228394008467,"auto_share":0.20370442116659257,"guarantee_share":0.013772739432560924},{"LOAN_SEGMENT":"SML","n":2505.0,"avg_coverage_ratio":1.3142326151332586,"real_estate_share":0.9211184727018085,"auto_share":0.006482988336145428,"guarantee_share":0.04365009374685023},{"LOAN_SEGMENT":"SMM","n":2501.0,"avg_coverage_ratio":1.2625651958194,"real_estate_share":0.9239660757080386,"auto_share":0.0,"guarantee_share":0.04518561576362055}],"writeoff_by_sector":[{"SECTOR":"Real Estate & Construction","n":196,"gross":7307416.97},{"SECTOR":"Manufacturing & Industry","n":21,"gross":1086470.15},{"SECTOR":"Energy & Utilities","n":17,"gross":1085285.3},{"SECTOR":"Financial & Professional Services","n":25,"gross":674426.21},{"SECTOR":"Transportation & Logistics","n":36,"gross":601369.3},{"SECTOR":"Trade & Distribution","n":8,"gross":524000.22000000003},{"SECTOR":"Agriculture & Agro-processing","n":28,"gross":345943.66},{"SECTOR":"Retail/Household (Consumer)","n":73,"gross":61337.07},{"SECTOR":"IT & Digital Services","n":9,"gross":8396.27},{"SECTOR":"Tourism & Hospitality","n":3,"gross":2507.9},{"SECTOR":"Education","n":1,"gross":1474.65}],"recovery_by_segment":[{"LOAN_SEGMENT":"CB","gross_wo":9179462.67,"recovered":1310162.6099999999,"recovery_rate":0.14272759279057015},{"LOAN_SEGMENT":"RB","gross_wo":102489.42,"recovered":16145.250000000002,"recovery_rate":0.15753089440841797},{"LOAN_SEGMENT":"SML","gross_wo":334205.53,"recovered":69566.29999999999,"recovery_rate":0.20815424568229013},{"LOAN_SEGMENT":"SMM","gross_wo":2082470.08,"recovered":364867.61000000004,"recovery_rate":0.1752090527034127}],"recovery_ts":[{"r_month":"2022-06","RECOVERY_AMOUNT_GEL":490.15},{"r_month":"2022-07","RECOVERY_AMOUNT_GEL":103770.15},{"r_month":"2022-08","RECOVERY_AMOUNT_GEL":1340.38},{"r_month":"2022-09","RECOVERY_AMOUNT_GEL":13312.66},{"r_month":"2022-10","RECOVERY_AMOUNT_GEL":14973.3},{"r_month":"2023-01","RECOVERY_AMOUNT_GEL":801.73},{"r_month":"2023-02","RECOVERY_AMOUNT_GEL":59335.96},{"r_month":"2023-03","RECOVERY_AMOUNT_GEL":96651.01},{"r_month":"2023-04","RECOVERY_AMOUNT_GEL":52129.74},{"r_month":"2023-05","RECOVERY_AMOUNT_GEL":2646.53},{"r_month":"2023-06","RECOVERY_AMOUNT_GEL":1377.59},{"r_month":"2023-07","RECOVERY_AMOUNT_GEL":1248.74},{"r_month":"2023-08","RECOVERY_AMOUNT_GEL":13644.32},{"r_month":"2023-09","RECOVERY_AMOUNT_GEL":880.34},{"r_month":"2023-10","RECOVERY_AMOUNT_GEL":77156.84},{"r_month":"2023-11","RECOVERY_AMOUNT_GEL":4541.56},{"r_month":"2023-12","RECOVERY_AMOUNT_GEL":19627.77},{"r_month":"2024-01","RECOVERY_AMOUNT_GEL":11212.259999999998},{"r_month":"2024-02","RECOVERY_AMOUNT_GEL":37534.05},{"r_month":"2024-03","RECOVERY_AMOUNT_GEL":145460.87},{"r_month":"2024-04","RECOVERY_AMOUNT_GEL":32258.87},{"r_month":"2024-05","RECOVERY_AMOUNT_GEL":71008.24},{"r_month":"2024-06","RECOVERY_AMOUNT_GEL":1557.8600000000001},{"r_month":"2024-07","RECOVERY_AMOUNT_GEL":26258.52},{"r_month":"2024-08","RECOVERY_AMOUNT_GEL":2069.07},{"r_month":"2024-09","RECOVERY_AMOUNT_GEL":14889.069999999998},{"r_month":"2024-10","RECOVERY_AMOUNT_GEL":16366.04},{"r_month":"2024-11","RECOVERY_AMOUNT_GEL":227921.13},{"r_month":"2024-12","RECOVERY_AMOUNT_GEL":22880.260000000002},{"r_month":"2025-01","RECOVERY_AMOUNT_GEL":55574.409999999996},{"r_month":"2025-02","RECOVERY_AMOUNT_GEL":40015.25},{"r_month":"2025-03","RECOVERY_AMOUNT_GEL":11561.0},{"r_month":"2025-04","RECOVERY_AMOUNT_GEL":3637.64},{"r_month":"2025-05","RECOVERY_AMOUNT_GEL":403.11},{"r_month":"2025-06","RECOVERY_AMOUNT_GEL":13774.41},{"r_month":"2025-07","RECOVERY_AMOUNT_GEL":1860.28},{"r_month":"2025-08","RECOVERY_AMOUNT_GEL":3573.39},{"r_month":"2025-09","RECOVERY_AMOUNT_GEL":25229.05},{"r_month":"2025-10","RECOVERY_AMOUNT_GEL":620.99},{"r_month":"2025-11","RECOVERY_AMOUNT_GEL":2990.38},{"r_month":"2025-12","RECOVERY_AMOUNT_GEL":59837.170000000006},{"r_month":"2026-01","RECOVERY_AMOUNT_GEL":7689.17},{"r_month":"2026-02","RECOVERY_AMOUNT_GEL":133722.33},{"r_month":"2026-03","RECOVERY_AMOUNT_GEL":122318.75},{"r_month":"2026-04","RECOVERY_AMOUNT_GEL":47309.17},{"r_month":"2026-05","RECOVERY_AMOUNT_GEL":55457.58},{"r_month":"2026-06","RECOVERY_AMOUNT_GEL":57410.57},{"r_month":"2026-07","RECOVERY_AMOUNT_GEL":44412.11}],"top_bankers":[{"BANKER":"Banker-178","n":58,"exposure":8711908.34,"stage3_exp":757491.62,"stage3_rate":0.08694898872179824},{"BANKER":"Banker-140","n":59,"exposure":8490935.11,"stage3_exp":748097.0500000002,"stage3_rate":0.0881053783014955},{"BANKER":"Banker-116","n":49,"exposure":8235507.63,"stage3_exp":184455.08,"stage3_rate":0.022397536167421413},{"BANKER":"Banker-059","n":56,"exposure":8089402.300000001,"stage3_exp":665294.22,"stage3_rate":0.08224269177464445},{"BANKER":"Banker-102","n":72,"exposure":7906754.91,"stage3_exp":1008229.48,"stage3_rate":0.12751495290752599},{"BANKER":"Banker-152","n":61,"exposure":7804143.35,"stage3_exp":348193.45,"stage3_rate":0.04461648567744467},{"BANKER":"Banker-096","n":68,"exposure":7717422.56,"stage3_exp":773359.7200000001,"stage3_rate":0.10020958603567771},{"BANKER":"Banker-014","n":50,"exposure":7623296.54,"stage3_exp":546866.6000000001,"stage3_rate":0.07173623604047812},{"BANKER":"Banker-172","n":62,"exposure":7586274.19,"stage3_exp":1200533.51,"stage3_rate":0.15825074073680429},{"BANKER":"Banker-023","n":46,"exposure":7512865.09,"stage3_exp":69607.18000000001,"stage3_rate":0.009265064548097723},{"BANKER":"Banker-040","n":64,"exposure":7483421.75,"stage3_exp":906648.02,"stage3_rate":0.1211542059619986},{"BANKER":"Banker-171","n":48,"exposure":7388425.6,"stage3_exp":650085.07,"stage3_rate":0.0879869548933402},{"BANKER":"Banker-067","n":66,"exposure":7326138.91,"stage3_exp":776428.48,"stage3_rate":0.10598058397994531},{"BANKER":"Banker-153","n":61,"exposure":7307743.13,"stage3_exp":231345.1,"stage3_rate":0.03165753035985544},{"BANKER":"Banker-083","n":71,"exposure":7261795.13,"stage3_exp":587842.1,"stage3_rate":0.08094997028647928},{"BANKER":"Banker-064","n":53,"exposure":7251006.36,"stage3_exp":3336.28,"stage3_rate":0.00046011268427573133},{"BANKER":"Banker-095","n":63,"exposure":7243265.3,"stage3_exp":818775.0099999999,"stage3_rate":0.11303948924803292},{"BANKER":"Banker-034","n":69,"exposure":7027610.79,"stage3_exp":57092.54,"stage3_rate":0.008124032719802913},{"BANKER":"Banker-134","n":62,"exposure":6822623.36,"stage3_exp":10068.039999999999,"stage3_rate":0.001475684567175052},{"BANKER":"Banker-108","n":51,"exposure":6792105.88,"stage3_exp":19303.64,"stage3_rate":0.0028420699472370414},{"BANKER":"Banker-076","n":51,"exposure":6784236.56,"stage3_exp":172504.94999999998,"stage3_rate":0.025427319415288783},{"BANKER":"Banker-020","n":66,"exposure":6754457.6,"stage3_exp":541376.24,"stage3_rate":0.08015095690289033},{"BANKER":"Banker-072","n":53,"exposure":6714588.43,"stage3_exp":644793.17,"stage3_rate":0.09602869583474978},{"BANKER":"Banker-029","n":49,"exposure":6683942.87,"stage3_exp":234261.48000000004,"stage3_rate":0.035048396516291595},{"BANKER":"Banker-103","n":51,"exposure":6637105.96,"stage3_exp":618231.5900000001,"stage3_rate":0.09314776556618362},{"BANKER":"Banker-082","n":65,"exposure":6633311.9399999995,"stage3_exp":536504.59,"stage3_rate":0.08088034979401255},{"BANKER":"Banker-162","n":55,"exposure":6631000.93,"stage3_exp":2361284.6399999997,"stage3_rate":0.35609776939060084},{"BANKER":"Banker-037","n":55,"exposure":6617534.21,"stage3_exp":325272.7,"stage3_rate":0.04915315730570285},{"BANKER":"Banker-022","n":57,"exposure":6612160.08,"stage3_exp":513172.71,"stage3_rate":0.07761044859639878},{"BANKER":"Banker-098","n":61,"exposure":6559526.37,"stage3_exp":1487798.15,"stage3_rate":0.22681487444039347}],"fx_timeseries":{"months":["2024-01-31","2024-02-29","2024-03-31","2024-04-30","2024-05-31","2024-06-30","2024-07-31","2024-08-31","2024-09-30","2024-10-31","2024-11-30","2024-12-31","2025-01-31","2025-02-28","2025-03-31","2025-04-30","2025-05-31","2025-06-30","2025-07-31","2025-08-31","2025-09-30","2025-10-31","2025-11-30","2025-12-31","2026-01-31","2026-02-28","2026-03-31","2026-04-30","2026-05-31","2026-06-30","2026-07-31"],"USD":[2.6608,2.6503,2.6667,2.6924,2.6905,2.6765,2.6513,2.6627,2.649,2.6696,2.6903,2.6835,2.7132,2.6916,2.7149,2.7359,2.7408,2.7363,2.7588,2.7835,2.7988,2.7849,2.7619,2.7404,2.7514,2.7463,2.7349,2.7466,2.7294,2.712,2.7439],"EUR":[2.8231,2.8087,2.8224,2.7996,2.7734,2.7765,2.7609,2.7664,2.7746,2.7473,2.762,2.7438,2.7367,2.7151,2.7241,2.7406,2.7718,2.7778,2.7878,2.7953,2.7702,2.7601,2.7466,2.736,2.7306,2.7159,2.7447,2.754,2.7706,2.7661,2.7773]},"restructuring_ts":[{"r_month":"2020-02","LVL1":1,"LVL2":1,"LVL3":1},{"r_month":"2020-03","LVL1":3,"LVL2":0,"LVL3":1},{"r_month":"2020-04","LVL1":18,"LVL2":3,"LVL3":1},{"r_month":"2020-05","LVL1":15,"LVL2":2,"LVL3":3},{"r_month":"2020-06","LVL1":15,"LVL2":2,"LVL3":6},{"r_month":"2020-07","LVL1":27,"LVL2":2,"LVL3":1},{"r_month":"2020-08","LVL1":23,"LVL2":5,"LVL3":8},{"r_month":"2020-09","LVL1":27,"LVL2":4,"LVL3":13},{"r_month":"2020-10","LVL1":23,"LVL2":5,"LVL3":14},{"r_month":"2020-11","LVL1":40,"LVL2":1,"LVL3":10},{"r_month":"2020-12","LVL1":45,"LVL2":3,"LVL3":6},{"r_month":"2021-01","LVL1":37,"LVL2":2,"LVL3":15},{"r_month":"2021-02","LVL1":42,"LVL2":4,"LVL3":14},{"r_month":"2021-03","LVL1":44,"LVL2":5,"LVL3":18},{"r_month":"2021-04","LVL1":51,"LVL2":4,"LVL3":18},{"r_month":"2021-05","LVL1":46,"LVL2":4,"LVL3":15},{"r_month":"2021-06","LVL1":65,"LVL2":4,"LVL3":20},{"r_month":"2021-07","LVL1":53,"LVL2":5,"LVL3":20},{"r_month":"2021-08","LVL1":61,"LVL2":6,"LVL3":27},{"r_month":"2021-09","LVL1":60,"LVL2":6,"LVL3":19},{"r_month":"2021-10","LVL1":64,"LVL2":7,"LVL3":17},{"r_month":"2021-11","LVL1":44,"LVL2":6,"LVL3":23},{"r_month":"2021-12","LVL1":57,"LVL2":5,"LVL3":29},{"r_month":"2022-01","LVL1":69,"LVL2":6,"LVL3":22},{"r_month":"2022-02","LVL1":48,"LVL2":4,"LVL3":29},{"r_month":"2022-03","LVL1":60,"LVL2":8,"LVL3":35},{"r_month":"2022-04","LVL1":70,"LVL2":8,"LVL3":17},{"r_month":"2022-05","LVL1":81,"LVL2":9,"LVL3":30},{"r_month":"2022-06","LVL1":65,"LVL2":1,"LVL3":29},{"r_month":"2022-07","LVL1":73,"LVL2":7,"LVL3":36},{"r_month":"2022-08","LVL1":64,"LVL2":8,"LVL3":40},{"r_month":"2022-09","LVL1":89,"LVL2":8,"LVL3":35},{"r_month":"2022-10","LVL1":63,"LVL2":5,"LVL3":29},{"r_month":"2022-11","LVL1":71,"LVL2":4,"LVL3":29},{"r_month":"2022-12","LVL1":66,"LVL2":5,"LVL3":29},{"r_month":"2023-01","LVL1":67,"LVL2":3,"LVL3":39},{"r_month":"2023-02","LVL1":88,"LVL2":7,"LVL3":44},{"r_month":"2023-03","LVL1":91,"LVL2":7,"LVL3":41},{"r_month":"2023-04","LVL1":91,"LVL2":6,"LVL3":37},{"r_month":"2023-05","LVL1":82,"LVL2":7,"LVL3":42},{"r_month":"2023-06","LVL1":80,"LVL2":6,"LVL3":36},{"r_month":"2023-07","LVL1":92,"LVL2":8,"LVL3":33},{"r_month":"2023-08","LVL1":92,"LVL2":7,"LVL3":35},{"r_month":"2023-09","LVL1":96,"LVL2":6,"LVL3":40},{"r_month":"2023-10","LVL1":71,"LVL2":7,"LVL3":32},{"r_month":"2023-11","LVL1":65,"LVL2":7,"LVL3":38},{"r_month":"2023-12","LVL1":85,"LVL2":4,"LVL3":34},{"r_month":"2024-01","LVL1":92,"LVL2":7,"LVL3":35},{"r_month":"2024-02","LVL1":98,"LVL2":10,"LVL3":44},{"r_month":"2024-03","LVL1":116,"LVL2":10,"LVL3":42},{"r_month":"2024-04","LVL1":131,"LVL2":12,"LVL3":37},{"r_month":"2024-05","LVL1":112,"LVL2":9,"LVL3":35},{"r_month":"2024-06","LVL1":95,"LVL2":9,"LVL3":42},{"r_month":"2024-07","LVL1":98,"LVL2":12,"LVL3":52},{"r_month":"2024-08","LVL1":108,"LVL2":10,"LVL3":59},{"r_month":"2024-09","LVL1":96,"LVL2":12,"LVL3":44},{"r_month":"2024-10","LVL1":118,"LVL2":13,"LVL3":61},{"r_month":"2024-11","LVL1":112,"LVL2":9,"LVL3":51},{"r_month":"2024-12","LVL1":108,"LVL2":7,"LVL3":52},{"r_month":"2025-01","LVL1":106,"LVL2":12,"LVL3":57},{"r_month":"2025-02","LVL1":95,"LVL2":7,"LVL3":57},{"r_month":"2025-03","LVL1":94,"LVL2":16,"LVL3":56},{"r_month":"2025-04","LVL1":108,"LVL2":13,"LVL3":49},{"r_month":"2025-05","LVL1":124,"LVL2":9,"LVL3":55},{"r_month":"2025-06","LVL1":108,"LVL2":4,"LVL3":56},{"r_month":"2025-07","LVL1":104,"LVL2":6,"LVL3":44},{"r_month":"2025-08","LVL1":111,"LVL2":11,"LVL3":54},{"r_month":"2025-09","LVL1":103,"LVL2":8,"LVL3":45},{"r_month":"2025-10","LVL1":104,"LVL2":9,"LVL3":40},{"r_month":"2025-11","LVL1":114,"LVL2":9,"LVL3":50},{"r_month":"2025-12","LVL1":106,"LVL2":10,"LVL3":46},{"r_month":"2026-01","LVL1":129,"LVL2":8,"LVL3":57},{"r_month":"2026-02","LVL1":106,"LVL2":10,"LVL3":48},{"r_month":"2026-03","LVL1":113,"LVL2":8,"LVL3":46},{"r_month":"2026-04","LVL1":104,"LVL2":7,"LVL3":64},{"r_month":"2026-05","LVL1":89,"LVL2":6,"LVL3":53},{"r_month":"2026-06","LVL1":113,"LVL2":5,"LVL3":51},{"r_month":"2026-07","LVL1":126,"LVL2":12,"LVL3":55}],"refi_count_total":4243,"restructurings_total":9192,"gambler_summary":[{"type":"Non-gambler","n":1617,"watch_rate":0.11317254174397032,"default_rate":0.09276437847866419,"exposure":2115899.3899999997,"avg_net_flow":0.0},{"type":"Net winner","n":78,"watch_rate":0.07692307692307693,"default_rate":0.07692307692307693,"exposure":113133.05,"avg_net_flow":25690.324615384612},{"type":"Mixed","n":78,"watch_rate":0.15384615384615385,"default_rate":0.14102564102564102,"exposure":108121.19999999998,"avg_net_flow":-326.9014102564103},{"type":"Net loser","n":198,"watch_rate":0.20707070707070707,"default_rate":0.09090909090909091,"exposure":256371.24,"avg_net_flow":-45909.182272727274}],"payment_schedule":{"ALL":{"months":["2024-01","2024-02","2024-03","2024-04","2024-05","2024-06","2024-07","2024-08","2024-09","2024-10","2024-11","2024-12","2025-01","2025-02","2025-03","2025-04","2025-05","2025-06","2025-07","2025-08","2025-09","2025-10","2025-11","2025-12","2026-01","2026-02","2026-03","2026-04","2026-05","2026-06","2026-07"],"scheduled":[8328147.03,8398747.7,9183085.35,12370267.96,7793638.03,10081282.19,13361380.32,14494322.26,14144532.8,19451127.16,14323931.07,13838767.64,19526971.36,15455089.97,16387784.38,19741297.6,17893129.87,16747874.97,21763573.92,18609736.69,18615549.919999998,24128524.52,21487795.44,20552293.21,25472279.42,19985048.89,18127448.97,21877653.1,21446797.81,22144233.85,23916148.71],"scheduled_principal":[6264152.21,6200937.96,6995962.86,5816987.25,5452285.34,7678487.06,6558064.26,11848584.68,11438126.38,12583297.24,11330501.49,10831120.94,12568690.44,12031462.06,12988500.89,12774921.07,14062638.46,12948051.19,14617790.61,14351617.22,14241612.48,16835265.93,16760525.49,15700194.06,17692471.81,14673327.09,12861145.2,13748219.76,15549267.85,16280039.19,15363589.08],"scheduled_interest":[2063994.82,2197809.74,2187122.49,6553280.71,2341352.69,2402795.13,6803316.06,2645737.58,2706406.42,6867829.92,2993429.58,3007646.7,6958280.92,3423627.91,3399283.49,6966376.53,3830491.41,3799823.78,7145783.31,4258119.47,4373937.44,7293258.59,4727269.95,4852099.15,7779807.61,5311721.8,5266303.77,8129433.34,5897529.96,5864194.66,8552559.63],"paid":[1584416.1,2187627.2600000002,2526200.73,5057250.11,4844085.95,2306974.67,6005339.06,4052015.08,2644113.06,5698164.89,4225264.82,3555994.58,5720903.4,4155791.85,4408980.43,5277561.81,6085412.0,3238385.75,6216661.9,5570819.41,3999527.01,6225564.41,5323511.89,5156229.77,6145121.06,5463827.15,6170537.17,5947892.97,7692653.55,4447306.72,7750872.68],"paid_principal":[647718.87,850196.32,1078721.1,948407.24,1162425.76,1168927.09,1286196.11,1182043.93,1273595.51,1340888.45,1320541.62,1578343.33,1587322.29,1436577.12,1945387.89,1705947.34,1879504.41,1655907.47,1943838.5,1960098.27,1803833.08,1980415.39,1817323.48,1986037.89,2053426.33,1958349.56,2285309.14,1927897.31,2278022.76,1977629.15,2487754.04],"paid_interest":[936697.23,1337430.94,1447479.63,4108842.87,3681660.19,1138047.58,4719142.95,2869971.15,1370517.55,4357276.44,2904723.2,1977651.25,4133581.11,2719214.73,2463592.54,3571614.47,4205907.59,1582478.28,4272823.4,3610721.14,2195693.93,4245149.02,3506188.41,3170191.88,4091694.73,3505477.59,3885228.03,4019995.66,5414630.79,2469677.57,5263118.64]},"RB":{"months":["2024-01","2024-02","2024-03","2024-04","2024-05","2024-06","2024-07","2024-08","2024-09","2024-10","2024-11","2024-12","2025-01","2025-02","2025-03","2025-04","2025-05","2025-06","2025-07","2025-08","2025-09","2025-10","2025-11","2025-12","2026-01","2026-02","2026-03","2026-04","2026-05","2026-06","2026-07"],"scheduled":[40897.3,55160.82,56008.69,47524.88,49165.81,51500.68,55837.01,54890.58,61514.31,57126.29,62626.55,60523.1,60821.65,51763.54,61971.36,58252.26,55411.47,58099.03,59389.43,66019.12,64695.01,59726.64,57441.57,59701.98,58888.48,64510.24,61090.48,65924.3,65245.38,64097.93,61833.81],"scheduled_principal":[24483.16,38583.87,38704.24,30626.83,32157.24,33843.909999999996,38390.06,37210.84,43045.71,39541.26,44363.63,41311.73,42800.81,33501.49,42210.0,39546.61,36764.39,37842.49,40257.28,46628.87,43601.22,40291.18,37794.08,38146.57,38734.39,44069.85,39050.94,45067.87,43939.23,40888.65,40255.19],"scheduled_interest":[16414.14,16576.95,17304.45,16898.05,17008.57,17656.77,17446.95,17679.74,18468.6,17585.03,18262.92,19211.37,18020.84,18262.05,19761.36,18705.65,18647.08,20256.54,19132.15,19390.25,21093.79,19435.46,19647.49,21555.41,20154.09,20440.39,22039.54,20856.43,21306.15,23209.28,21578.62],"paid":[30233.64,42757.11,48838.98,41977.89,45032.73,41523.04,45161.26,44321.2,41815.09,45666.05,42784.73,44705.68,43998.13,41070.59,47249.69,41056.07,46161.1,40645.39,45100.55,41508.21,40772.09,45924.97,39699.67,47001.12,43130.79,39369.26,45366.25,39414.9,43504.07,38876.44,43730.35],"paid_principal":[17526.25,24984.68,28645.1,25171.9,26168.32,25088.86,26718.56,25776.8,25378.5,27100.05,26257.41,26860.96,26759.31,25086.05,28021.17,25375.65,27517.8,25129.33,27016.21,24998.73,25095.54,27760.18,24164.92,28904.54,26768.28,24292.66,27489.14,23834.11,26329.920000000002,23761.36,25757.68],"paid_interest":[12707.39,17772.43,20193.88,16805.99,18864.41,16434.18,18442.7,18544.4,16436.59,18566.0,16527.32,17844.72,17238.82,15984.54,19228.52,15680.42,18643.3,15516.06,18084.34,16509.48,15676.55,18164.79,15534.75,18096.58,16362.51,15076.6,17877.11,15580.79,17174.15,15115.08,17972.67]},"SML":{"months":["2024-01","2024-02","2024-03","2024-04","2024-05","2024-06","2024-07","2024-08","2024-09","2024-10","2024-11","2024-12","2025-01","2025-02","2025-03","2025-04","2025-05","2025-06","2025-07","2025-08","2025-09","2025-10","2025-11","2025-12","2026-01","2026-02","2026-03","2026-04","2026-05","2026-06","2026-07"],"scheduled":[79113.21,179841.33,185937.58,235035.49,219940.56,265605.92,258737.13999999998,269257.11,260235.49,301462.31,268427.53,282600.07,316684.55,295718.99,304193.75,316686.64,367930.04,316954.95,350904.38,338110.65,353459.71,378662.48,395825.33,375340.07,362191.34,302049.9,408811.6,372963.88,350823.81,351547.2,416158.04],"scheduled_principal":[29657.1,128336.81,132501.46,150922.71,164153.37,207055.47,171323.43,208378.79,197266.68,211223.23,202506.44,214867.93,223655.55,225923.7,232005.35,223536.58,291713.18,241555.51,255812.54,258742.15,272449.08,281548.04,311575.98,289581.43,263736.34,214656.04,316857.01,271466.29,259907.98,255941.7,309919.77999999997],"scheduled_interest":[49456.11,51504.52,53436.12,84112.78,55787.19,58550.45,87413.71,60878.32,62968.81,90239.08,65921.09,67732.14,93029.0,69795.29,72188.4,93150.06,76216.86,75399.44,95091.84,79368.5,81010.63,97114.44,84249.35,85758.64,98455.0,87393.86,91954.59,101497.59,90915.83,95605.5,106238.26],"paid":[56624.96,82506.8,87705.35,98995.33,112690.65,66261.4,114336.04,98312.45,67657.95,114027.14,86882.38,93993.43000000001,99993.32,87386.79,100181.13,94651.75,115769.5,75552.0,111942.05,105346.26,85361.32,110007.07,97226.86,98946.35,99697.89,88727.77,106009.37,93466.69,118194.43,75223.41,111105.99],"paid_principal":[20833.71,30459.72,35460.73,30094.21,36725.22,29544.04,37959.75,33352.52,29439.72,39590.53,31779.06,39597.85,36983.59,36791.82,40498.96,38119.18,41000.4,39733.87,41840.28,41210.31,44359.3,44208.68,38764.72,43164.38,39843.26,36514.04,43486.15,37512.32,43620.37,34137.63,43059.62],"paid_interest":[35791.25,52047.08,52244.62,68901.12,75965.43,36717.36,76376.29,64959.93,38218.23,74436.61,55103.32,54395.58,63009.73,50594.97,59682.17,56532.57,74769.1,35818.13,70101.77,64135.95,41002.02,65798.39,58462.14,55781.97,59854.63,52213.73,62523.22,55954.37,74574.06,41085.78,68046.37]},"SMM":{"months":["2024-01","2024-02","2024-03","2024-04","2024-05","2024-06","2024-07","2024-08","2024-09","2024-10","2024-11","2024-12","2025-01","2025-02","2025-03","2025-04","2025-05","2025-06","2025-07","2025-08","2025-09","2025-10","2025-11","2025-12","2026-01","2026-02","2026-03","2026-04","2026-05","2026-06","2026-07"],"scheduled":[503857.83,1205329.81,1346702.6300000001,1667854.02,1233899.13,1514720.84,2064695.67,1703513.04,1962571.54,2426249.58,1817286.48,2011175.57,2280994.66,2019328.65,2227807.36,2232362.69,2494010.64,2202682.08,2913424.29,2825238.6,2714698.06,2887059.36,2607198.25,2852277.02,2924068.47,2752401.39,2544275.7,2744114.1,2674809.88,2775722.8,3252997.91],"scheduled_principal":[203448.3,868516.59,1005713.64,1008407.91,865320.98,1136193.29,1360009.3599999999,1301090.02,1531740.35,1697983.58,1383170.27,1532564.92,1544228.94,1541656.1300000001,1699929.69,1484220.25,1959080.91,1625775.48,2141216.86,2240328.28,2100096.2,2109323.3,1987665.62,2220555.76,2121099.95,2104506.84,1886686.03,1904189.11,1991024.57,2075828.54,2388292.22],"scheduled_interest":[300409.53,336813.22,340988.99,659446.11,368578.15,378527.55,704686.31,402423.02,430831.19,728266.0,434116.21,478610.65,736765.72,477672.52,527877.67,748142.44,534929.73,576906.6,772207.43,584910.32,614601.86,777736.06,619532.63,631721.26,802968.52,647894.55,657589.67,839924.99,683785.31,699894.26,864705.69],"paid":[377798.94,503231.81,608131.98,679935.37,803672.88,471581.65,869553.21,677998.57,507766.84,823620.5,645636.43,644100.42,766237.4,631389.41,707525.19,727425.63,842454.96,549767.31,803554.73,776205.4,588715.76,844314.98,728069.73,707264.5,745014.03,668646.4,832145.49,764893.31,918448.34,571297.77,897095.02],"paid_principal":[158471.36,185331.9,278742.25,209171.92,242880.56,233378.77,275839.4,233878.67,241045.87,250089.71,246359.66,285452.12,274265.51,239566.66,289194.1,252797.17,281434.96,267066.18,281057.93,280028.93,282497.64,308474.68,284511.92,291852.06,273042.83,267790.67,348558.83,317982.63,318316.83,281520.22,357002.0],"paid_interest":[219327.58,317899.91,329389.73,470763.45,560792.32,238202.88,593713.81,444119.9,266720.97,573530.79,399276.77,358648.3,491971.89,391822.75,418331.09,474628.46,561020.0,282701.13,522496.8,496176.47,306218.12,535840.3,443557.81,415412.44,471971.2,400855.73,483586.66,446910.68,600131.51,289777.55,540093.02]},"CB":{"months":["2024-01","2024-02","2024-03","2024-04","2024-05","2024-06","2024-07","2024-08","2024-09","2024-10","2024-11","2024-12","2025-01","2025-02","2025-03","2025-04","2025-05","2025-06","2025-07","2025-08","2025-09","2025-10","2025-11","2025-12","2026-01","2026-02","2026-03","2026-04","2026-05","2026-06","2026-07"],"scheduled":[1546955.1,3621113.9,4660644.89,8217846.6,4075380.34,5459222.95,8614378.37,9551231.65,8223713.62,13972295.64,9725609.37,9389150.26,14991236.74,10778272.86,11377017.76,15366531.959999999,12956989.64,13049083.54,16843108.34,13607566.709999999,13801308.36,18864372.22,16865049.93,14809753.88,20563202.63,15187467.33,14312553.09,16912995.64,16706826.69,17639771.39,19174300.83],"scheduled_principal":[651370.89,2595297.82,3559691.11,3064414.62,2852680.36,4126767.42,3223029.87,8024318.76,6611519.68,8488036.67,7798014.0200000005,7416650.69,9363287.38,8408175.36,9022637.74,9678419.62,10189027.42,10277397.75,10975219.92,10403256.58,10487042.51,12820284.36,13185553.45,11015198.86,14009198.85,10902247.65,10060299.16,10015208.25,11853915.98,12805482.129999999,11821238.98],"scheduled_interest":[895584.21,1025816.08,1100953.78,5153431.98,1222699.98,1332455.53,5391348.5,1526912.89,1612193.94,5484258.97,1927595.35,1972499.57,5627949.36,2370097.5,2354380.02,5688112.34,2767962.22,2771685.79,5867888.42,3204310.13,3314265.85,6044087.86,3679496.48,3794555.02,6554003.78,4285219.68,4252253.93,6897787.39,4852910.71,4834289.26,7353061.85],"paid":[1119758.56,1559131.54,1781524.42,4236341.52,3882689.69,1727608.58,4976288.55,3231382.86,2026873.18,4714851.2,3449961.28,2773195.05,4810674.55,3395945.06,3554024.42,4414428.36,5081026.44,2572421.05,5256064.57,4647759.54,3284677.84,5225317.39,4458515.63,4303017.8,5257278.35,4667083.72,5187016.06,5050118.07,6612506.71,3761909.1,6698941.32],"paid_principal":[450887.55,609420.02,735873.02,683969.21,856651.66,880915.42,945678.4,889035.94,977731.42,1024108.16,1016145.49,1226432.4,1249313.88,1135132.59,1587673.66,1389655.34,1529551.25,1323978.09,1593924.08,1613860.3,1451880.6,1599971.85,1469881.92,1622116.91,1713771.96,1629752.19,1865775.02,1548568.25,1889755.64,1638209.94,2061934.74],"paid_interest":[668871.01,949711.52,1045651.4,3552372.31,3026038.03,846693.16,4030610.15,2342346.92,1049141.76,3690743.04,2433815.79,1546762.65,3561360.67,2260812.47,1966350.76,3024773.02,3551475.19,1248442.96,3662140.49,3033899.24,1832797.24,3625345.54,2988633.71,2680900.89,3543506.39,3037331.53,3321241.04,3501549.82,4722751.07,2123699.16,4637006.58]}},"payment_status":{"counts":{"underpaid":115305,"on_time":85144,"no_schedule":26656,"overpaid":16032},"surplus":{"no_schedule":34759718.82,"on_time":-576.8899999999965,"overpaid":10298155.91,"underpaid":-425020752.71}},"payment_behavior_ts":[{"month":"2024-01","prepay_amt":0.0,"shortfall_amt":6944531.09,"n_overpaid":0.0,"n_underpaid":3040.0,"n_ontime":2223.0},{"month":"2024-02","prepay_amt":147300.2,"shortfall_amt":6925846.2299999995,"n_overpaid":418.0,"n_underpaid":2912.0,"n_ontime":1991.0},{"month":"2024-03","prepay_amt":228656.24000000002,"shortfall_amt":7522557.0600000005,"n_overpaid":547.0,"n_underpaid":2735.0,"n_ontime":2114.0},{"month":"2024-04","prepay_amt":190795.21999999997,"shortfall_amt":8501908.85,"n_overpaid":374.0,"n_underpaid":3972.0,"n_ontime":3119.0},{"month":"2024-05","prepay_amt":213556.38,"shortfall_amt":5719247.99,"n_overpaid":510.0,"n_underpaid":2627.0,"n_ontime":2428.0},{"month":"2024-06","prepay_amt":176836.14,"shortfall_amt":8353322.9,"n_overpaid":410.0,"n_underpaid":3197.0,"n_ontime":2059.0},{"month":"2024-07","prepay_amt":281184.25,"shortfall_amt":8782098.54,"n_overpaid":546.0,"n_underpaid":3723.0,"n_ontime":3435.0},{"month":"2024-08","prepay_amt":168882.97999999998,"shortfall_amt":12431965.629999999,"n_overpaid":430.0,"n_underpaid":2940.0,"n_ontime":2451.0},{"month":"2024-09","prepay_amt":267636.37,"shortfall_amt":12295078.55,"n_overpaid":477.0,"n_underpaid":3354.0,"n_ontime":2119.0},{"month":"2024-10","prepay_amt":319265.43,"shortfall_amt":15239358.45,"n_overpaid":563.0,"n_underpaid":3978.0,"n_ontime":3274.0},{"month":"2024-11","prepay_amt":230862.89,"shortfall_amt":12022134.760000002,"n_overpaid":466.0,"n_underpaid":3340.0,"n_ontime":2309.0},{"month":"2024-12","prepay_amt":332939.57,"shortfall_amt":11451533.54,"n_overpaid":531.0,"n_underpaid":3241.0,"n_ontime":2475.0},{"month":"2025-01","prepay_amt":356763.17,"shortfall_amt":15125707.229999999,"n_overpaid":521.0,"n_underpaid":4211.0,"n_ontime":3227.0},{"month":"2025-02","prepay_amt":270680.84,"shortfall_amt":13063145.59,"n_overpaid":474.0,"n_underpaid":3673.0,"n_ontime":2235.0},{"month":"2025-03","prepay_amt":493504.08,"shortfall_amt":13671591.420000002,"n_overpaid":630.0,"n_underpaid":3381.0,"n_ontime":2491.0},{"month":"2025-04","prepay_amt":317890.72,"shortfall_amt":15871401.240000002,"n_overpaid":465.0,"n_underpaid":4558.0,"n_ontime":2942.0},{"month":"2025-05","prepay_amt":344331.63,"shortfall_amt":14217766.16,"n_overpaid":593.0,"n_underpaid":3139.0,"n_ontime":2885.0},{"month":"2025-06","prepay_amt":254104.57,"shortfall_amt":14104738.86,"n_overpaid":481.0,"n_underpaid":3823.0,"n_ontime":2414.0},{"month":"2025-07","prepay_amt":417784.33,"shortfall_amt":17378435.05,"n_overpaid":581.0,"n_underpaid":4293.0,"n_ontime":3184.0},{"month":"2025-08","prepay_amt":352382.61,"shortfall_amt":14899319.569999998,"n_overpaid":520.0,"n_underpaid":3410.0,"n_ontime":2961.0},{"month":"2025-09","prepay_amt":370898.67999999993,"shortfall_amt":15588222.86,"n_overpaid":506.0,"n_underpaid":3955.0,"n_ontime":2543.0},{"month":"2025-10","prepay_amt":392540.41000000003,"shortfall_amt":19684831.060000002,"n_overpaid":626.0,"n_underpaid":4351.0,"n_ontime":3155.0},{"month":"2025-11","prepay_amt":374075.77,"shortfall_amt":17917598.16,"n_overpaid":489.0,"n_underpaid":3872.0,"n_ontime":2769.0},{"month":"2025-12","prepay_amt":413370.75,"shortfall_amt":16808634.6,"n_overpaid":638.0,"n_underpaid":3755.0,"n_ontime":2842.0},{"month":"2026-01","prepay_amt":400931.38,"shortfall_amt":20659154.38,"n_overpaid":565.0,"n_underpaid":4454.0,"n_ontime":3213.0},{"month":"2026-02","prepay_amt":414816.63999999996,"shortfall_amt":16336707.07,"n_overpaid":532.0,"n_underpaid":4210.0,"n_ontime":2630.0},{"month":"2026-03","prepay_amt":566446.75,"shortfall_amt":13923724.280000001,"n_overpaid":699.0,"n_underpaid":3875.0,"n_ontime":2912.0},{"month":"2026-04","prepay_amt":358395.53,"shortfall_amt":17214214.73,"n_overpaid":516.0,"n_underpaid":4850.0,"n_ontime":3070.0},{"month":"2026-05","prepay_amt":535631.29,"shortfall_amt":16086415.99,"n_overpaid":685.0,"n_underpaid":3558.0,"n_ontime":3392.0},{"month":"2026-06","prepay_amt":387644.75,"shortfall_amt":18152216.01,"n_overpaid":546.0,"n_underpaid":4363.0,"n_ontime":2850.0},{"month":"2026-07","prepay_amt":718046.34,"shortfall_amt":18127344.86,"n_overpaid":693.0,"n_underpaid":4515.0,"n_ontime":3432.0}],"callouts":{"biggest_deal":{"deal_no":529400,"client":"Kutaisi Auto Parts #1777","product":"Corporate Term Loan","amount":1437502.1,"segment":"CB","sector":"Energy & Utilities"},"top_sector":"Real Estate & Construction","top_region":"Tbilisi","riskiest_sector":"Real Estate & Construction","total_scheduled":529648462.11,"total_paid":149685007.24,"total_prepay":10298155.91,"total_shortfall":425020752.71,"balloon_principal_share":0.6436676339244822,"interest_collection_rate_all":0.6585392376675545,"total_collection_rate_all":0.28261199257275044},"collection_by_segment":[{"segment":"RB","scheduled_total":1807659.7,"paid_total":1328397.04,"collection_rate":0.734871192846751,"interest_collection_rate":0.8899859127711668,"principal_collection_rate":0.6589524198581245},{"segment":"SML","scheduled_total":9481211.05,"paid_total":2954783.83,"collection_rate":0.31164624586644973,"interest_collection_rate":0.7289934785647402,"principal_collection_rate":0.16522619718548853},{"segment":"SMM","scheduled_total":69383328.05000001,"paid_total":21683493.96,"collection_rate":0.3125173520701418,"interest_collection_rate":0.7267632023956857,"principal_collection_rate":0.16341878053567657},{"segment":"CB","scheduled_total":380864952.23,"paid_total":123718332.41,"collection_rate":0.3248351723770264,"interest_collection_rate":0.7251365572456892,"principal_collection_rate":0.15133917117303528}]};
+
+// ============ FORMATTERS ============
+const fmtGEL = (n, d=1) => { if (n==null) return "—"; const a=Math.abs(n); if(a>=1e9) return (n/1e9).toFixed(d)+"B"; if(a>=1e6) return (n/1e6).toFixed(d)+"M"; if(a>=1e3) return (n/1e3).toFixed(d)+"K"; return n.toFixed(0); };
+const fmtGELFull = n => n==null ? "—" : "₾" + Math.round(n).toLocaleString();
+const fmtPct = (n, d=1) => n==null ? "—" : (n*100).toFixed(d)+"%";
+const fmtInt = n => n==null ? "—" : Math.round(n).toLocaleString();
+const monthLabel = ym => { const [y,m] = ym.split("-"); return new Date(y,m-1).toLocaleDateString("en",{month:"short",year:"2-digit"}); };
+const COLORS = { teal: "#2DD4BF", violet: "#8B8CF8", amber: "#FBBF24", rose: "#FB7185", blue: "#60A5FA",
+  tealSoft: "rgba(45,212,191,0.22)", violetSoft: "rgba(139,140,248,0.22)", amberSoft: "rgba(251,191,36,0.22)", roseSoft: "rgba(251,113,133,0.22)", blueSoft: "rgba(96,165,250,0.22)" };
+
+// ============ TOOLTIP ============
+const tt = document.getElementById("tooltip");
+function showTip(html, ev) {
+  tt.innerHTML = html; tt.classList.add("visible");
+  const pad = 14; const rect = tt.getBoundingClientRect();
+  let x = ev.clientX + pad, y = ev.clientY + pad;
+  if (x + rect.width > window.innerWidth) x = ev.clientX - rect.width - pad;
+  if (y + rect.height > window.innerHeight) y = ev.clientY - rect.height - pad;
+  tt.style.left = x + "px"; tt.style.top = y + "px";
+}
+function hideTip() { tt.classList.remove("visible"); }
+window.showTip = showTip; window.hideTip = hideTip;
+
+// ============ STATE ============
+let STATE = { page: "overview", segment: "ALL", compProduct: "", compSector: "" };
+
+// ============ SIDEBAR / TOPBAR META ============
+document.getElementById("sbAsOf").textContent = DATA.meta.period_end;
+const PAGE_META = {
+  overview: ["Overview", "The book, at a glance — exposure, risk, and where it's concentrated"],
+  composition: ["Composition", "Where the exposure sits — product, sector, region, currency, grade"],
+  risk: ["Risk", "Where credit stress concentrates, and how well it's covered"],
+  origination: ["Origination", "The funnel from application to performing vintage"],
+  payments: ["Payments", "Scheduled vs actual cash flow — prepayments, shortfalls, collection performance"],
+  collections: ["Collections", "Write-offs, recoveries, and restructuring activity"],
+  behavior: ["Behavior", "Client cash-flow overlays and macro context"],
+  league: ["League tables", "Banker rankings by book size and risk"],
+};
+
+// ============ TOP TICKER ============
+function updateTicker() {
+  const k = DATA.kpi[STATE.segment];
+  document.getElementById("tkExposure").textContent = fmtGEL(k.gross_exposure_latest) + " GEL";
+  document.getElementById("tkStage3").textContent = fmtPct(k.stage3_share_latest);
+  document.getElementById("tkLoans").textContent = fmtInt(k.active_loans_latest);
+}
+
+// ============ SPARKLINE (mini inline SVG) ============
+function sparkline(values, color) {
+  if (!values || values.length < 2) return "";
+  const W = 200, H = 30;
+  const min = Math.min(...values), max = Math.max(...values);
+  const range = (max - min) || 1;
+  const pts = values.map((v,i) => `${i/(values.length-1)*W},${H - ((v-min)/range)*H}`);
+  const path = "M" + pts.join(" L");
+  const areaPath = path + ` L${W},${H} L0,${H} Z`;
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="width:100%;height:100%">
+    <path d="${areaPath}" fill="${color}" opacity="0.15"/>
+    <path d="${path}" fill="none" stroke="${color}" stroke-width="2"/>
+  </svg>`;
+}
+
+// ============ OVERVIEW PAGE ============
+function renderOverview() {
+  const seg = STATE.segment;
+  const k = DATA.kpi[seg];
+  const ts = DATA.timeseries[seg];
+  const changeExp = k.gross_exposure_start ? ((k.gross_exposure_latest - k.gross_exposure_start) / k.gross_exposure_start * 100) : 0;
+  const loanDelta = k.active_loans_latest - k.active_loans_start;
+
+  const tiles = [
+    { label: "Active loans", val: fmtInt(k.active_loans_latest), unit:"", change: `${loanDelta>=0?'+':''}${fmtInt(loanDelta)} vs start`, dir: loanDelta>=0?"up":"down", spark: ts.n_loans, color: COLORS.blue },
+    { label: "Gross exposure", val: fmtGEL(k.gross_exposure_latest), unit:"GEL", change: `${changeExp>=0?'+':''}${changeExp.toFixed(1)}% since start`, dir: changeExp>=0?"up":"down", spark: ts.exposure, color: COLORS.teal },
+    { label: "Allowance", val: fmtGEL(k.allowance_latest), unit:"GEL", change: `Coverage ${fmtPct(k.coverage_latest,2)}`, dir:"flat", spark: ts.allowance, color: COLORS.violet },
+    { label: "Stage-3 share", val: fmtPct(k.stage3_share_latest), unit:"", change: `NPL ratio ${fmtPct(k.npl_ratio_latest)}`, dir: k.stage3_share_latest > k.stage3_share_start ? "down":"up", spark: ts.stage3_exp, color: COLORS.rose },
+    { label: "Write-offs (life)", val: fmtGEL(k.write_offs_total_gel), unit:"GEL", change: `Recovered ${fmtGEL(k.recoveries_total_gel)}`, dir:"flat", spark: null, color: COLORS.amber },
+    { label: "Avg PD", val: fmtPct(k.avg_pd_latest,2), unit:"", change: `Avg ticket ${fmtGEL(k.avg_ticket_latest)}`, dir:"flat", spark: null, color: COLORS.blue },
+  ];
+  document.getElementById("ovKpiRow").innerHTML = tiles.map(t => `
+    <div class="card kpi-card span-2" style="grid-column:span 2">
+      <div class="kl">${t.label}</div>
+      <div class="kv num">${t.val}${t.unit?`<span class="unit">${t.unit}</span>`:''}</div>
+      <div class="kchange ${t.dir}">${t.dir==='up'?'▲':t.dir==='down'?'▼':'—'} ${t.change}</div>
+      ${t.spark ? `<div class="sparkline">${sparkline(t.spark, t.color)}</div>` : ''}
+    </div>`).join("");
+
+  drawOverviewArea(ts);
+  drawOverviewDonut();
+  drawOverviewStage(ts);
+  renderTopProducts();
+  renderOverviewCallout();
+}
+
+function drawOverviewArea(ts) {
+  const svg = document.getElementById("ovAreaChart");
+  const W=1000,H=300, ml=55,mr=55,mt=15,mb=32;
+  const months = ts.months, exp = ts.exposure, s3 = ts.stage3_exp;
+  const s3share = s3.map((v,i)=>v/(exp[i]||1));
+  const n = months.length;
+  const x = i => ml + (W-ml-mr)*i/(n-1);
+  const maxExp = Math.max(...exp)*1.08;
+  const yExp = v => (H-mb) - (H-mt-mb)*(v/maxExp);
+  const maxS3 = Math.max(...s3share)*1.3 || 0.01;
+  const yS3 = v => (H-mb) - (H-mt-mb)*0.42*(v/maxS3);
+
+  let p = [];
+  // grid
+  [0,0.25,0.5,0.75,1].forEach(f => {
+    const yy = mt + (H-mt-mb)*(1-f);
+    p.push(`<line x1="${ml}" x2="${W-mr}" y1="${yy}" y2="${yy}" class="grid-line"/>`);
+  });
+  // exposure gradient area
+  p.push(`<defs>
+    <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="${COLORS.teal}" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="${COLORS.teal}" stop-opacity="0.02"/>
+    </linearGradient>
+  </defs>`);
+  let pathE = `M ${x(0)},${yExp(exp[0])}`;
+  for (let i=1;i<n;i++) pathE += ` L ${x(i)},${yExp(exp[i])}`;
+  const pathEArea = pathE + ` L ${x(n-1)},${H-mb} L ${x(0)},${H-mb} Z`;
+  p.push(`<path d="${pathEArea}" fill="url(#areaGrad)"/>`);
+  p.push(`<path d="${pathE}" fill="none" stroke="${COLORS.teal}" stroke-width="2.5"/>`);
+  // stage3 share line
+  let pathS = `M ${x(0)},${yS3(s3share[0])}`;
+  for (let i=1;i<n;i++) pathS += ` L ${x(i)},${yS3(s3share[i])}`;
+  p.push(`<path d="${pathS}" fill="none" stroke="${COLORS.rose}" stroke-width="2" stroke-dasharray="4 3"/>`);
+  // axis labels
+  const li = [0, Math.floor(n/4), Math.floor(n/2), Math.floor(3*n/4), n-1];
+  li.forEach(i => p.push(`<text x="${x(i)}" y="${H-10}" text-anchor="middle" class="axis-label">${monthLabel(months[i])}</text>`));
+  p.push(`<text x="${ml-8}" y="${yExp(maxExp*0.98)+3}" text-anchor="end" class="axis-label">${fmtGEL(maxExp)}</text>`);
+  p.push(`<text x="${ml-8}" y="${H-mb}" text-anchor="end" class="axis-label">0</text>`);
+  p.push(`<text x="${W-mr+8}" y="${yS3(maxS3*0.95)+3}" class="axis-label" fill="${COLORS.rose}">${fmtPct(maxS3,0)}</text>`);
+  p.push(`<text x="${W-mr+8}" y="${H-mb}" class="axis-label" fill="${COLORS.rose}">0%</text>`);
+  // hover
+  months.forEach((mo,i) => p.push(`<rect x="${x(i)-8}" y="0" width="16" height="${H-mb}" fill="transparent"
+    onmousemove="showTip('<div class=\\'tt-label\\'>${monthLabel(mo)}</div>Exposure ${fmtGEL(exp[i])} GEL<br>Stage-3 share ${fmtPct(s3share[i])}', event)" onmouseleave="hideTip()"/>`));
+  svg.innerHTML = p.join("");
+}
+
+function drawOverviewDonut() {
+  const svg = document.getElementById("ovDonut");
+  const rows = DATA.latest[STATE.segment].by_segment;
+  const W=300,H=260, cx=W/2, cy=110, R=85, R2=52;
+  const colors = { RB: COLORS.teal, SML: COLORS.violet, SMM: COLORS.amber, CB: COLORS.rose };
+  const total = rows.reduce((s,r)=>s+r.exposure,0);
+  let a0=-Math.PI/2, p=[];
+  rows.forEach(row => {
+    const a1 = a0 + 2*Math.PI*(row.exposure/total);
+    const large = (a1-a0)>Math.PI?1:0;
+    const x1=cx+R*Math.cos(a0), y1=cy+R*Math.sin(a0), x2=cx+R*Math.cos(a1), y2=cy+R*Math.sin(a1);
+    const x3=cx+R2*Math.cos(a1), y3=cy+R2*Math.sin(a1), x4=cx+R2*Math.cos(a0), y4=cy+R2*Math.sin(a0);
+    const d = `M ${x1},${y1} A ${R},${R} 0 ${large} 1 ${x2},${y2} L ${x3},${y3} A ${R2},${R2} 0 ${large} 0 ${x4},${y4} Z`;
+    p.push(`<path d="${d}" fill="${colors[row.LOAN_SEGMENT]||'#555'}"
+      onmousemove="showTip('<div class=\\'tt-label\\'>${row.LOAN_SEGMENT}</div>Exposure ${fmtGELFull(row.exposure)}<br>Loans ${fmtInt(row.n)}<br>Share ${fmtPct(row.exposure/total)}', event)" onmouseleave="hideTip()"/>`);
+    a0 = a1;
+  });
+  p.push(`<text x="${cx}" y="${cy-4}" text-anchor="middle" class="axis-label" style="font-size:9px">TOTAL</text>`);
+  p.push(`<text x="${cx}" y="${cy+15}" text-anchor="middle" class="num" style="font-size:16px;font-weight:600;fill:var(--text)">${fmtGEL(total)}</text>`);
+  svg.innerHTML = p.join("");
+  document.getElementById("ovDonutLegend").innerHTML = rows.map(r => `<span><span class="sw" style="background:${colors[r.LOAN_SEGMENT]}"></span>${r.LOAN_SEGMENT} · ${fmtPct(r.exposure/total,0)}</span>`).join("");
+}
+
+function drawOverviewStage(ts) {
+  const svg = document.getElementById("ovStageChart");
+  const W=500,H=240, ml=40,mr=15,mt=15,mb=30;
+  const months = ts.months, s1=ts.stage1_exp, s2=ts.stage2_exp, s3=ts.stage3_exp;
+  const totals = s1.map((v,i)=>v+s2[i]+s3[i]);
+  const n = months.length;
+  const x = i => ml + (W-ml-mr)*i/(n-1);
+  const p2 = s2.map((v,i)=>v/(totals[i]||1)), p3 = s3.map((v,i)=>v/(totals[i]||1));
+  const p23 = p2.map((v,i)=>v+p3[i]);
+  const maxY = Math.max(...p23)*1.15 || 0.05;
+  const y = v => (H-mb) - (H-mt-mb)*(v/maxY);
+  let p=[];
+  [0,0.5,1].forEach(f => { const yy=y(maxY*f); p.push(`<line x1="${ml}" x2="${W-mr}" y1="${yy}" y2="${yy}" class="grid-line"/>`); p.push(`<text x="${ml-6}" y="${yy+3}" text-anchor="end" class="axis-label">${fmtPct(maxY*f,0)}</text>`); });
+  let top = `M ${x(0)},${y(p23[0])}`; for(let i=1;i<n;i++) top += ` L ${x(i)},${y(p23[i])}`;
+  let bottom = `L ${x(n-1)},${y(0)} L ${x(0)},${y(0)} Z`;
+  p.push(`<path d="${top} ${bottom}" fill="${COLORS.amberSoft}"/>`);
+  let path3 = `M ${x(0)},${y(p3[0])}`; for(let i=1;i<n;i++) path3 += ` L ${x(i)},${y(p3[i])}`;
+  p.push(`<path d="${path3} ${bottom}" fill="${COLORS.roseSoft}"/>`);
+  p.push(`<path d="${top}" fill="none" stroke="${COLORS.amber}" stroke-width="1.5"/>`);
+  p.push(`<path d="${path3}" fill="none" stroke="${COLORS.rose}" stroke-width="1.5"/>`);
+  [0, Math.floor(n/2), n-1].forEach(i => p.push(`<text x="${x(i)}" y="${H-mb+14}" text-anchor="middle" class="axis-label">${monthLabel(months[i])}</text>`));
+  months.forEach((mo,i) => p.push(`<rect x="${x(i)-6}" y="${mt}" width="12" height="${H-mt-mb}" fill="transparent"
+    onmousemove="showTip('<div class=\\'tt-label\\'>${monthLabel(mo)}</div>Stage 2 · ${fmtPct(p2[i])}<br>Stage 3 · ${fmtPct(p3[i])}', event)" onmouseleave="hideTip()"/>`));
+  svg.innerHTML = p.join("");
+}
+
+function renderTopProducts() {
+  const rows = DATA.latest[STATE.segment].by_product.slice(0,6);
+  const max = Math.max(...rows.map(r=>r.exposure));
+  document.getElementById("ovTopProducts").innerHTML = rows.map(r => `
+    <div style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:4px">
+        <span>${r.LOAN_PRODUCT}</span><span class="num" style="color:var(--text-dim)">${fmtGEL(r.exposure)}</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill teal" style="width:${(r.exposure/max*100).toFixed(1)}%"></div></div>
+    </div>`).join("");
+}
+
+function renderOverviewCallout() {
+  const c = DATA.callouts;
+  document.getElementById("ovCallout").innerHTML = `
+    <div style="font-size:12px;line-height:1.6;color:var(--text-dim)">
+      Largest exposure: <strong style="color:var(--text)">${c.biggest_deal.product}</strong> for <em>${c.biggest_deal.client}</em>
+      at <span class="num" style="color:var(--teal)">${fmtGELFull(c.biggest_deal.amount)}</span>.<br><br>
+      Riskiest sector: <strong style="color:var(--rose)">${c.riskiest_sector}</strong><br>
+      Largest sector: <strong style="color:var(--text)">${c.top_sector}</strong><br>
+      Top region: <strong style="color:var(--text)">${c.top_region}</strong>
+    </div>`;
+}
+
+// ============ COMPOSITION PAGE ============
+function populateCompFilters() {
+  const prodSel = document.getElementById("cSegFilterProduct");
+  const secSel = document.getElementById("cSegFilterSector");
+  prodSel.innerHTML = '<option value="">All products</option>' + DATA.latest.ALL.by_product.map(r=>`<option value="${r.LOAN_PRODUCT}">${r.LOAN_PRODUCT}</option>`).join("");
+  secSel.innerHTML = '<option value="">All sectors</option>' + DATA.latest.ALL.by_sector.map(r=>`<option value="${r.SECTOR}">${r.SECTOR}</option>`).join("");
+}
+function bucketTable(rows, keyCol, keyLabel, containerId, filterFn) {
+  const use = filterFn ? rows.filter(filterFn) : rows;
+  const totalExp = use.reduce((s,r)=>s+r.exposure,0) || 1;
+  const maxExp = Math.max(...use.map(r=>r.exposure), 1);
+  let html = `<div class="table-scroll"><table><thead><tr><th>${keyLabel}</th><th style="text-align:right">Loans</th><th style="text-align:right">Exposure</th><th>Share</th><th style="text-align:right">Stage-3</th><th style="text-align:right">Cover</th></tr></thead><tbody>`;
+  use.forEach(r => {
+    const share = r.exposure/totalExp, s3rate = r.stage3_exp/(r.exposure||1), cov = r.allowance/(r.exposure||1);
+    const s3color = s3rate>0.1 ? "var(--rose)" : (s3rate>0.05 ? "var(--amber)" : "var(--text-dim)");
+    html += `<tr><td>${r[keyCol]}</td><td class="num">${fmtInt(r.n)}</td><td class="num">${fmtGEL(r.exposure)}</td>
+      <td><div class="bar-cell"><span class="num" style="font-size:10.5px">${fmtPct(share,1)}</span><div class="bar-track"><div class="bar-fill teal" style="width:${(r.exposure/maxExp*100).toFixed(1)}%"></div></div></div></td>
+      <td class="num" style="color:${s3color}">${fmtPct(s3rate,1)}</td><td class="num">${fmtPct(cov,2)}</td></tr>`;
+  });
+  html += `</tbody></table></div>`;
+  document.getElementById(containerId).innerHTML = html;
+}
+function renderComposition() {
+  const seg = STATE.segment;
+  const L = DATA.latest[seg];
+  bucketTable(L.by_product, "LOAN_PRODUCT", "Product", "cProductTable", r => !STATE.compProduct || r.LOAN_PRODUCT===STATE.compProduct);
+  bucketTable(L.by_sector, "SECTOR", "Sector", "cSectorTable", r => !STATE.compSector || r.SECTOR===STATE.compSector);
+  document.getElementById("cProductBadge").textContent = seg==="ALL" ? "All segments" : seg;
+  document.getElementById("cSectorBadge").textContent = seg==="ALL" ? "All segments" : seg;
+  drawRegionChart(L.by_region);
+  drawCcyDonut(L.by_ccy);
+  drawCigHeatmap();
+}
+function drawRegionChart(rows0) {
+  const svg = document.getElementById("cRegionChart");
+  const rows = rows0.slice(0,10);
+  const W=480,H=320, ml=140,mr=20,mt=10,mb=15;
+  const maxExp = Math.max(...rows.map(r=>r.exposure),1);
+  const bh = (H-mt-mb)/rows.length - 5;
+  let p=[];
+  rows.forEach((r,i) => {
+    const y = mt + i*((H-mt-mb)/rows.length);
+    const w = (W-ml-mr)*(r.exposure/maxExp);
+    p.push(`<text x="${ml-8}" y="${y+bh/2+3}" text-anchor="end" class="axis-label">${r.REGION_BUSINESS.substring(0,20)}</text>`);
+    p.push(`<defs><linearGradient id="rbar${i}" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="${COLORS.teal}" stop-opacity="0.5"/><stop offset="100%" stop-color="${COLORS.teal}" stop-opacity="1"/></linearGradient></defs>`);
+    p.push(`<rect x="${ml}" y="${y}" width="${w}" height="${bh}" rx="3" fill="url(#rbar${i})"
+      onmousemove="showTip('<div class=\\'tt-label\\'>${r.REGION_BUSINESS}</div>Exposure ${fmtGELFull(r.exposure)}<br>Loans ${fmtInt(r.n)}', event)" onmouseleave="hideTip()"/>`);
+    p.push(`<text x="${ml+w+6}" y="${y+bh/2+3}" class="axis-label" style="font-size:9.5px">${fmtGEL(r.exposure)}</text>`);
+  });
+  svg.innerHTML = p.join("");
+}
+function drawCcyDonut(rows) {
+  const svg = document.getElementById("cCcyDonut");
+  const W=260,H=220, cx=W/2,cy=95,R=72,R2=42;
+  const colors = { GEL: COLORS.teal, USD: COLORS.amber, EUR: COLORS.violet };
+  const total = rows.reduce((s,r)=>s+r.exposure,0) || 1;
+  let a0=-Math.PI/2, p=[];
+  rows.forEach(row => {
+    const a1 = a0 + 2*Math.PI*(row.exposure/total);
+    const large = (a1-a0)>Math.PI?1:0;
+    const x1=cx+R*Math.cos(a0), y1=cy+R*Math.sin(a0), x2=cx+R*Math.cos(a1), y2=cy+R*Math.sin(a1);
+    const x3=cx+R2*Math.cos(a1), y3=cy+R2*Math.sin(a1), x4=cx+R2*Math.cos(a0), y4=cy+R2*Math.sin(a0);
+    p.push(`<path d="M ${x1},${y1} A ${R},${R} 0 ${large} 1 ${x2},${y2} L ${x3},${y3} A ${R2},${R2} 0 ${large} 0 ${x4},${y4} Z" fill="${colors[row.CCY]||'#555'}"
+      onmousemove="showTip('<div class=\\'tt-label\\'>${row.CCY}</div>${fmtGELFull(row.exposure)}<br>${fmtInt(row.n)} loans', event)" onmouseleave="hideTip()"/>`);
+    a0=a1;
+  });
+  p.push(`<text x="${cx}" y="${cy+4}" text-anchor="middle" class="num" style="font-size:13px;font-weight:600;fill:var(--text)">${fmtGEL(total)}</text>`);
+  svg.innerHTML = p.join("");
+  document.getElementById("cCcyLegend").innerHTML = rows.map(r => `<span><span class="sw" style="background:${colors[r.CCY]}"></span>${r.CCY} ${fmtPct(r.exposure/total,0)}</span>`).join("");
+}
+function drawCigHeatmap() {
+  const svg = document.getElementById("cCigHeatmap");
+  const grades0 = DATA.cig_recent.grades, months = DATA.cig_recent.months, counts0 = DATA.cig_recent.counts;
+  // filter out all-zero grade rows
+  const keepIdx = grades0.map((g,gi) => counts0.some(row=>row[gi]>0));
+  const grades = grades0.filter((g,i)=>keepIdx[i]);
+  const counts = counts0.map(row => row.filter((v,i)=>keepIdx[i]));
+  const W=420,H=320, ml=34,mr=10,mt=10,mb=26;
+  const cellW = (W-ml-mr)/months.length, cellH = (H-mt-mb)/grades.length;
+  const flat = counts.flat().filter(v=>v>0);
+  const max = Math.max(...flat), min = Math.min(...flat);
+  let p=[];
+  counts.forEach((row,mi) => row.forEach((v,gi) => {
+    const alpha = v>0 ? 0.12 + 0.85*(v-min)/((max-min)||1) : 0.03;
+    p.push(`<rect x="${ml+mi*cellW}" y="${mt+gi*cellH}" width="${cellW-1}" height="${cellH-1}" rx="2" fill="${COLORS.violet}" opacity="${alpha}"
+      onmousemove="showTip('<div class=\\'tt-label\\'>${grades[gi]} · ${monthLabel(months[mi])}</div>${fmtInt(v)} loans', event)" onmouseleave="hideTip()"/>`);
+  }));
+  grades.forEach((g,i) => p.push(`<text x="${ml-6}" y="${mt+i*cellH+cellH/2+3}" text-anchor="end" class="axis-label" style="font-weight:600">${g}</text>`));
+  months.forEach((mo,i) => p.push(`<text x="${ml+i*cellW+cellW/2}" y="${H-mb+14}" text-anchor="middle" class="axis-label">${monthLabel(mo)}</text>`));
+  svg.innerHTML = p.join("");
+}
+
+// ============ RISK PAGE ============
+function renderRisk() {
+  drawSectorBubble();
+  drawPdChart();
+  drawGauges();
+  drawCollTable();
+  drawLtvChart();
+}
+function drawSectorBubble() {
+  const svg = document.getElementById("rBubble");
+  const rows = DATA.sector_risk;
+  const W=700,H=380, ml=55,mr=20,mt=15,mb=70;
+  const maxExp = Math.max(...rows.map(r=>r.exposure));
+  const maxS3 = Math.max(...rows.map(r=>r.stage3_rate_by_exp))*1.15;
+  const x = i => ml + (W-ml-mr)*(i+0.5)/rows.length;
+  const y = v => (H-mb) - (H-mt-mb)*(v/maxS3);
+  const rad = e => 7+28*Math.sqrt(e/maxExp);
+  let p=[];
+  [0,0.05,0.1,0.15,0.2].forEach(v => { if(v<=maxS3) { p.push(`<line x1="${ml}" x2="${W-mr}" y1="${y(v)}" y2="${y(v)}" class="grid-line"/>`); p.push(`<text x="${ml-8}" y="${y(v)+3}" text-anchor="end" class="axis-label">${fmtPct(v,0)}</text>`); } });
+  rows.forEach((r,i) => {
+    const cx=x(i), cy=y(r.stage3_rate_by_exp), rr=rad(r.exposure);
+    p.push(`<circle cx="${cx}" cy="${cy}" r="${rr}" fill="${COLORS.roseSoft}" stroke="${COLORS.rose}" stroke-width="1.5"
+      onmousemove="showTip('<div class=\\'tt-label\\'>${r.SECTOR}</div>Exposure ${fmtGELFull(r.exposure)}<br>Stage-3 rate ${fmtPct(r.stage3_rate_by_exp)}<br>Avg PD ${fmtPct(r.avg_pd,2)}', event)" onmouseleave="hideTip()"/>`);
+    const short = r.SECTOR.length>16 ? r.SECTOR.substring(0,14)+"…" : r.SECTOR;
+    p.push(`<text x="${cx}" y="${H-mb+12}" text-anchor="end" class="axis-label" transform="rotate(-40,${cx},${H-mb+12})" style="font-size:9px">${short}</text>`);
+  });
+  svg.innerHTML = p.join("");
+}
+function drawPdChart() {
+  const svg = document.getElementById("rPdChart");
+  const rows = DATA.pd_by_riskgroup;
+  const W=460,H=380, ml=45,mr=40,mt=15,mb=45;
+  const maxPd = Math.max(...rows.map(r=>r.avg_pd))*1.15;
+  const maxS3 = Math.max(...rows.map(r=>r.stage3_rate))*1.15;
+  const barW = (W-ml-mr)/rows.length - 8;
+  let p=[];
+  rows.forEach((r,i) => {
+    const cx = ml + i*((W-ml-mr)/rows.length)+4;
+    const hPd = (H-mt-mb)*(r.avg_pd/maxPd), hS3 = (H-mt-mb)*(r.stage3_rate/maxS3);
+    p.push(`<rect x="${cx}" y="${H-mb-hPd}" width="${barW*0.45}" height="${hPd}" rx="2" fill="${COLORS.amber}"
+      onmousemove="showTip('<div class=\\'tt-label\\'>Risk group ${r.PD_RISK_GROUP}</div>Modelled PD ${fmtPct(r.avg_pd,2)}<br>Realized Stage-3 ${fmtPct(r.stage3_rate)}', event)" onmouseleave="hideTip()"/>`);
+    p.push(`<rect x="${cx+barW*0.5}" y="${H-mb-hS3}" width="${barW*0.45}" height="${hS3}" rx="2" fill="${COLORS.rose}"/>`);
+    p.push(`<text x="${cx+barW/2}" y="${H-mb+14}" text-anchor="middle" class="axis-label">${r.PD_RISK_GROUP}</text>`);
+  });
+  p.push(`<text x="${W/2}" y="${H-6}" text-anchor="middle" class="axis-label" style="font-weight:600">Internal risk group (1=best, 8=worst)</text>`);
+  svg.innerHTML = p.join("");
+}
+function drawGauges() {
+  const rows = DATA.collateral_by_segment;
+  const colors = { RB: COLORS.teal, SML: COLORS.violet, SMM: COLORS.amber, CB: COLORS.rose };
+  document.getElementById("rGauges").innerHTML = rows.map(r => {
+    const ratio = r.avg_coverage_ratio || 0;
+    const pct = Math.min(ratio/2, 1); // scale: 2x coverage = full ring
+    const R=38, C=2*Math.PI*R;
+    const dash = C*pct;
+    return `<div class="gauge-tile">
+      <svg width="90" height="90" viewBox="0 0 90 90">
+        <circle cx="45" cy="45" r="${R}" fill="none" stroke="var(--surface-3)" stroke-width="8"/>
+        <circle cx="45" cy="45" r="${R}" fill="none" stroke="${colors[r.LOAN_SEGMENT]}" stroke-width="8" stroke-linecap="round"
+          stroke-dasharray="${dash} ${C}" transform="rotate(-90 45 45)"/>
+        <text x="45" y="49" text-anchor="middle" font-family="JetBrains Mono" font-size="15" font-weight="600" fill="var(--text)">${ratio.toFixed(2)}×</text>
+      </svg>
+      <div class="gl">${r.LOAN_SEGMENT}</div>
+      <div class="gv">${fmtInt(r.n)} loans</div>
+    </div>`;
+  }).join("");
+}
+function drawCollTable() {
+  const rows = DATA.collateral_by_segment;
+  let html = `<table><thead><tr><th>Segment</th><th>Composition</th></tr></thead><tbody>`;
+  rows.forEach(r => {
+    const re=(r.real_estate_share||0)*100, au=(r.auto_share||0)*100, gu=(r.guarantee_share||0)*100;
+    html += `<tr><td>${r.LOAN_SEGMENT}</td><td>
+      <div style="display:flex;height:12px;border-radius:6px;overflow:hidden;background:var(--surface-3)">
+        <div style="width:${re}%;background:${COLORS.teal}"></div><div style="width:${au}%;background:${COLORS.amber}"></div><div style="width:${gu}%;background:${COLORS.violet}"></div>
+      </div>
+      <div style="font-size:9.5px;color:var(--text-faint);margin-top:4px;font-family:'JetBrains Mono',monospace">RE ${re.toFixed(0)}% · Auto ${au.toFixed(0)}% · Guar ${gu.toFixed(0)}%</div>
+    </td></tr>`;
+  });
+  html += `</tbody></table>`;
+  document.getElementById("rCollTable").innerHTML = html;
+}
+function drawLtvChart() {
+  const svg = document.getElementById("rLtvChart");
+  const ltv = DATA.ltv_distribution;
+  const bins = Object.keys(ltv), vals = Object.values(ltv);
+  const W=380,H=300, ml=40,mr=15,mt=15,mb=50;
+  const max = Math.max(...vals,1);
+  const barW = (W-ml-mr)/bins.length - 8;
+  let p=[];
+  bins.forEach((b,i) => {
+    const cx = ml+i*((W-ml-mr)/bins.length)+4;
+    const h = (H-mt-mb)*(vals[i]/max);
+    const risky = i>=4;
+    p.push(`<rect x="${cx}" y="${H-mb-h}" width="${barW}" height="${h}" rx="2" fill="${risky?COLORS.rose:COLORS.teal}"
+      onmousemove="showTip('<div class=\\'tt-label\\'>LTV ${b}</div>${fmtInt(vals[i])} mortgages', event)" onmouseleave="hideTip()"/>`);
+    p.push(`<text x="${cx+barW/2}" y="${H-mb+14}" text-anchor="middle" class="axis-label" transform="rotate(-35,${cx+barW/2},${H-mb+14})">${b}</text>`);
+    p.push(`<text x="${cx+barW/2}" y="${H-mb-h-4}" text-anchor="middle" class="axis-label">${vals[i]}</text>`);
+  });
+  svg.innerHTML = p.join("");
+}
+
+// ============ ORIGINATION PAGE ============
+function renderOrigination() {
+  drawFunnel(); drawRejectTable(); drawVintage(); drawCommitteeTable("oCommitteeTable");
+}
+function drawFunnel() {
+  const svg = document.getElementById("oFunnel");
+  const rows = DATA.funnel;
+  const W=700,H=320, ml=45,mr=45,mt=15,mb=35;
+  const max = Math.max(...rows.map(r=>r.total));
+  const barW = (W-ml-mr)/rows.length - 3;
+  let p=[];
+  rows.forEach((r,i) => {
+    const cx = ml+i*((W-ml-mr)/rows.length)+1.5;
+    const hTot=(H-mt-mb)*(r.total/max), hAc=(H-mt-mb)*(r.accepted/max);
+    p.push(`<rect x="${cx}" y="${H-mb-hTot}" width="${barW}" height="${hTot}" fill="var(--surface-3)"
+      onmousemove="showTip('<div class=\\'tt-label\\'>${monthLabel(r.app_month)}</div>Total ${fmtInt(r.total)}<br>Accepted ${fmtInt(r.accepted)}<br>Rate ${fmtPct(r.accepted/r.total)}', event)" onmouseleave="hideTip()"/>`);
+    p.push(`<rect x="${cx}" y="${H-mb-hAc}" width="${barW}" height="${hAc}" fill="${COLORS.teal}"/>`);
+  });
+  const yr = v => H-mb-(H-mt-mb)*v;
+  let pathAr = ""; rows.forEach((r,i) => { const cx=ml+i*((W-ml-mr)/rows.length)+barW/2; pathAr += (i===0?"M":"L")+` ${cx},${yr(r.accepted/r.total)}`; });
+  p.push(`<path d="${pathAr}" fill="none" stroke="${COLORS.amber}" stroke-width="2"/>`);
+  rows.forEach((r,i) => { if(i%4===0||i===rows.length-1) { const cx=ml+i*((W-ml-mr)/rows.length)+barW/2; p.push(`<text x="${cx}" y="${H-mb+14}" text-anchor="middle" class="axis-label">${monthLabel(r.app_month)}</text>`); } });
+  svg.innerHTML = p.join("");
+}
+function drawRejectTable() {
+  const rows = Object.entries(DATA.reject_reasons).sort((a,b)=>b[1]-a[1]);
+  const total = rows.reduce((s,[k,v])=>s+v,0), max = Math.max(...rows.map(r=>r[1]));
+  let html = `<table><thead><tr><th>Reason</th><th style="text-align:right">Count</th><th>Share</th></tr></thead><tbody>`;
+  rows.forEach(([reason,n]) => html += `<tr><td>${reason}</td><td class="num">${fmtInt(n)}</td>
+    <td><div class="bar-cell"><span class="num" style="font-size:10.5px">${fmtPct(n/total,1)}</span><div class="bar-track"><div class="bar-fill rose" style="width:${(n/max*100).toFixed(1)}%"></div></div></div></td></tr>`);
+  html += `</tbody></table>`;
+  document.getElementById("oRejectTable").innerHTML = html;
+}
+function drawVintage() {
+  const svg = document.getElementById("oVintage");
+  const rows = DATA.vintages;
+  const W=1200,H=320, ml=50,mr=15,mt=15,mb=45;
+  const barW = (W-ml-mr)/rows.length - 1;
+  const parts_ = [["still_open",COLORS.teal],["matured",COLORS.violet],["paid_off",COLORS.blue],["refinanced",COLORS.amber],["written_off",COLORS.rose]];
+  let p=[];
+  rows.forEach((r,i) => {
+    const cx = ml+i*((W-ml-mr)/rows.length);
+    let yc = H-mb;
+    parts_.forEach(([key,color]) => {
+      const h = (H-mt-mb)*(r[key]/Math.max(1,r.originated));
+      p.push(`<rect x="${cx}" y="${yc-h}" width="${barW}" height="${h}" fill="${color}"
+        onmousemove="showTip('<div class=\\'tt-label\\'>${r.orig_month}</div>Originated ${fmtInt(r.originated)}<br>Open ${fmtInt(r.still_open)}<br>Matured ${fmtInt(r.matured)}<br>Written off ${fmtInt(r.written_off)}', event)" onmouseleave="hideTip()"/>`);
+      yc -= h;
+    });
+  });
+  rows.forEach((r,i) => { if(i%6===0||i===rows.length-1) { const cx=ml+i*((W-ml-mr)/rows.length); p.push(`<text x="${cx+barW/2}" y="${H-mb+14}" text-anchor="middle" class="axis-label">${monthLabel(r.orig_month)}</text>`); } });
+  svg.innerHTML = p.join("");
+}
+function drawCommitteeTable(id) {
+  const rows = DATA.committee;
+  let html = `<table><thead><tr><th>Level</th><th style="text-align:right">Apps</th><th style="text-align:right">Rate</th></tr></thead><tbody>`;
+  rows.forEach(r => html += `<tr><td>Level ${r.COMMITTEE}</td><td class="num">${fmtInt(r.n)}</td><td class="num">${fmtPct(r.ac/r.n)}</td></tr>`);
+  html += `</tbody></table>`;
+  document.getElementById(id).innerHTML = html;
+}
+
+// ============ PAYMENTS PAGE (NEW) ============
+function renderPayments() {
+  const seg = STATE.segment;
+  const ps = DATA.payment_schedule[seg];
+  const c = DATA.callouts;
+  const totalSched = ps.scheduled.reduce((a,b)=>a+b,0);
+  const totalPaid = ps.paid.reduce((a,b)=>a+b,0);
+  const totalSchedInt = ps.scheduled_interest.reduce((a,b)=>a+b,0);
+  const totalPaidInt = ps.paid_interest.reduce((a,b)=>a+b,0);
+  const interestRate = totalSchedInt ? totalPaidInt/totalSchedInt : 0;
+  const overallRate = totalSched ? totalPaid/totalSched : 0;
+  const st = DATA.payment_status;
+  const stTotal = Object.values(st.counts).reduce((a,b)=>a+b,0);
+  const tiles = [
+    { l: "Interest collection rate", v: fmtPct(interestRate,0), u:"", c: `${fmtGEL(totalPaidInt)} of ${fmtGEL(totalSchedInt)} scheduled`, color: interestRate>0.8?COLORS.teal:(interestRate>0.6?COLORS.amber:COLORS.rose) },
+    { l: "Total scheduled", v: fmtGEL(totalSched), u:"GEL", c: `principal + interest, ${ps.months.length}mo`, color: COLORS.blue },
+    { l: "Total collected", v: fmtGEL(totalPaid), u:"GEL", c: `${fmtPct(overallRate,0)} of scheduled (incl. bullet principal)`, color: COLORS.teal },
+    { l: "Prepayment surplus", v: fmtGEL(c.total_prepay), u:"GEL", c: `${fmtPct((st.counts.overpaid||0)/stTotal)} of deal-months`, color: COLORS.violet },
+  ];
+  document.getElementById("pKpiRow").innerHTML = tiles.map(t => `
+    <div class="card kpi-card span-3">
+      <div class="kl">${t.l}</div>
+      <div class="kv num" style="color:${t.color}">${t.v}<span class="unit">${t.u}</span></div>
+      <div class="kchange flat">${t.c}</div>
+    </div>`).join("");
+
+  drawScheduleChart(ps);
+  drawStatusDonut();
+  drawBehaviorChart();
+  drawPvsPChart("pPrincipalChart", ps.scheduled_principal, ps.paid_principal, ps.months, "Principal");
+  drawPvsPChart("pInterestChart", ps.scheduled_interest, ps.paid_interest, ps.months, "Interest");
+  renderCollectionBySegment();
+}
+function renderCollectionBySegment() {
+  const rows = DATA.collection_by_segment;
+  const colors = { RB: COLORS.teal, SML: COLORS.violet, SMM: COLORS.amber, CB: COLORS.rose };
+  let html = `<table><thead><tr><th>Segment</th><th style="text-align:right">Interest collected</th><th style="text-align:right">Principal collected</th><th style="text-align:right">Overall</th></tr></thead><tbody>`;
+  rows.forEach(r => {
+    html += `<tr><td><span class="sw" style="background:${colors[r.segment]}"></span>${r.segment}</td>
+      <td class="num" style="color:${r.interest_collection_rate>0.8?'var(--teal)':'var(--amber)'}">${fmtPct(r.interest_collection_rate,0)}</td>
+      <td class="num" style="color:var(--text-dim)">${fmtPct(r.principal_collection_rate,0)}</td>
+      <td class="num">${fmtPct(r.collection_rate,0)}</td></tr>`;
+  });
+  html += `</tbody></table>
+  <div class="insight" style="margin-top:14px">
+    <div class="il">Why principal collection looks low</div>
+    <p><span class="num-hl warn">${fmtPct(DATA.callouts.balloon_principal_share,0)}</span> of scheduled principal in the corporate segments is bullet/balloon repayment due at maturity — structurally, banks expect these to be <strong>refinanced</strong> rather than cash-settled, which shows up as "shortfall" in a pure scheduled-vs-paid view. <strong style="color:var(--text)">Interest collection is the cleaner ongoing-health signal</strong>: retail runs at <span class="num-hl">${fmtPct(rowRate('RB'),0)}</span>, corporate segments cluster around <span class="num-hl">${fmtPct(rowRate('CB'),0)}</span>.</p>
+  </div>`;
+  document.getElementById("pCollBySegment").innerHTML = html;
+}
+function rowRate(seg) { const r = DATA.collection_by_segment.find(x=>x.segment===seg); return r ? r.interest_collection_rate : 0; }
+function drawScheduleChart(ps) {
+  const svg = document.getElementById("pScheduleChart");
+  const W=1200,H=340, ml=60,mr=20,mt=15,mb=35;
+  const months = ps.months, sch = ps.scheduled, paid = ps.paid;
+  const n = months.length;
+  const x = i => ml + (W-ml-mr)*i/(n-1);
+  const max = Math.max(...sch, ...paid)*1.1;
+  const y = v => (H-mb) - (H-mt-mb)*(v/max);
+  let p=[];
+  [0,0.25,0.5,0.75,1].forEach(f => { const yy=y(max*f); p.push(`<line x1="${ml}" x2="${W-mr}" y1="${yy}" y2="${yy}" class="grid-line"/>`); p.push(`<text x="${ml-8}" y="${yy+3}" text-anchor="end" class="axis-label">${fmtGEL(max*f)}</text>`); });
+  // gap fill between scheduled and paid: green where paid>sched, red where paid<sched
+  for (let i=0;i<n-1;i++) {
+    const x1=x(i), x2=x(i+1);
+    const s1=sch[i], s2=sch[i+1], pd1=paid[i], pd2=paid[i+1];
+    const color = (pd1+pd2)/2 >= (s1+s2)/2 ? COLORS.tealSoft : COLORS.roseSoft;
+    p.push(`<path d="M ${x1},${y(s1)} L ${x2},${y(s2)} L ${x2},${y(pd2)} L ${x1},${y(pd1)} Z" fill="${color}"/>`);
+  }
+  let pathS = `M ${x(0)},${y(sch[0])}`; for(let i=1;i<n;i++) pathS += ` L ${x(i)},${y(sch[i])}`;
+  let pathP = `M ${x(0)},${y(paid[0])}`; for(let i=1;i<n;i++) pathP += ` L ${x(i)},${y(paid[i])}`;
+  p.push(`<path d="${pathS}" fill="none" stroke="${COLORS.blue}" stroke-width="2" stroke-dasharray="5 3"/>`);
+  p.push(`<path d="${pathP}" fill="none" stroke="${COLORS.teal}" stroke-width="2.5"/>`);
+  const li = [0, Math.floor(n/4), Math.floor(n/2), Math.floor(3*n/4), n-1];
+  li.forEach(i => p.push(`<text x="${x(i)}" y="${H-10}" text-anchor="middle" class="axis-label">${monthLabel(months[i])}</text>`));
+  months.forEach((mo,i) => p.push(`<rect x="${x(i)-8}" y="0" width="16" height="${H-mb}" fill="transparent"
+    onmousemove="showTip('<div class=\\'tt-label\\'>${monthLabel(mo)}</div>Scheduled ${fmtGEL(sch[i])}<br>Paid ${fmtGEL(paid[i])}<br>Gap ${fmtGEL(paid[i]-sch[i])}', event)" onmouseleave="hideTip()"/>`));
+  p.push(`<rect x="${ml}" y="4" width="10" height="10" fill="${COLORS.blue}"/><text x="${ml+14}" y="13" class="axis-label">Scheduled</text>`);
+  p.push(`<rect x="${ml+100}" y="4" width="10" height="10" fill="${COLORS.teal}"/><text x="${ml+114}" y="13" class="axis-label">Paid</text>`);
+  p.push(`<rect x="${ml+180}" y="4" width="10" height="10" fill="${COLORS.tealSoft}"/><text x="${ml+194}" y="13" class="axis-label">Prepayment</text>`);
+  p.push(`<rect x="${ml+290}" y="4" width="10" height="10" fill="${COLORS.roseSoft}"/><text x="${ml+304}" y="13" class="axis-label">Shortfall</text>`);
+  svg.innerHTML = p.join("");
+}
+function drawStatusDonut() {
+  const svg = document.getElementById("pStatusDonut");
+  const st = DATA.payment_status.counts;
+  const rows = [
+    { k: "on_time", label: "On-time", color: COLORS.teal },
+    { k: "overpaid", label: "Overpaid", color: COLORS.violet },
+    { k: "underpaid", label: "Underpaid", color: COLORS.rose },
+    { k: "no_schedule", label: "No schedule due", color: "#3A4258" },
+  ];
+  const total = Object.values(st).reduce((a,b)=>a+b,0) || 1;
+  const W=260,H=220, cx=W/2,cy=95,R=72,R2=42;
+  let a0=-Math.PI/2, p=[];
+  rows.forEach(r => {
+    const v = st[r.k]||0;
+    const a1 = a0 + 2*Math.PI*(v/total);
+    const large = (a1-a0)>Math.PI?1:0;
+    const x1=cx+R*Math.cos(a0), y1=cy+R*Math.sin(a0), x2=cx+R*Math.cos(a1), y2=cy+R*Math.sin(a1);
+    const x3=cx+R2*Math.cos(a1), y3=cy+R2*Math.sin(a1), x4=cx+R2*Math.cos(a0), y4=cy+R2*Math.sin(a0);
+    p.push(`<path d="M ${x1},${y1} A ${R},${R} 0 ${large} 1 ${x2},${y2} L ${x3},${y3} A ${R2},${R2} 0 ${large} 0 ${x4},${y4} Z" fill="${r.color}"
+      onmousemove="showTip('<div class=\\'tt-label\\'>${r.label}</div>${fmtInt(v)} deal-months<br>${fmtPct(v/total)}', event)" onmouseleave="hideTip()"/>`);
+    a0=a1;
+  });
+  p.push(`<text x="${cx}" y="${cy+4}" text-anchor="middle" class="num" style="font-size:12px;font-weight:600;fill:var(--text)">${fmtInt(total)}</text>`);
+  svg.innerHTML = p.join("");
+  document.getElementById("pStatusLegend").innerHTML = rows.map(r => `<span><span class="sw" style="background:${r.color}"></span>${r.label} · ${fmtPct((st[r.k]||0)/total,0)}</span>`).join("");
+}
+function drawBehaviorChart() {
+  const svg = document.getElementById("pBehaviorChart");
+  const rows = DATA.payment_behavior_ts;
+  const W=800,H=280, ml=55,mr=20,mt=15,mb=35;
+  const n = rows.length;
+  const max = Math.max(...rows.map(r=>Math.max(r.prepay_amt, r.shortfall_amt)))*1.1 || 1;
+  const barW = (W-ml-mr)/n - 2;
+  const midY = mt + (H-mt-mb)/2;
+  let p=[];
+  p.push(`<line x1="${ml}" x2="${W-mr}" y1="${midY}" y2="${midY}" class="grid-line"/>`);
+  rows.forEach((r,i) => {
+    const cx = ml+i*((W-ml-mr)/n);
+    const hPre = (midY-mt)*(r.prepay_amt/max);
+    const hShort = (midY-mt)*(r.shortfall_amt/max);
+    p.push(`<rect x="${cx}" y="${midY-hPre}" width="${barW}" height="${hPre}" fill="${COLORS.violet}"
+      onmousemove="showTip('<div class=\\'tt-label\\'>${monthLabel(r.month)}</div>Prepayment ${fmtGEL(r.prepay_amt)}<br>${fmtInt(r.n_overpaid)} deal-months', event)" onmouseleave="hideTip()"/>`);
+    p.push(`<rect x="${cx}" y="${midY}" width="${barW}" height="${hShort}" fill="${COLORS.rose}"
+      onmousemove="showTip('<div class=\\'tt-label\\'>${monthLabel(r.month)}</div>Shortfall ${fmtGEL(r.shortfall_amt)}<br>${fmtInt(r.n_underpaid)} deal-months', event)" onmouseleave="hideTip()"/>`);
+  });
+  rows.forEach((r,i) => { if(i%4===0||i===n-1) { const cx=ml+i*((W-ml-mr)/n)+barW/2; p.push(`<text x="${cx}" y="${H-10}" text-anchor="middle" class="axis-label">${monthLabel(r.month)}</text>`); } });
+  p.push(`<text x="${ml-8}" y="${mt+8}" text-anchor="end" class="axis-label" fill="${COLORS.violet}">+${fmtGEL(max)}</text>`);
+  p.push(`<text x="${ml-8}" y="${H-mb}" text-anchor="end" class="axis-label" fill="${COLORS.rose}">-${fmtGEL(max)}</text>`);
+  svg.innerHTML = p.join("");
+}
+function drawPvsPChart(id, sched, paid, months, label) {
+  const svg = document.getElementById(id);
+  const W=560,H=260, ml=55,mr=15,mt=15,mb=32;
+  const n = months.length;
+  const x = i => ml + (W-ml-mr)*i/(n-1);
+  const max = Math.max(...sched,...paid)*1.1 || 1;
+  const y = v => (H-mb) - (H-mt-mb)*(v/max);
+  let p=[];
+  [0,0.5,1].forEach(f => { const yy=y(max*f); p.push(`<line x1="${ml}" x2="${W-mr}" y1="${yy}" y2="${yy}" class="grid-line"/>`); p.push(`<text x="${ml-8}" y="${yy+3}" text-anchor="end" class="axis-label">${fmtGEL(max*f)}</text>`); });
+  let pathS = `M ${x(0)},${y(sched[0])}`; for(let i=1;i<n;i++) pathS += ` L ${x(i)},${y(sched[i])}`;
+  let pathP = `M ${x(0)},${y(paid[0])}`; for(let i=1;i<n;i++) pathP += ` L ${x(i)},${y(paid[i])}`;
+  p.push(`<path d="${pathS}" fill="none" stroke="${COLORS.blue}" stroke-width="2" stroke-dasharray="4 3"/>`);
+  p.push(`<path d="${pathP}" fill="none" stroke="${COLORS.teal}" stroke-width="2.5"/>`);
+  [0,Math.floor(n/2),n-1].forEach(i => p.push(`<text x="${x(i)}" y="${H-10}" text-anchor="middle" class="axis-label">${monthLabel(months[i])}</text>`));
+  p.push(`<rect x="${ml}" y="4" width="10" height="10" fill="${COLORS.blue}"/><text x="${ml+14}" y="13" class="axis-label">Scheduled ${label.toLowerCase()}</text>`);
+  p.push(`<rect x="${ml+140}" y="4" width="10" height="10" fill="${COLORS.teal}"/><text x="${ml+154}" y="13" class="axis-label">Paid ${label.toLowerCase()}</text>`);
+  svg.innerHTML = p.join("");
+}
+
+// ============ COLLECTIONS PAGE ============
+function renderCollections() {
+  drawWriteoffChart(); drawRecoveryTable(); drawRecoveryTs(); drawWoSectorTable(); drawRestChart();
+}
+function drawWriteoffChart() {
+  const svg = document.getElementById("colWriteoff");
+  const rows = DATA.writeoff_ts[STATE.segment].slice(-24);
+  const W=700,H=300, ml=55,mr=20,mt=15,mb=32;
+  const max = Math.max(...rows.map(r=>r.gross),1)*1.1;
+  const barW = (W-ml-mr)/rows.length - 2;
+  let p=[];
+  rows.forEach((r,i) => {
+    const cx = ml+i*((W-ml-mr)/rows.length);
+    const hG = (H-mt-mb)*(r.gross/max), hN = (H-mt-mb)*(r.net/max);
+    p.push(`<rect x="${cx}" y="${H-mb-hG}" width="${barW}" height="${hG}" fill="${COLORS.roseSoft}"
+      onmousemove="showTip('<div class=\\'tt-label\\'>${monthLabel(r.wo_month)}</div>Gross ${fmtGEL(r.gross)}<br>Net ${fmtGEL(r.net)}', event)" onmouseleave="hideTip()"/>`);
+    p.push(`<rect x="${cx}" y="${H-mb-hN}" width="${barW}" height="${hN}" fill="${COLORS.rose}"/>`);
+  });
+  rows.forEach((r,i) => { if(i%4===0||i===rows.length-1) { const cx=ml+i*((W-ml-mr)/rows.length); p.push(`<text x="${cx+barW/2}" y="${H-mb+14}" text-anchor="middle" class="axis-label">${monthLabel(r.wo_month)}</text>`); } });
+  svg.innerHTML = p.join("");
+}
+function drawRecoveryTable() {
+  const rows = DATA.recovery_by_segment.filter(r=>r.gross_wo>0);
+  let html = `<table><thead><tr><th>Segment</th><th style="text-align:right">Gross WO</th><th style="text-align:right">Recovered</th><th style="text-align:right">Rate</th></tr></thead><tbody>`;
+  rows.forEach(r => { const color = r.recovery_rate>0.3?"var(--teal)":(r.recovery_rate>0.1?"var(--amber)":"var(--rose)"); html += `<tr><td>${r.LOAN_SEGMENT}</td><td class="num">${fmtGEL(r.gross_wo)}</td><td class="num">${fmtGEL(r.recovered)}</td><td class="num" style="color:${color}">${fmtPct(r.recovery_rate)}</td></tr>`; });
+  html += `</tbody></table>`;
+  document.getElementById("colRecoveryTable").innerHTML = html;
+}
+function drawRecoveryTs() {
+  const svg = document.getElementById("colRecoveryTs");
+  const rows = DATA.recovery_ts;
+  const W=460,H=140, ml=45,mr=10,mt=8,mb=20;
+  const n = rows.length;
+  const x = i => ml + (W-ml-mr)*i/(n-1);
+  const max = Math.max(...rows.map(r=>r.RECOVERY_AMOUNT_GEL),1)*1.1;
+  const y = v => (H-mb) - (H-mt-mb)*(v/max);
+  let path = `M ${x(0)},${y(rows[0].RECOVERY_AMOUNT_GEL)}`;
+  for (let i=1;i<n;i++) path += ` L ${x(i)},${y(rows[i].RECOVERY_AMOUNT_GEL)}`;
+  const area = path + ` L ${x(n-1)},${H-mb} L ${x(0)},${H-mb} Z`;
+  let p = [`<path d="${area}" fill="${COLORS.tealSoft}"/>`, `<path d="${path}" fill="none" stroke="${COLORS.teal}" stroke-width="2"/>`];
+  p.push(`<text x="${ml}" y="10" class="axis-label">Recoveries over time</text>`);
+  svg.innerHTML = p.join("");
+}
+function drawWoSectorTable() {
+  const rows = DATA.writeoff_by_sector;
+  const max = Math.max(...rows.map(r=>r.gross)), total = rows.reduce((s,r)=>s+r.gross,0);
+  let html = `<div class="table-scroll"><table><thead><tr><th>Sector</th><th style="text-align:right">Deals</th><th style="text-align:right">Gross</th><th>Share</th></tr></thead><tbody>`;
+  rows.forEach(r => html += `<tr><td>${r.SECTOR}</td><td class="num">${fmtInt(r.n)}</td><td class="num">${fmtGEL(r.gross)}</td>
+    <td><div class="bar-cell"><span class="num" style="font-size:10.5px">${fmtPct(r.gross/total,1)}</span><div class="bar-track"><div class="bar-fill rose" style="width:${(r.gross/max*100).toFixed(1)}%"></div></div></div></td></tr>`);
+  html += `</tbody></table></div>`;
+  document.getElementById("colSectorTable").innerHTML = html;
+}
+function drawRestChart() {
+  const svg = document.getElementById("colRest");
+  const rows = DATA.restructuring_ts;
+  const W=820,H=300, ml=50,mr=15,mt=15,mb=35;
+  const keys = ["LVL1","LVL2","LVL3"];
+  const colors = { LVL1: COLORS.tealSoft, LVL2: COLORS.amber, LVL3: COLORS.rose };
+  const max = Math.max(...rows.map(r=>keys.reduce((s,k)=>s+(r[k]||0),0)))*1.1;
+  const barW = (W-ml-mr)/rows.length - 1;
+  let p=[];
+  rows.forEach((r,i) => {
+    const cx = ml+i*((W-ml-mr)/rows.length);
+    let yc = H-mb;
+    keys.forEach(k => { const v=r[k]||0; const h=(H-mt-mb)*(v/max); p.push(`<rect x="${cx}" y="${yc-h}" width="${barW}" height="${h}" fill="${colors[k]}"
+      onmousemove="showTip('<div class=\\'tt-label\\'>${monthLabel(r.r_month)}</div>L1 ${r.LVL1||0} · L2 ${r.LVL2||0} · L3 ${r.LVL3||0}', event)" onmouseleave="hideTip()"/>`); yc -= h; });
+  });
+  rows.forEach((r,i) => { if(i%6===0||i===rows.length-1) { const cx=ml+i*((W-ml-mr)/rows.length); p.push(`<text x="${cx+barW/2}" y="${H-mb+14}" text-anchor="middle" class="axis-label">${monthLabel(r.r_month)}</text>`); } });
+  svg.innerHTML = p.join("");
+}
+
+// ============ BEHAVIOR PAGE ============
+function renderBehavior() {
+  const rows = DATA.gambler_summary;
+  const nonG = rows.find(r=>r.type==="Non-gambler");
+  const baseline = nonG ? nonG.watch_rate : 0;
+  document.getElementById("behGamblerCards").innerHTML = rows.map(r => {
+    const lift = baseline>0 ? r.watch_rate/baseline : null;
+    const worse = lift && lift>1.1, better = lift && lift<0.9;
+    const color = worse?"var(--rose)":(better?"var(--teal)":"var(--text)");
+    return `<div class="stat-tile span-3" style="grid-column:span 3${r.type==='Net loser'?';border-color:var(--rose)':''}">
+      <div class="tl">${r.type}</div>
+      <div class="tv" style="color:${color}">${fmtPct(r.watch_rate,1)}</div>
+      <div class="td">carry Watch-or-worse (Stage 2+)</div>
+      <div class="meta"><span>${fmtInt(r.n)} clients</span><span style="color:${color}">${lift?lift.toFixed(2)+'× baseline':'baseline'}</span></div>
+    </div>`;
+  }).join("");
+  const netLoser = rows.find(r=>r.type==="Net loser");
+  if (netLoser && nonG) {
+    const lift = netLoser.watch_rate/baseline;
+    document.getElementById("behInsight").innerHTML = `<div class="insight">
+      <div class="il">Signal</div>
+      <p>Retail clients with net-negative betting flows are <span class="num-hl warn">${lift.toFixed(1)}×</span> more likely to carry a Watch-or-worse loan than baseline retail clients with no observed betting activity — <span class="num-hl warn">${fmtPct(netLoser.watch_rate,1)}</span> vs <span class="num-hl">${fmtPct(baseline,1)}</span>. Default rates converge between groups, suggesting the effect surfaces as early migration rather than full non-performance.</p>
+    </div>`;
+  }
+  drawFxChart();
+  drawCommitteeTable("behCommittee");
+}
+function drawFxChart() {
+  const svg = document.getElementById("behFx");
+  const months = DATA.fx_timeseries.months, usd = DATA.fx_timeseries.USD, eur = DATA.fx_timeseries.EUR;
+  const W=700,H=260, ml=45,mr=15,mt=15,mb=32;
+  const all = [...usd,...eur];
+  const min = Math.min(...all)*0.98, max = Math.max(...all)*1.02;
+  const n = months.length;
+  const x = i => ml + (W-ml-mr)*i/(n-1);
+  const y = v => (H-mb) - (H-mt-mb)*(v-min)/(max-min);
+  let p=[];
+  let pathU="",pathE="";
+  usd.forEach((v,i) => pathU += (i===0?"M":"L")+` ${x(i)},${y(v)}`);
+  eur.forEach((v,i) => pathE += (i===0?"M":"L")+` ${x(i)},${y(v)}`);
+  p.push(`<path d="${pathU}" fill="none" stroke="${COLORS.amber}" stroke-width="2"/>`);
+  p.push(`<path d="${pathE}" fill="none" stroke="${COLORS.violet}" stroke-width="2"/>`);
+  [min,(min+max)/2,max].forEach(v => { p.push(`<line x1="${ml}" x2="${W-mr}" y1="${y(v)}" y2="${y(v)}" class="grid-line"/>`); p.push(`<text x="${ml-6}" y="${y(v)+3}" text-anchor="end" class="axis-label">${v.toFixed(2)}</text>`); });
+  [0,Math.floor(n/2),n-1].forEach(i => p.push(`<text x="${x(i)}" y="${H-mb+14}" text-anchor="middle" class="axis-label">${monthLabel(months[i])}</text>`));
+  p.push(`<rect x="${ml}" y="4" width="10" height="10" fill="${COLORS.amber}"/><text x="${ml+14}" y="13" class="axis-label">USD/GEL ${usd[usd.length-1].toFixed(2)}</text>`);
+  p.push(`<rect x="${ml+140}" y="4" width="10" height="10" fill="${COLORS.violet}"/><text x="${ml+154}" y="13" class="axis-label">EUR/GEL ${eur[eur.length-1].toFixed(2)}</text>`);
+  svg.innerHTML = p.join("");
+}
+
+// ============ LEAGUE PAGE ============
+let bankerSort = { col: "exposure", desc: true };
+function renderLeague() {
+  const rows = [...DATA.top_bankers].sort((a,b) => { const av=a[bankerSort.col],bv=b[bankerSort.col]; if(typeof av==="string") return bankerSort.desc?bv.localeCompare(av):av.localeCompare(bv); return bankerSort.desc?bv-av:av-bv; });
+  const max = Math.max(...rows.map(r=>r.exposure));
+  const arrow = c => bankerSort.col===c ? (bankerSort.desc?"↓":"↑") : "";
+  let html = `<div class="table-scroll"><table><thead><tr>
+    <th data-sort="BANKER" style="cursor:pointer">Banker ${arrow("BANKER")}</th>
+    <th data-sort="n" style="cursor:pointer;text-align:right">Loans ${arrow("n")}</th>
+    <th data-sort="exposure" style="cursor:pointer;text-align:right">Exposure ${arrow("exposure")}</th>
+    <th data-sort="stage3_rate" style="cursor:pointer;text-align:right">Stage-3 ${arrow("stage3_rate")}</th>
+    <th>Book share</th></tr></thead><tbody>`;
+  rows.forEach((r,i) => {
+    const color = r.stage3_rate>0.15?"var(--rose)":(r.stage3_rate>0.08?"var(--amber)":"var(--text-dim)");
+    html += `<tr><td>#${i+1} · ${r.BANKER}</td><td class="num">${fmtInt(r.n)}</td><td class="num">${fmtGEL(r.exposure)}</td>
+      <td class="num" style="color:${color}">${fmtPct(r.stage3_rate,1)}</td>
+      <td><div class="bar-track" style="min-width:100px"><div class="bar-fill teal" style="width:${(r.exposure/max*100).toFixed(0)}%"></div></div></td></tr>`;
+  });
+  html += `</tbody></table></div>`;
+  document.getElementById("lgTable").innerHTML = html;
+  document.querySelectorAll("#lgTable th[data-sort]").forEach(th => th.addEventListener("click", () => {
+    const col = th.dataset.sort;
+    if (bankerSort.col===col) bankerSort.desc = !bankerSort.desc; else { bankerSort.col=col; bankerSort.desc=true; }
+    renderLeague();
+  }));
+}
+
+// ============ PAGE ROUTER ============
+const RENDERERS = { overview: renderOverview, composition: renderComposition, risk: renderRisk, origination: renderOrigination, payments: renderPayments, collections: renderCollections, behavior: renderBehavior, league: renderLeague };
+function renderPage(page) {
+  RENDERERS[page]();
+}
+function switchPage(page) {
+  STATE.page = page;
+  document.querySelectorAll(".nav-item").forEach(n => n.classList.toggle("active", n.dataset.page===page));
+  document.querySelectorAll(".page").forEach(s => s.classList.toggle("active", s.id === "page-"+page));
+  document.getElementById("pageTitle").textContent = PAGE_META[page][0];
+  document.getElementById("pageSub").textContent = PAGE_META[page][1];
+  renderPage(page);
+  document.getElementById("sidebar").classList.remove("open");
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+// ============ WIRE UP ============
+document.querySelectorAll(".nav-item").forEach(n => n.addEventListener("click", () => switchPage(n.dataset.page)));
+document.querySelectorAll(".seg-pill").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll(".seg-pill").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");
+  STATE.segment = b.dataset.seg;
+  updateTicker();
+  renderPage(STATE.page);
+}));
+document.getElementById("menuToggle").addEventListener("click", () => document.getElementById("sidebar").classList.toggle("open"));
+document.getElementById("cApply").addEventListener("click", () => {
+  STATE.compProduct = document.getElementById("cSegFilterProduct").value;
+  STATE.compSector = document.getElementById("cSegFilterSector").value;
+  renderComposition();
+});
+document.getElementById("cReset").addEventListener("click", () => {
+  document.getElementById("cSegFilterProduct").value = "";
+  document.getElementById("cSegFilterSector").value = "";
+  STATE.compProduct = ""; STATE.compSector = "";
+  renderComposition();
+});
+
+// ============ INIT ============
+populateCompFilters();
+updateTicker();
+renderPage("overview");
+
+</script>
+</body>
+</html>
