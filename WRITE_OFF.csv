@@ -1,0 +1,418 @@
+HIST_DATE,DEAL_NO,WRITE_OFF_DATE,OVERDUE_DATE,CLIENT_NO,CLIENT_SHORT,CLIENT_GROUP,LOAN_SEGMENT,LOAN_PRODUCT,SECTOR,REGION_BUSINESS,BANKER,RISK_MANAGER,REGIONAL_MANAGER,WRITE_OFF_AMOUNT_GEL,ALLOWANCE_AT_WRITE_OFF_GEL,NET_WRITE_OFF_GEL,WRITE_OFF_REASON
+2022-01-31,500106,2022-01-19,2020-01-20,903296,Black Sea Shipping #3296,,SML,Corporate Term Loan,Real Estate & Construction,Kakheti,Banker-152,RiskMgr-06,RM-KAK-04,2230.42,1561.29,669.13,730+ DPD
+2022-01-31,500280,2022-01-19,2020-01-20,902360,Kartli Agro LLC #2360,,SMM,Agro,Agriculture & Agro-processing,Racha-Lechkhumi,Banker-022,RiskMgr-11,RM-RAC-07,33966.78,13863.27,20103.51,730+ DPD
+2022-02-28,500252,2022-02-19,2020-02-20,901901,Beka Sharashenidze,,RB,Consumer,Retail/Household (Consumer),Tbilisi,Banker-090,RiskMgr-02,RM-TBI-01,1700.63,832.77,867.86,730+ DPD
+2022-02-28,500436,2022-02-14,2020-02-15,908162,Svaneti Tourism Ltd #8162,,SMM,Developer,Real Estate & Construction,Mtskheta-Mtianeti,Banker-057,RiskMgr-05,RM-MTS-10,27810.81,14676.96,13133.85,730+ DPD
+2022-03-31,500730,2022-03-26,2020-03-26,908413,Zugdidi Retail Group #8413,,SMM,Agro,Agriculture & Agro-processing,Kvemo Kartli,Banker-026,RiskMgr-08,RM-KVE-09,17816.98,7601.04,10215.94,730+ DPD
+2022-04-30,500331,2022-04-21,2020-04-21,905263,Batumi Trade Group #5263,,CB,Developer,Real Estate & Construction,Kakheti,Banker-005,RiskMgr-04,RM-KAK-04,188874.0,111856.65,77017.35,730+ DPD
+2022-04-30,500559,2022-04-21,2020-04-21,904726,Luka Chikvaidze,,RB,Mortgage,Real Estate & Construction,Tbilisi,Banker-171,RiskMgr-09,RM-TBI-01,388.91,201.54,187.37,730+ DPD
+2022-04-30,500718,2022-04-01,2020-04-01,903866,GeoTech Solutions #3866,,SML,Developer,Real Estate & Construction,Shida Kartli,Banker-084,RiskMgr-12,RM-SHI-08,2842.63,1430.33,1412.3,730+ DPD
+2022-04-30,501057,2022-04-21,2020-04-21,902950,Mtkvari Energy Partners #2950,,SML,Corporate Term Loan,Real Estate & Construction,Adjara,Banker-125,RiskMgr-12,RM-ADJ-02,3850.76,1897.97,1952.79,730+ DPD
+2022-04-30,501096,2022-04-26,2020-04-26,906307,Tbilisi Med Center #6307,,SMM,Corporate Term Loan,Financial & Professional Services,Abkhazia (Nominal),Banker-006,RiskMgr-03,RM-ABK-12,13338.61,5584.07,7754.54,730+ DPD
+2022-06-30,500536,2022-06-16,2020-06-16,903859,Sofio Chikvaidze,,RB,Auto Loan,Transportation & Logistics,Shida Kartli,Banker-181,RiskMgr-05,RM-SHI-08,544.49,330.9,213.59,730+ DPD
+2022-06-30,500891,2022-06-16,2020-06-16,900803,Tbilisi Developers JSC #803,GROUP-082,SML,Agro,Agriculture & Agro-processing,Kvemo Kartli,Banker-025,RiskMgr-09,RM-KVE-09,2895.21,1493.38,1401.83,730+ DPD
+2022-06-30,500934,2022-06-26,2020-06-26,907554,Georgian Logistics Co #7554,GROUP-843,SMM,Corporate Term Loan,Manufacturing & Industry,Tbilisi,Banker-177,RiskMgr-07,RM-TBI-01,38996.4,21814.48,17181.92,730+ DPD
+2022-06-30,501263,2022-06-26,2020-06-26,907639,Batumi Trade Group #7639,GROUP-851,SMM,Developer,Real Estate & Construction,Shida Kartli,Banker-168,RiskMgr-07,RM-SHI-08,15445.42,7437.29,8008.13,730+ DPD
+2022-07-31,501268,2022-07-22,2020-07-22,906957,Rustavi Steel Works #6957,,SML,Developer,Real Estate & Construction,Imereti,Banker-095,RiskMgr-03,RM-IME-03,2355.32,1502.45,852.87,730+ DPD
+2022-07-31,501543,2022-07-22,2020-07-22,900749,Mtkvari Energy Partners #749,,SML,Corporate Term Loan,Real Estate & Construction,Adjara,Banker-169,RiskMgr-07,RM-ADJ-02,3883.4,1799.29,2084.11,730+ DPD
+2022-07-31,501706,2022-07-27,2020-07-27,904551,Rioni Construction #4551,,CB,Developer,Real Estate & Construction,Tbilisi,Banker-124,RiskMgr-06,RM-TBI-01,129983.43,75603.04,54380.39,730+ DPD
+2022-07-31,501905,2022-07-02,2020-07-02,901858,Tbilisi Med Center #1858,GROUP-209,CB,Developer,Real Estate & Construction,Samegrelo-Zemo Svaneti,Banker-039,RiskMgr-10,RM-SAM-05,165394.77,80978.35,84416.42,730+ DPD
+2022-07-31,502123,2022-07-22,2020-07-22,906221,Nika Dzidziguri,,RB,Digital,IT & Digital Services,Adjara,Banker-158,RiskMgr-05,RM-ADJ-02,1021.77,470.03,551.74,730+ DPD
+2022-08-31,501621,2022-08-01,2020-08-01,906517,Kartli Agro LLC #6517,,CB,Developer,Real Estate & Construction,Tbilisi,Banker-159,RiskMgr-12,RM-TBI-01,168063.79,116642.74,51421.05,730+ DPD
+2022-08-31,501825,2022-08-01,2020-08-01,907954,Kutaisi Auto Parts #7954,,SML,Developer,Real Estate & Construction,Tbilisi,Banker-085,RiskMgr-07,RM-TBI-01,4075.51,2811.62,1263.89,730+ DPD
+2022-08-31,501942,2022-08-01,2020-08-01,907685,Tbilisi Developers JSC #7685,,SML,Developer,Financial & Professional Services,Samegrelo-Zemo Svaneti,Banker-036,RiskMgr-08,RM-SAM-05,3037.69,1548.86,1488.83,730+ DPD
+2022-08-31,502327,2022-08-16,2020-08-16,903162,Imereti Textiles #3162,,SML,Agro,Agriculture & Agro-processing,Tbilisi,Banker-169,RiskMgr-10,RM-TBI-01,2120.95,1120.45,1000.5,730+ DPD
+2022-09-30,500972,2022-09-16,2020-09-16,907779,Alazani Valley Farms #7779,GROUP-864,SMM,Corporate Term Loan,Transportation & Logistics,Tbilisi,Banker-087,RiskMgr-04,RM-TBI-01,24421.53,11321.73,13099.8,730+ DPD
+2022-09-30,501166,2022-09-26,2020-09-26,901535,Ana Kiladze,,RB,Digital,IT & Digital Services,Shida Kartli,Banker-013,RiskMgr-03,RM-SHI-08,1362.69,684.22,678.47,730+ DPD
+2022-09-30,501395,2022-09-26,2020-09-26,900785,Alazani Valley Farms #785,,SMM,Agro,Manufacturing & Industry,Guria,Banker-172,RiskMgr-03,RM-GUR-06,10137.84,5294.28,4843.56,730+ DPD
+2022-09-30,502689,2022-09-26,2020-09-26,900865,Rustavi Steel Works #865,,SML,Corporate Term Loan,Manufacturing & Industry,Samtskhe-Javakheti,Banker-057,RiskMgr-04,RM-SAM-11,3302.57,1353.69,1948.88,730+ DPD
+2022-09-30,502800,2022-09-01,2020-09-01,905000,Tbilisi Med Center #5000,,SMM,Agro,Agriculture & Agro-processing,Kvemo Kartli,Banker-059,RiskMgr-09,RM-KVE-09,27473.41,16146.38,11327.03,730+ DPD
+2022-10-31,500281,2022-10-21,2020-10-21,900849,Ketevan Sharashenidze,,RB,Consumer,Education,Kakheti,Banker-048,RiskMgr-08,RM-KAK-04,1474.65,672.39,802.26,730+ DPD
+2022-10-31,500557,2022-10-01,2020-10-01,905198,Caucasus Pharma #5198,,CB,Corporate Term Loan,Transportation & Logistics,Shida Kartli,Banker-171,RiskMgr-05,RM-SHI-08,132049.13,59166.18,72882.95,730+ DPD
+2022-10-31,500813,2022-10-16,2020-10-16,905796,Ketevan Kiladze,,RB,Consumer,Retail/Household (Consumer),Imereti,Banker-133,RiskMgr-06,RM-IME-03,1077.7,734.32,343.38,730+ DPD
+2022-10-31,502180,2022-10-01,2020-10-01,902607,Caucasus Pharma #2607,,SMM,Agro,Agriculture & Agro-processing,Samegrelo-Zemo Svaneti,Banker-028,RiskMgr-07,RM-SAM-05,20944.42,13968.11,6976.31,730+ DPD
+2022-11-30,501093,2022-11-21,2020-11-21,908450,Ana Mamaladze,,RB,Mortgage,Real Estate & Construction,Abkhazia (Nominal),Banker-005,RiskMgr-02,RM-ABK-12,937.91,522.8,415.11,730+ DPD
+2022-11-30,501858,2022-11-26,2020-11-26,902842,Tbilisi Med Center #2842,,CB,Developer,Real Estate & Construction,Mtskheta-Mtianeti,Banker-010,RiskMgr-06,RM-MTS-10,98311.97,41185.7,57126.27,730+ DPD
+2022-11-30,502734,2022-11-16,2020-11-16,903235,Gori Foodstuffs #3235,GROUP-364,SMM,Developer,Real Estate & Construction,Abkhazia (Nominal),Banker-014,RiskMgr-10,RM-ABK-12,30356.09,17666.32,12689.77,730+ DPD
+2022-11-30,503123,2022-11-01,2020-11-01,903851,Vardzia Hospitality #3851,,SML,Agro,Agriculture & Agro-processing,Samegrelo-Zemo Svaneti,Banker-133,RiskMgr-03,RM-SAM-05,3527.64,2154.56,1373.08,730+ DPD
+2023-01-31,500663,2023-01-24,2021-01-24,908161,Georgian Logistics Co #8161,,SML,Corporate Term Loan,Energy & Utilities,Imereti,Banker-089,RiskMgr-07,RM-IME-03,2211.27,924.71,1286.56,730+ DPD
+2023-01-31,500695,2023-01-19,2021-01-19,903158,Ketevan Kapanadze,,RB,Auto Loan,Retail/Household (Consumer),Samegrelo-Zemo Svaneti,Banker-158,RiskMgr-05,RM-SAM-05,369.54,163.38,206.16,730+ DPD
+2023-01-31,501371,2023-01-24,2021-01-24,901076,Zurab Dzidziguri,,RB,Auto Loan,Transportation & Logistics,Kvemo Kartli,Banker-098,RiskMgr-07,RM-KVE-09,103.81,43.46,60.35,730+ DPD
+2023-01-31,501848,2023-01-14,2021-01-14,903079,Kakheti Wine Cellars #3079,,SMM,Developer,Real Estate & Construction,Tbilisi,Banker-013,RiskMgr-02,RM-TBI-01,19298.38,9651.19,9647.19,730+ DPD
+2023-01-31,503358,2023-01-24,2021-01-24,905138,Kutaisi Auto Parts #5138,,SML,Corporate Term Loan,Real Estate & Construction,Kakheti,Banker-103,RiskMgr-09,RM-KAK-04,2300.53,1041.37,1259.16,730+ DPD
+2023-01-31,504183,2023-01-30,2021-01-30,902443,Levan Kapanadze,,RB,Mortgage,Retail/Household (Consumer),Tbilisi,Banker-171,RiskMgr-01,RM-TBI-01,1738.44,953.6,784.84,730+ DPD
+2023-01-31,504289,2023-01-30,2021-01-30,903032,Svaneti Tourism Ltd #3032,,SML,Trade Finance,Trade & Distribution,Samtskhe-Javakheti,Banker-098,RiskMgr-06,RM-SAM-11,3150.47,1377.03,1773.44,730+ DPD
+2023-02-28,501532,2023-02-14,2021-02-14,907693,Elene Lomidze,,RB,Consumer,Retail/Household (Consumer),Guria,Banker-090,RiskMgr-05,RM-GUR-06,451.6,250.2,201.4,730+ DPD
+2023-02-28,501786,2023-02-19,2021-02-19,900449,Rustavi Steel Works #449,,SML,Developer,Real Estate & Construction,Samegrelo-Zemo Svaneti,Banker-025,RiskMgr-01,RM-SAM-05,4612.26,2124.65,2487.61,730+ DPD
+2023-02-28,501817,2023-02-24,2021-02-24,900390,Rioni Construction #390,GROUP-037,CB,Developer,Real Estate & Construction,Tbilisi,Banker-019,RiskMgr-05,RM-TBI-01,131875.85,58919.3,72956.55,730+ DPD
+2023-02-28,502442,2023-02-24,2021-02-24,904925,Alazani Valley Farms #4925,,SMM,Developer,Real Estate & Construction,Adjara,Banker-178,RiskMgr-07,RM-ADJ-02,35271.23,19858.44,15412.79,730+ DPD
+2023-02-28,503121,2023-02-14,2021-02-14,903135,Gori Foodstuffs #3135,,SML,Corporate Term Loan,Real Estate & Construction,Shida Kartli,Banker-172,RiskMgr-09,RM-SHI-08,3462.71,2141.3,1321.41,730+ DPD
+2023-03-31,500211,2023-03-01,2021-03-01,906644,Beka Kiladze,,RB,Consumer,Retail/Household (Consumer),Adjara,Banker-062,RiskMgr-04,RM-ADJ-02,897.74,623.76,273.98,730+ DPD
+2023-03-31,500974,2023-03-16,2021-03-16,908875,Zugdidi Retail Group #8875,,SML,Developer,Real Estate & Construction,Tbilisi,Banker-020,RiskMgr-04,RM-TBI-01,3795.42,1788.1,2007.32,730+ DPD
+2023-03-31,501465,2023-03-21,2021-03-21,908319,Tamar Mamaladze,,RB,Auto Loan,Retail/Household (Consumer),Tbilisi,Banker-112,RiskMgr-08,RM-TBI-01,1004.82,423.43,581.39,730+ DPD
+2023-03-31,504011,2023-03-21,2021-03-21,901883,Kutaisi Auto Parts #1883,,SMM,Developer,Financial & Professional Services,Kakheti,Banker-051,RiskMgr-06,RM-KAK-04,37988.63,22082.87,15905.76,730+ DPD
+2023-03-31,504172,2023-03-26,2021-03-26,908819,Black Sea Shipping #8819,,CB,Developer,Real Estate & Construction,Tbilisi,Banker-022,RiskMgr-05,RM-TBI-01,134200.18,85191.08,49009.1,730+ DPD
+2023-04-30,501645,2023-04-01,2021-04-01,907661,Rioni Construction #7661,GROUP-853,CB,Corporate Term Loan,Manufacturing & Industry,Tbilisi,Banker-145,RiskMgr-12,RM-TBI-01,164981.86,95928.15,69053.71,730+ DPD
+2023-04-30,502034,2023-04-16,2021-04-16,900723,Svaneti Tourism Ltd #723,,SML,Developer,Real Estate & Construction,Samegrelo-Zemo Svaneti,Banker-044,RiskMgr-03,RM-SAM-05,3583.59,2034.54,1549.05,730+ DPD
+2023-04-30,502274,2023-04-16,2021-04-16,900997,Caucasus Pharma #997,,CB,Developer,Real Estate & Construction,Tbilisi,Banker-144,RiskMgr-04,RM-TBI-01,120901.85,65571.01,55330.84,730+ DPD
+2023-04-30,502577,2023-04-21,2021-04-21,902366,Zugdidi Retail Group #2366,,SMM,Developer,Real Estate & Construction,Imereti,Banker-001,RiskMgr-11,RM-IME-03,17424.79,7448.63,9976.16,730+ DPD
+2023-04-30,503020,2023-04-21,2021-04-21,901549,Zugdidi Retail Group #1549,,SML,Developer,Real Estate & Construction,Tbilisi,Banker-008,RiskMgr-02,RM-TBI-01,4388.02,2032.64,2355.38,730+ DPD
+2023-04-30,503715,2023-04-01,2021-04-01,903901,Caucasus Pharma #3901,,SML,Corporate Term Loan,Financial & Professional Services,Abkhazia (Nominal),Banker-180,RiskMgr-09,RM-ABK-12,3176.25,1564.06,1612.19,730+ DPD
+2023-04-30,503836,2023-04-01,2021-04-01,904613,Kakheti Wine Cellars #4613,GROUP-498,SML,Corporate Term Loan,Real Estate & Construction,Kvemo Kartli,Banker-065,RiskMgr-09,RM-KVE-09,2840.58,1212.25,1628.33,730+ DPD
+2023-04-30,504678,2023-04-21,2021-04-21,904072,Georgian Logistics Co #4072,GROUP-446,SML,Auto Loan,Transportation & Logistics,Tbilisi,Banker-083,RiskMgr-01,RM-TBI-01,1563.09,678.7,884.39,730+ DPD
+2023-04-30,504745,2023-04-26,2021-04-26,906884,GeoTech Solutions #6884,,SMM,Developer,Real Estate & Construction,Tbilisi,Banker-090,RiskMgr-10,RM-TBI-01,9263.41,4315.82,4947.59,730+ DPD
+2023-05-31,500739,2023-05-21,2021-05-21,902032,Zurab Kiladze,,RB,Auto Loan,Transportation & Logistics,Tbilisi,Banker-067,RiskMgr-01,RM-TBI-01,893.66,385.92,507.74,730+ DPD
+2023-05-31,501141,2023-05-26,2021-05-26,904944,Davit Tsereteli,,RB,Digital,IT & Digital Services,Tbilisi,Banker-081,RiskMgr-03,RM-TBI-01,1691.01,697.03,993.98,730+ DPD
+2023-05-31,501583,2023-05-16,2021-05-16,906201,Kakheti Wine Cellars #6201,,SML,Developer,Real Estate & Construction,Imereti,Banker-114,RiskMgr-05,RM-IME-03,3251.14,1658.04,1593.1,730+ DPD
+2023-05-31,502551,2023-05-26,2021-05-26,900049,Salome Gelashvili,,RB,Auto Loan,Retail/Household (Consumer),Kakheti,Banker-032,RiskMgr-01,RM-KAK-04,711.86,292.3,419.56,730+ DPD
+2023-05-31,502591,2023-05-16,2021-05-16,904454,Caucasus Pharma #4454,,SML,Developer,Real Estate & Construction,Samegrelo-Zemo Svaneti,Banker-108,RiskMgr-03,RM-SAM-05,2597.33,1084.11,1513.22,730+ DPD
+2023-05-31,503093,2023-05-26,2021-05-26,901662,Imereti Textiles #1662,,SMM,Developer,Financial & Professional Services,Tbilisi,Banker-023,RiskMgr-04,RM-TBI-01,12866.72,6340.9,6525.82,730+ DPD
+2023-05-31,503827,2023-05-01,2021-05-01,900212,Elene Sharashenidze,,RB,Auto Loan,Transportation & Logistics,Adjara,Banker-174,RiskMgr-12,RM-ADJ-02,121.44,70.7,50.74,730+ DPD
+2023-05-31,504084,2023-05-21,2021-05-21,905007,Giorgi Tsereteli,,RB,Auto Loan,Retail/Household (Consumer),Adjara,Banker-100,RiskMgr-03,RM-ADJ-02,549.1,309.85,239.25,730+ DPD
+2023-05-31,504790,2023-05-01,2021-05-01,906273,GeoTech Solutions #6273,,SMM,Developer,Real Estate & Construction,Guria,Banker-047,RiskMgr-12,RM-GUR-06,30815.03,14563.37,16251.66,730+ DPD
+2023-06-30,503540,2023-06-01,2021-06-01,904030,Vardzia Hospitality #4030,,SML,Agro,Agriculture & Agro-processing,Samegrelo-Zemo Svaneti,Banker-128,RiskMgr-07,RM-SAM-05,2992.8,1527.36,1465.44,730+ DPD
+2023-06-30,504870,2023-06-01,2021-06-01,906540,Rustavi Steel Works #6540,,SML,Developer,Real Estate & Construction,Imereti,Banker-113,RiskMgr-03,RM-IME-03,3088.57,1678.63,1409.94,730+ DPD
+2023-06-30,505046,2023-06-26,2021-06-26,903955,Black Sea Shipping #3955,GROUP-434,SML,Developer,Real Estate & Construction,Kvemo Kartli,Banker-150,RiskMgr-03,RM-KVE-09,2481.18,1402.92,1078.26,730+ DPD
+2023-07-31,503212,2023-07-22,2021-07-22,901717,Georgian Logistics Co #1717,GROUP-188,SML,Developer,Real Estate & Construction,Tbilisi,Banker-040,RiskMgr-11,RM-TBI-01,1492.68,668.73,823.95,730+ DPD
+2023-07-31,503671,2023-07-02,2021-07-02,908739,Beka Gelashvili,,RB,Consumer,Retail/Household (Consumer),Tbilisi,Banker-091,RiskMgr-04,RM-TBI-01,1118.26,776.39,341.87,730+ DPD
+2023-07-31,504265,2023-07-17,2021-07-17,907761,Luka Lomidze,,RB,Mortgage,Retail/Household (Consumer),Samegrelo-Zemo Svaneti,Banker-095,RiskMgr-05,RM-SAM-05,396.36,160.96,235.4,730+ DPD
+2023-07-31,504300,2023-07-27,2021-07-27,905609,Ana Gelashvili,,RB,Consumer,Retail/Household (Consumer),Samegrelo-Zemo Svaneti,Banker-177,RiskMgr-04,RM-SAM-05,1147.15,693.58,453.57,730+ DPD
+2023-07-31,504445,2023-07-22,2021-07-22,907292,Tbilisi Med Center #7292,GROUP-816,SML,Corporate Term Loan,Transportation & Logistics,Samegrelo-Zemo Svaneti,Banker-176,RiskMgr-06,RM-SAM-05,2651.08,1774.77,876.31,730+ DPD
+2023-07-31,505722,2023-07-27,2021-07-27,902012,Caucasus Pharma #2012,,SMM,Developer,Real Estate & Construction,Samegrelo-Zemo Svaneti,Banker-114,RiskMgr-11,RM-SAM-05,22924.24,9827.49,13096.75,730+ DPD
+2023-07-31,505841,2023-07-17,2021-07-17,906713,Caucasus Pharma #6713,,CB,Corporate Term Loan,Manufacturing & Industry,Guria,Banker-161,RiskMgr-05,RM-GUR-06,125667.04,71839.93,53827.11,730+ DPD
+2023-07-31,505861,2023-07-17,2021-07-17,900636,Luka Gogoladze,,RB,Mortgage,Real Estate & Construction,Kvemo Kartli,Banker-036,RiskMgr-01,RM-KVE-09,1257.04,843.34,413.7,730+ DPD
+2023-08-31,502749,2023-08-26,2021-08-26,900164,Kutaisi Auto Parts #164,,SML,Corporate Term Loan,Real Estate & Construction,Tbilisi,Banker-103,RiskMgr-12,RM-TBI-01,2272.07,1140.57,1131.5,730+ DPD
+2023-08-31,503066,2023-08-21,2021-08-21,903971,Black Sea Shipping #3971,,SML,Developer,Real Estate & Construction,Guria,Banker-005,RiskMgr-01,RM-GUR-06,2715.87,1268.57,1447.3,730+ DPD
+2023-08-31,503489,2023-08-26,2021-08-26,905760,Vardzia Hospitality #5760,GROUP-660,SMM,Developer,Real Estate & Construction,Guria,Banker-143,RiskMgr-05,RM-GUR-06,8812.07,4501.23,4310.84,730+ DPD
+2023-08-31,504725,2023-08-21,2021-08-21,900609,Kakheti Wine Cellars #609,,SML,Consumer,Retail/Household (Consumer),Samtskhe-Javakheti,Banker-171,RiskMgr-01,RM-SAM-11,1339.95,679.33,660.62,730+ DPD
+2023-08-31,504850,2023-08-16,2021-08-16,908747,Svaneti Tourism Ltd #8747,,SML,Developer,Trade & Distribution,Tbilisi,Banker-146,RiskMgr-10,RM-TBI-01,2510.46,1316.26,1194.2,730+ DPD
+2023-08-31,504915,2023-08-16,2021-08-16,901719,Rustavi Steel Works #1719,GROUP-189,SML,Corporate Term Loan,Real Estate & Construction,Kakheti,Banker-101,RiskMgr-06,RM-KAK-04,2035.14,975.49,1059.65,730+ DPD
+2023-08-31,505595,2023-08-26,2021-08-26,901898,Alazani Valley Farms #1898,,SMM,Developer,Real Estate & Construction,Guria,Banker-089,RiskMgr-02,RM-GUR-06,3996.68,2709.98,1286.7,730+ DPD
+2023-08-31,505943,2023-08-01,2021-08-01,903971,Black Sea Shipping #3971,,SML,Developer,Trade & Distribution,Tbilisi,Banker-060,RiskMgr-02,RM-TBI-01,3368.28,2236.82,1131.46,730+ DPD
+2023-09-30,500500,2023-09-26,2021-09-26,905161,Nika Lomidze,,RB,Mortgage,Retail/Household (Consumer),Abkhazia (Nominal),Banker-163,RiskMgr-04,RM-ABK-12,886.18,426.34,459.84,730+ DPD
+2023-09-30,500612,2023-09-16,2021-09-16,903961,Levan Gogoladze,,RB,Mortgage,Retail/Household (Consumer),Tbilisi,Banker-055,RiskMgr-04,RM-TBI-01,984.88,546.79,438.09,730+ DPD
+2023-09-30,502435,2023-09-26,2021-09-26,905875,Levan Lomidze,,RB,Mortgage,Retail/Household (Consumer),Abkhazia (Nominal),Banker-026,RiskMgr-07,RM-ABK-12,1571.13,646.14,924.99,730+ DPD
+2023-09-30,504116,2023-09-16,2021-09-16,900983,Imereti Textiles #983,,CB,Corporate Term Loan,Energy & Utilities,Kvemo Kartli,Banker-117,RiskMgr-04,RM-KVE-09,93840.53,63680.89,30159.64,730+ DPD
+2023-09-30,504328,2023-09-21,2021-09-21,908706,Mariam Beridze,,RB,Auto Loan,Retail/Household (Consumer),Imereti,Banker-082,RiskMgr-10,RM-IME-03,968.41,551.98,416.43,730+ DPD
+2023-09-30,504667,2023-09-21,2021-09-21,900073,Irakli Gelashvili,,RB,Consumer,Retail/Household (Consumer),Tbilisi,Banker-059,RiskMgr-12,RM-TBI-01,45.48,23.37,22.11,730+ DPD
+2023-09-30,505411,2023-09-26,2021-09-26,907408,GeoTech Solutions #7408,,CB,Corporate Term Loan,Energy & Utilities,Tbilisi,Banker-079,RiskMgr-06,RM-TBI-01,201071.46,126766.1,74305.36,730+ DPD
+2023-09-30,505717,2023-09-01,2021-09-01,902666,Black Sea Shipping #2666,,CB,Corporate Term Loan,Real Estate & Construction,Tbilisi,Banker-048,RiskMgr-08,RM-TBI-01,177762.99,88951.62,88811.37,730+ DPD
+2023-09-30,506173,2023-09-26,2021-09-26,905146,Caucasus Pharma #5146,GROUP-587,CB,Developer,Real Estate & Construction,Kvemo Kartli,Banker-092,RiskMgr-03,RM-KVE-09,194786.39,133311.45,61474.94,730+ DPD
+2023-10-31,500842,2023-10-16,2021-10-16,902542,Levan Sharashenidze,,RB,Auto Loan,Retail/Household (Consumer),Racha-Lechkhumi,Banker-084,RiskMgr-04,RM-RAC-07,994.46,521.74,472.72,730+ DPD
+2023-10-31,501573,2023-10-01,2021-10-01,908591,Svaneti Tourism Ltd #8591,,SML,Developer,Real Estate & Construction,Shida Kartli,Banker-032,RiskMgr-07,RM-SHI-08,2715.09,1601.54,1113.55,730+ DPD
+2023-10-31,502151,2023-10-26,2021-10-26,902067,Mariam Tsereteli,,RB,Auto Loan,Retail/Household (Consumer),Adjara,Banker-161,RiskMgr-07,RM-ADJ-02,959.33,474.27,485.06,730+ DPD
+2023-10-31,504519,2023-10-16,2021-10-16,906382,Sofio Gogoladze,,RB,Mortgage,Real Estate & Construction,Tbilisi,Banker-099,RiskMgr-01,RM-TBI-01,609.3,417.91,191.39,730+ DPD
+2023-10-31,504536,2023-10-16,2021-10-16,904105,Zugdidi Retail Group #4105,GROUP-447,SMM,Corporate Term Loan,Transportation & Logistics,Abkhazia (Nominal),Banker-012,RiskMgr-08,RM-ABK-12,19212.99,11319.7,7893.29,730+ DPD
+2023-10-31,504908,2023-10-21,2021-10-21,906366,Caucasus Pharma #6366,GROUP-720,CB,Corporate Term Loan,Financial & Professional Services,Imereti,Banker-140,RiskMgr-11,RM-IME-03,126868.57,80803.56,46065.01,730+ DPD
+2023-10-31,505078,2023-10-16,2021-10-16,908921,Kakheti Wine Cellars #8921,,SMM,Corporate Term Loan,Real Estate & Construction,Kvemo Kartli,Banker-006,RiskMgr-01,RM-KVE-09,24203.93,10266.51,13937.42,730+ DPD
+2023-10-31,505279,2023-10-16,2021-10-16,903551,Rustavi Steel Works #3551,,SML,Agro,Trade & Distribution,Samegrelo-Zemo Svaneti,Banker-181,RiskMgr-11,RM-SAM-05,3414.48,1627.08,1787.4,730+ DPD
+2023-10-31,507082,2023-10-26,2021-10-26,902331,Sofio Lomidze,,RB,Consumer,Retail/Household (Consumer),Samegrelo-Zemo Svaneti,Banker-149,RiskMgr-01,RM-SAM-05,514.56,263.84,250.72,730+ DPD
+2023-11-30,502779,2023-11-16,2021-11-16,900829,Beka Beridze,,RB,Mortgage,Retail/Household (Consumer),Mtskheta-Mtianeti,Banker-114,RiskMgr-10,RM-MTS-10,1186.02,502.9,683.12,730+ DPD
+2023-11-30,502838,2023-11-21,2021-11-21,904822,Irakli Beridze,,RB,Auto Loan,Retail/Household (Consumer),Samegrelo-Zemo Svaneti,Banker-067,RiskMgr-01,RM-SAM-05,428.04,187.98,240.06,730+ DPD
+2023-11-30,504397,2023-11-16,2021-11-16,900975,Colchis Manufacturing #975,,SMM,Corporate Term Loan,Energy & Utilities,Kakheti,Banker-070,RiskMgr-09,RM-KAK-04,35739.38,20516.5,15222.88,730+ DPD
+2023-11-30,504836,2023-11-01,2021-11-01,908127,Zugdidi Retail Group #8127,,SMM,Developer,Real Estate & Construction,Adjara,Banker-025,RiskMgr-09,RM-ADJ-02,17926.03,9922.38,8003.65,730+ DPD
+2023-11-30,506725,2023-11-21,2021-11-21,901703,Vardzia Hospitality #1703,,SML,Developer,Real Estate & Construction,Tbilisi,Banker-034,RiskMgr-01,RM-TBI-01,4463.45,1805.48,2657.97,730+ DPD
+2023-11-30,506764,2023-11-26,2021-11-26,905961,GeoTech Solutions #5961,,SMM,Corporate Term Loan,Financial & Professional Services,Kvemo Kartli,Banker-158,RiskMgr-11,RM-KVE-09,6601.94,3487.79,3114.15,730+ DPD
+2023-11-30,506863,2023-11-16,2021-11-16,908837,Mtkvari Energy Partners #8837,GROUP-962,SMM,Corporate Term Loan,Real Estate & Construction,Imereti,Banker-074,RiskMgr-07,RM-IME-03,28325.64,15740.81,12584.83,730+ DPD
+2023-11-30,507257,2023-11-21,2021-11-21,900877,Kutaisi Auto Parts #877,,SML,Corporate Term Loan,Real Estate & Construction,Tbilisi,Banker-135,RiskMgr-05,RM-TBI-01,2239.13,1052.94,1186.19,730+ DPD
+2023-12-31,503710,2023-12-30,2021-12-30,900818,Alazani Valley Farms #818,,SMM,Corporate Term Loan,Real Estate & Construction,Tbilisi,Banker-066,RiskMgr-08,RM-TBI-01,36961.03,19917.06,17043.97,730+ DPD
+2023-12-31,506657,2023-12-27,2021-12-27,902511,Luka Sharashenidze,,RB,Mortgage,Retail/Household (Consumer),Tbilisi,Banker-106,RiskMgr-04,RM-TBI-01,1733.64,935.89,797.75,730+ DPD
+2023-12-31,507547,2023-12-30,2021-12-30,902515,GeoTech Solutions #2515,,SML,Developer,Real Estate & Construction,Kakheti,Banker-014,RiskMgr-03,RM-KAK-04,3851.7,2510.66,1341.04,730+ DPD
+2024-01-31,500265,2024-01-24,2022-01-24,904095,Elene Kiladze,,RB,Mortgage,Real Estate & Construction,Tbilisi,Banker-168,RiskMgr-10,RM-TBI-01,1355.28,694.89,660.39,730+ DPD
+2024-01-31,500906,2024-01-19,2022-01-19,907920,Davit Lomidze,,RB,Auto Loan,Retail/Household (Consumer),Adjara,Banker-148,RiskMgr-09,RM-ADJ-02,29.03,14.09,14.94,730+ DPD
+2024-01-31,501608,2024-01-19,2022-01-19,902503,Tbilisi Developers JSC #2503,,SMM,Developer,Real Estate & Construction,Kvemo Kartli,Banker-144,RiskMgr-05,RM-KVE-09,20141.51,9645.23,10496.28,730+ DPD
+2024-01-31,501699,2024-01-30,2022-01-30,904606,Rioni Construction #4606,GROUP-497,SML,Mortgage,Real Estate & Construction,Tbilisi,Banker-107,RiskMgr-10,RM-TBI-01,1580.66,738.75,841.91,730+ DPD
+2024-01-31,502346,2024-01-30,2022-01-30,907734,Luka Kapanadze,,RB,Digital,Financial & Professional Services,Imereti,Banker-140,RiskMgr-04,RM-IME-03,184.03,122.66,61.37,730+ DPD
+2024-01-31,503676,2024-01-30,2022-01-30,900676,Black Sea Shipping #676,,SML,Corporate Term Loan,Transportation & Logistics,Adjara,Banker-082,RiskMgr-12,RM-ADJ-02,4591.48,1872.78,2718.7,730+ DPD
+2024-01-31,504355,2024-01-30,2022-01-30,907976,Elene Beridze,,RB,Auto Loan,Retail/Household (Consumer),Racha-Lechkhumi,Banker-050,RiskMgr-02,RM-RAC-07,995.22,468.18,527.04,730+ DPD
+2024-01-31,504834,2024-01-14,2022-01-14,906772,Nino Tsereteli,,RB,Consumer,Retail/Household (Consumer),Tbilisi,Banker-109,RiskMgr-05,RM-TBI-01,308.09,129.47,178.62,730+ DPD
+2024-01-31,505383,2024-01-14,2022-01-14,904587,Tbilisi Med Center #4587,GROUP-495,SMM,Developer,Real Estate & Construction,Imereti,Banker-069,RiskMgr-04,RM-IME-03,18544.9,9616.04,8928.86,730+ DPD
+2024-01-31,505774,2024-01-30,2022-01-30,905029,Colchis Manufacturing #5029,,SML,Developer,Real Estate & Construction,Kakheti,Banker-160,RiskMgr-10,RM-KAK-04,3065.22,1908.99,1156.23,730+ DPD
+2024-01-31,506514,2024-01-30,2022-01-30,906204,Vardzia Hospitality #6204,,SML,Developer,Real Estate & Construction,Tbilisi,Banker-136,RiskMgr-07,RM-TBI-01,4336.69,2030.59,2306.1,730+ DPD
+2024-01-31,506706,2024-01-14,2022-01-14,906036,Kakheti Wine Cellars #6036,,SML,Developer,Real Estate & Construction,Adjara,Banker-034,RiskMgr-01,RM-ADJ-02,4511.87,2350.14,2161.73,730+ DPD
+2024-01-31,507015,2024-01-30,2022-01-30,903175,Vardzia Hospitality #3175,,SML,Corporate Term Loan,Energy & Utilities,Tbilisi,Banker-024,RiskMgr-11,RM-TBI-01,2782.29,1696.29,1086.0,730+ DPD
+2024-01-31,508030,2024-01-30,2022-01-30,901319,Kutaisi Auto Parts #1319,,CB,Corporate Term Loan,Transportation & Logistics,Adjara,Banker-179,RiskMgr-10,RM-ADJ-02,63747.08,37914.67,25832.41,730+ DPD
+2024-02-29,501936,2024-02-14,2022-02-14,908986,Irakli Abashidze,,RB,Auto Loan,Retail/Household (Consumer),Tbilisi,Banker-097,RiskMgr-07,RM-TBI-01,215.77,102.21,113.56,730+ DPD
+2024-02-29,504981,2024-02-24,2022-02-24,905844,Mariam Mamaladze,,RB,Consumer,Retail/Household (Consumer),Imereti,Banker-010,RiskMgr-01,RM-IME-03,250.77,102.68,148.09,730+ DPD
+2024-02-29,505337,2024-02-29,2022-03-01,900243,Beka Kapanadze,,RB,Digital,Financial & Professional Services,Samegrelo-Zemo Svaneti,Banker-178,RiskMgr-11,RM-SAM-05,183.93,80.91,103.02,730+ DPD
+2024-02-29,505988,2024-02-24,2022-02-24,903697,Giorgi Mamaladze,,RB,Mortgage,Real Estate & Construction,Samegrelo-Zemo Svaneti,Banker-123,RiskMgr-12,RM-SAM-05,1299.12,855.81,443.31,730+ DPD
+2024-02-29,506583,2024-02-14,2022-02-14,905547,Kutaisi Auto Parts #5547,,SMM,Corporate Term Loan,Energy & Utilities,Tbilisi,Banker-139,RiskMgr-08,RM-TBI-01,14324.94,7126.06,7198.88,730+ DPD
+2024-02-29,506812,2024-02-14,2022-02-14,906261,Batumi Trade Group #6261,,CB,Developer,Real Estate & Construction,Imereti,Banker-058,RiskMgr-08,RM-IME-03,122756.05,51189.28,71566.77,730+ DPD
+2024-02-29,507988,2024-02-29,2022-03-01,900663,Kakheti Wine Cellars #663,,SML,Developer,Real Estate & Construction,Adjara,Banker-129,RiskMgr-02,RM-ADJ-02,2649.42,1842.14,807.28,730+ DPD
+2024-02-29,508366,2024-02-24,2022-02-24,906741,Ana Gogoladze,,RB,Digital,IT & Digital Services,Guria,Banker-022,RiskMgr-02,RM-GUR-06,496.67,222.78,273.89,730+ DPD
+2024-03-31,500456,2024-03-20,2022-03-21,900090,Mtkvari Energy Partners #90,GROUP-009,CB,Developer,Real Estate & Construction,Adjara,Banker-069,RiskMgr-12,RM-ADJ-02,84095.17,43753.92,40341.25,730+ DPD
+2024-03-31,504226,2024-03-15,2022-03-16,908537,Mariam Gogoladze,,RB,Mortgage,Retail/Household (Consumer),Adjara,Banker-154,RiskMgr-07,RM-ADJ-02,1122.86,512.68,610.18,730+ DPD
+2024-03-31,505262,2024-03-15,2022-03-16,904083,GeoTech Solutions #4083,,CB,Developer,Real Estate & Construction,Tbilisi,Banker-151,RiskMgr-03,RM-TBI-01,132085.34,68079.31,64006.03,730+ DPD
+2024-03-31,506068,2024-03-20,2022-03-21,905799,Kartli Agro LLC #5799,,SMM,Agro,Agriculture & Agro-processing,Tbilisi,Banker-153,RiskMgr-06,RM-TBI-01,37880.57,17495.42,20385.15,730+ DPD
+2024-03-31,506170,2024-03-25,2022-03-26,907538,Beka Sharashenidze,,RB,Mortgage,Real Estate & Construction,Tbilisi,Banker-017,RiskMgr-08,RM-TBI-01,24.83,16.08,8.75,730+ DPD
+2024-03-31,506945,2024-03-25,2022-03-26,906274,Zugdidi Retail Group #6274,,CB,Developer,Trade & Distribution,Tbilisi,Banker-071,RiskMgr-11,RM-TBI-01,141820.73,87806.1,54014.63,730+ DPD
+2024-03-31,507939,2024-03-20,2022-03-21,903048,Tbilisi Developers JSC #3048,,SML,Corporate Term Loan,Real Estate & Construction,Tbilisi,Banker-022,RiskMgr-12,RM-TBI-01,2605.97,1480.51,1125.46,730+ DPD
+2024-03-31,508508,2024-03-15,2022-03-16,904712,Tbilisi Developers JSC #4712,GROUP-513,SMM,Developer,Real Estate & Construction,Tbilisi,Banker-101,RiskMgr-02,RM-TBI-01,7586.69,3653.89,3932.8,730+ DPD
+2024-04-30,501558,2024-04-30,2022-05-01,907209,Mtkvari Energy Partners #7209,GROUP-804,CB,Corporate Term Loan,Manufacturing & Industry,Imereti,Banker-003,RiskMgr-05,RM-IME-03,66196.41,39845.48,26350.93,730+ DPD
+2024-04-30,503579,2024-04-20,2022-04-21,902882,Nika Sharashenidze,,RB,Mortgage,Real Estate & Construction,Racha-Lechkhumi,Banker-093,RiskMgr-07,RM-RAC-07,383.1,232.6,150.5,730+ DPD
+2024-04-30,504332,2024-04-30,2022-05-01,907930,Georgian Logistics Co #7930,,SMM,Developer,Real Estate & Construction,Adjara,Banker-120,RiskMgr-08,RM-ADJ-02,19562.35,9992.67,9569.68,730+ DPD
+2024-04-30,508376,2024-04-25,2022-04-26,907546,Georgian Logistics Co #7546,GROUP-841,SML,Agro,Agriculture & Agro-processing,Shida Kartli,Banker-049,RiskMgr-05,RM-SHI-08,2914.14,1430.47,1483.67,730+ DPD
+2024-04-30,508566,2024-04-30,2022-05-01,903963,Kutaisi Auto Parts #3963,,SML,Developer,Real Estate & Construction,Tbilisi,Banker-011,RiskMgr-10,RM-TBI-01,2484.66,1738.78,745.88,730+ DPD
+2024-04-30,509022,2024-04-20,2022-04-21,906595,Alazani Valley Farms #6595,GROUP-743,SMM,Corporate Term Loan,Real Estate & Construction,Tbilisi,Banker-119,RiskMgr-06,RM-TBI-01,29294.57,15079.77,14214.8,730+ DPD
+2024-05-31,501577,2024-05-25,2022-05-26,907815,Tbilisi Med Center #7815,,CB,Corporate Term Loan,Transportation & Logistics,Kvemo Kartli,Banker-161,RiskMgr-12,RM-KVE-09,98734.07,52095.04,46639.03,730+ DPD
+2024-05-31,502604,2024-05-20,2022-05-21,908044,GeoTech Solutions #8044,,CB,Corporate Term Loan,Energy & Utilities,Imereti,Banker-093,RiskMgr-12,RM-IME-03,100490.73,46560.46,53930.27,730+ DPD
+2024-05-31,502940,2024-05-20,2022-05-21,908023,Rioni Construction #8023,,SMM,Developer,Real Estate & Construction,Adjara,Banker-085,RiskMgr-05,RM-ADJ-02,19466.83,10071.5,9395.33,730+ DPD
+2024-05-31,504026,2024-05-15,2022-05-16,901040,Tamar Mamaladze,,RB,Consumer,Tourism & Hospitality,Adjara,Banker-045,RiskMgr-03,RM-ADJ-02,211.82,113.87,97.95,730+ DPD
+2024-05-31,505535,2024-05-25,2022-05-26,904620,Levan Mamaladze,,RB,Consumer,Retail/Household (Consumer),Imereti,Banker-080,RiskMgr-08,RM-IME-03,232.36,93.01,139.35,730+ DPD
+2024-05-31,505716,2024-05-31,2022-06-01,905768,Kartli Agro LLC #5768,,SML,Developer,Real Estate & Construction,Imereti,Banker-038,RiskMgr-05,RM-IME-03,4507.76,2812.51,1695.25,730+ DPD
+2024-05-31,506631,2024-05-20,2022-05-21,902423,GeoTech Solutions #2423,,CB,Corporate Term Loan,Financial & Professional Services,Imereti,Banker-103,RiskMgr-10,RM-IME-03,137212.91,58319.89,78893.02,730+ DPD
+2024-05-31,507019,2024-05-31,2022-06-01,908729,Vardzia Hospitality #8729,,SML,Developer,Real Estate & Construction,Kvemo Kartli,Banker-071,RiskMgr-03,RM-KVE-09,2384.55,1403.91,980.64,730+ DPD
+2024-05-31,507687,2024-05-31,2022-06-01,906948,Nika Sharashenidze,,RB,Auto Loan,Transportation & Logistics,Kvemo Kartli,Banker-032,RiskMgr-03,RM-KVE-09,142.93,59.18,83.75,730+ DPD
+2024-05-31,508659,2024-05-25,2022-05-26,901407,Kartli Agro LLC #1407,,SMM,Agro,Agriculture & Agro-processing,Samtskhe-Javakheti,Banker-018,RiskMgr-08,RM-SAM-11,5729.02,3313.52,2415.5,730+ DPD
+2024-05-31,508717,2024-05-25,2022-05-26,908291,Levan Kiladze,,RB,Digital,Financial & Professional Services,Abkhazia (Nominal),Banker-168,RiskMgr-05,RM-ABK-12,1089.29,634.29,455.0,730+ DPD
+2024-05-31,509467,2024-05-31,2022-06-01,908827,Mtkvari Energy Partners #8827,GROUP-959,SML,Developer,Real Estate & Construction,Tbilisi,Banker-044,RiskMgr-08,RM-TBI-01,3945.96,1668.88,2277.08,730+ DPD
+2024-06-30,501710,2024-06-20,2022-06-21,901495,Levan Kapanadze,,RB,Auto Loan,Transportation & Logistics,Adjara,Banker-011,RiskMgr-10,RM-ADJ-02,1170.79,743.18,427.61,730+ DPD
+2024-06-30,503385,2024-06-15,2022-06-16,903540,Vardzia Hospitality #3540,GROUP-388,CB,Developer,Real Estate & Construction,Tbilisi,Banker-096,RiskMgr-04,RM-TBI-01,124565.15,73569.44,50995.71,730+ DPD
+2024-06-30,503979,2024-06-25,2022-06-26,900674,Kutaisi Auto Parts #674,,SMM,Developer,Real Estate & Construction,Shida Kartli,Banker-112,RiskMgr-09,RM-SHI-08,22562.93,11141.2,11421.73,730+ DPD
+2024-06-30,504521,2024-06-15,2022-06-16,905290,Elene Mamaladze,,RB,Mortgage,Real Estate & Construction,Kvemo Kartli,Banker-159,RiskMgr-09,RM-KVE-09,103.91,57.89,46.02,730+ DPD
+2024-06-30,506035,2024-06-15,2022-06-16,907045,Vardzia Hospitality #7045,GROUP-780,SMM,Developer,Real Estate & Construction,Adjara,Banker-103,RiskMgr-02,RM-ADJ-02,21319.11,9825.24,11493.87,730+ DPD
+2024-06-30,506468,2024-06-25,2022-06-26,906101,Black Sea Shipping #6101,,SMM,Agro,Agriculture & Agro-processing,Adjara,Banker-176,RiskMgr-07,RM-ADJ-02,20525.68,12460.88,8064.8,730+ DPD
+2024-06-30,507055,2024-06-15,2022-06-16,902554,Nino Mamaladze,,RB,Auto Loan,Retail/Household (Consumer),Samtskhe-Javakheti,Banker-107,RiskMgr-10,RM-SAM-11,1072.47,691.29,381.18,730+ DPD
+2024-06-30,507616,2024-06-20,2022-06-21,907360,Salome Tsereteli,,RB,Mortgage,Retail/Household (Consumer),Kakheti,Banker-109,RiskMgr-06,RM-KAK-04,191.85,108.69,83.16,730+ DPD
+2024-06-30,508526,2024-06-15,2022-06-16,908607,Nika Chikvaidze,,RB,Auto Loan,Transportation & Logistics,Mtskheta-Mtianeti,Banker-153,RiskMgr-11,RM-MTS-10,576.93,336.79,240.14,730+ DPD
+2024-06-30,508902,2024-06-25,2022-06-26,905484,Black Sea Shipping #5484,,SML,Developer,Real Estate & Construction,Kvemo Kartli,Banker-111,RiskMgr-12,RM-KVE-09,2709.11,1709.55,999.56,730+ DPD
+2024-07-31,501285,2024-07-26,2022-07-27,901841,Imereti Textiles #1841,,SML,Developer,Real Estate & Construction,Tbilisi,Banker-179,RiskMgr-12,RM-TBI-01,1860.03,905.18,954.85,730+ DPD
+2024-07-31,502236,2024-07-16,2022-07-17,905687,Mariam Dzidziguri,,RB,Mortgage,Retail/Household (Consumer),Tbilisi,Banker-045,RiskMgr-02,RM-TBI-01,160.75,75.3,85.45,730+ DPD
+2024-07-31,505113,2024-07-26,2022-07-27,907315,Zugdidi Retail Group #7315,,CB,Developer,Trade & Distribution,Samtskhe-Javakheti,Banker-005,RiskMgr-01,RM-SAM-11,166436.16,77089.55,89346.61,730+ DPD
+2024-07-31,506033,2024-07-26,2022-07-27,904519,Rustavi Steel Works #4519,,SMM,Developer,Real Estate & Construction,Tbilisi,Banker-067,RiskMgr-09,RM-TBI-01,17688.98,11279.01,6409.97,730+ DPD
+2024-07-31,506946,2024-07-26,2022-07-27,908978,Elene Tsereteli,,RB,Auto Loan,Transportation & Logistics,Guria,Banker-112,RiskMgr-05,RM-GUR-06,1057.14,448.47,608.67,730+ DPD
+2024-07-31,507512,2024-07-26,2022-07-27,906314,Mariam Kiladze,,RB,Auto Loan,Retail/Household (Consumer),Kvemo Kartli,Banker-025,RiskMgr-03,RM-KVE-09,149.83,87.6,62.23,730+ DPD
+2024-07-31,507794,2024-07-01,2022-07-02,908651,Kutaisi Auto Parts #8651,,SML,Developer,Real Estate & Construction,Racha-Lechkhumi,Banker-052,RiskMgr-04,RM-RAC-07,3439.0,2289.48,1149.52,730+ DPD
+2024-07-31,508406,2024-07-26,2022-07-27,901455,Salome Sharashenidze,,RB,Auto Loan,Retail/Household (Consumer),Adjara,Banker-100,RiskMgr-02,RM-ADJ-02,700.08,318.85,381.23,730+ DPD
+2024-07-31,509731,2024-07-21,2022-07-22,900375,Zugdidi Retail Group #375,,SML,Developer,Real Estate & Construction,Abkhazia (Nominal),Banker-075,RiskMgr-02,RM-ABK-12,4392.48,2818.82,1573.66,730+ DPD
+2024-07-31,509789,2024-07-16,2022-07-17,907554,Georgian Logistics Co #7554,GROUP-843,SMM,Developer,Real Estate & Construction,Adjara,Banker-128,RiskMgr-03,RM-ADJ-02,33759.06,21154.26,12604.8,730+ DPD
+2024-07-31,510115,2024-07-16,2022-07-17,905341,Kartli Agro LLC #5341,,SMM,Agro,Agriculture & Agro-processing,Samegrelo-Zemo Svaneti,Banker-091,RiskMgr-05,RM-SAM-05,5823.44,3892.88,1930.56,730+ DPD
+2024-08-31,500261,2024-08-25,2022-08-26,906025,Ana Kiladze,,RB,Mortgage,Real Estate & Construction,Tbilisi,Banker-024,RiskMgr-06,RM-TBI-01,642.6,340.7,301.9,730+ DPD
+2024-08-31,507608,2024-08-15,2022-08-16,901628,Colchis Manufacturing #1628,,SMM,Agro,Agriculture & Agro-processing,Samegrelo-Zemo Svaneti,Banker-101,RiskMgr-12,RM-SAM-05,32420.04,15210.19,17209.85,730+ DPD
+2024-08-31,507955,2024-08-15,2022-08-16,904060,Kutaisi Auto Parts #4060,GROUP-443,SML,Developer,Real Estate & Construction,Imereti,Banker-176,RiskMgr-11,RM-IME-03,2391.07,1350.62,1040.45,730+ DPD
+2024-08-31,508949,2024-08-31,2022-09-01,904205,Kartli Agro LLC #4205,,CB,Developer,Real Estate & Construction,Mtskheta-Mtianeti,Banker-021,RiskMgr-04,RM-MTS-10,84434.97,40702.0,43732.97,730+ DPD
+2024-08-31,510369,2024-08-31,2022-09-01,902528,Rustavi Steel Works #2528,,SML,Corporate Term Loan,Real Estate & Construction,Imereti,Banker-148,RiskMgr-10,RM-IME-03,2368.01,1142.74,1225.27,730+ DPD
+2024-08-31,510500,2024-08-20,2022-08-21,900223,Sofio Gelashvili,,RB,Consumer,Retail/Household (Consumer),Kvemo Kartli,Banker-100,RiskMgr-12,RM-KVE-09,999.34,637.12,362.22,730+ DPD
+2024-09-30,502678,2024-09-30,2022-10-01,900529,Giorgi Kapanadze,,RB,Auto Loan,Transportation & Logistics,Kvemo Kartli,Banker-171,RiskMgr-11,RM-KVE-09,377.31,200.43,176.88,730+ DPD
+2024-09-30,503117,2024-09-20,2022-09-21,901955,Kakheti Wine Cellars #1955,,SMM,Developer,Real Estate & Construction,Tbilisi,Banker-064,RiskMgr-01,RM-TBI-01,31789.14,17669.42,14119.72,730+ DPD
+2024-09-30,504919,2024-09-15,2022-09-16,908222,Gori Foodstuffs #8222,,SML,Corporate Term Loan,Financial & Professional Services,Abkhazia (Nominal),Banker-155,RiskMgr-09,RM-ABK-12,2652.47,1677.74,974.73,730+ DPD
+2024-09-30,505264,2024-09-30,2022-10-01,905210,Georgian Logistics Co #5210,,SMM,Developer,Real Estate & Construction,Tbilisi,Banker-100,RiskMgr-01,RM-TBI-01,9341.8,4354.75,4987.05,730+ DPD
+2024-09-30,506334,2024-09-30,2022-10-01,904869,Tamar Sharashenidze,,RB,Mortgage,Real Estate & Construction,Imereti,Banker-041,RiskMgr-10,RM-IME-03,519.42,242.27,277.15,730+ DPD
+2024-09-30,506676,2024-09-15,2022-09-16,908572,Luka Abashidze,,RB,Auto Loan,Retail/Household (Consumer),Adjara,Banker-099,RiskMgr-06,RM-ADJ-02,857.52,495.26,362.26,730+ DPD
+2024-09-30,507008,2024-09-20,2022-09-21,905369,Batumi Trade Group #5369,,SMM,Developer,Real Estate & Construction,Mtskheta-Mtianeti,Banker-067,RiskMgr-07,RM-MTS-10,37225.15,22601.72,14623.43,730+ DPD
+2024-09-30,508078,2024-09-25,2022-09-26,904568,Kartli Agro LLC #4568,GROUP-491,SML,Corporate Term Loan,Real Estate & Construction,Adjara,Banker-114,RiskMgr-11,RM-ADJ-02,1989.06,1328.53,660.53,730+ DPD
+2024-09-30,508215,2024-09-15,2022-09-16,900798,Mtkvari Energy Partners #798,,SMM,Corporate Term Loan,Financial & Professional Services,Tbilisi,Banker-049,RiskMgr-11,RM-TBI-01,8785.52,3937.45,4848.07,730+ DPD
+2024-09-30,508350,2024-09-20,2022-09-21,903338,Kakheti Wine Cellars #3338,,SMM,Developer,Real Estate & Construction,Guria,Banker-063,RiskMgr-06,RM-GUR-06,25799.82,16889.92,8909.9,730+ DPD
+2024-09-30,509636,2024-09-30,2022-10-01,904903,Rioni Construction #4903,,SML,Agro,Agriculture & Agro-processing,Guria,Banker-154,RiskMgr-07,RM-GUR-06,2573.97,1612.66,961.31,730+ DPD
+2024-09-30,509931,2024-09-20,2022-09-21,900002,Zugdidi Retail Group #2,,SML,Agro,Agriculture & Agro-processing,Adjara,Banker-116,RiskMgr-05,RM-ADJ-02,4173.68,2671.77,1501.91,730+ DPD
+2024-09-30,510615,2024-09-30,2022-10-01,905301,Tbilisi Developers JSC #5301,,SMM,Developer,Real Estate & Construction,Imereti,Banker-129,RiskMgr-12,RM-IME-03,8643.0,3958.17,4684.83,730+ DPD
+2024-09-30,510922,2024-09-30,2022-10-01,906895,Vardzia Hospitality #6895,,SMM,Corporate Term Loan,Manufacturing & Industry,Samegrelo-Zemo Svaneti,Banker-002,RiskMgr-12,RM-SAM-05,12435.89,6645.97,5789.92,730+ DPD
+2024-10-31,500897,2024-10-20,2022-10-21,904159,Caucasus Pharma #4159,,SMM,Corporate Term Loan,Manufacturing & Industry,Tbilisi,Banker-013,RiskMgr-01,RM-TBI-01,25495.03,10598.48,14896.55,730+ DPD
+2024-10-31,501995,2024-10-20,2022-10-21,907435,Irakli Beridze,,RB,Auto Loan,Transportation & Logistics,Kvemo Kartli,Banker-087,RiskMgr-06,RM-KVE-09,505.57,310.53,195.04,730+ DPD
+2024-10-31,504670,2024-10-31,2022-11-01,904488,Salome Kiladze,,RB,Mortgage,Real Estate & Construction,Tbilisi,Banker-007,RiskMgr-07,RM-TBI-01,1066.46,535.03,531.43,730+ DPD
+2024-10-31,508383,2024-10-20,2022-10-21,901842,Georgian Logistics Co #1842,GROUP-207,SMM,Corporate Term Loan,Real Estate & Construction,Adjara,Banker-172,RiskMgr-07,RM-ADJ-02,18337.82,9198.31,9139.51,730+ DPD
+2024-10-31,510075,2024-10-31,2022-11-01,908026,Sofio Gelashvili,,RB,Consumer,Retail/Household (Consumer),Samtskhe-Javakheti,Banker-019,RiskMgr-08,RM-SAM-11,1348.76,906.55,442.21,730+ DPD
+2024-10-31,510186,2024-10-15,2022-10-16,908197,Tamar Lomidze,,RB,Auto Loan,Transportation & Logistics,Adjara,Banker-042,RiskMgr-08,RM-ADJ-02,222.96,124.34,98.62,730+ DPD
+2024-11-30,501535,2024-11-20,2022-11-21,900152,Alazani Valley Farms #152,,SMM,Corporate Term Loan,Transportation & Logistics,Kakheti,Banker-026,RiskMgr-04,RM-KAK-04,31243.21,20484.04,10759.17,730+ DPD
+2024-11-30,501546,2024-11-15,2022-11-16,904547,Kartli Agro LLC #4547,,CB,Developer,Real Estate & Construction,Samegrelo-Zemo Svaneti,Banker-096,RiskMgr-01,RM-SAM-05,70418.01,49289.11,21128.9,730+ DPD
+2024-11-30,501875,2024-11-25,2022-11-26,903688,Batumi Trade Group #3688,,CB,Developer,Real Estate & Construction,Adjara,Banker-054,RiskMgr-11,RM-ADJ-02,126607.03,83739.39,42867.64,730+ DPD
+2024-11-30,504741,2024-11-15,2022-11-16,905874,Vardzia Hospitality #5874,,CB,Developer,Real Estate & Construction,Kakheti,Banker-167,RiskMgr-07,RM-KAK-04,53054.48,22665.01,30389.47,730+ DPD
+2024-11-30,508324,2024-11-25,2022-11-26,908104,Luka Gogoladze,,RB,Digital,IT & Digital Services,Shida Kartli,Banker-057,RiskMgr-01,RM-SHI-08,1422.18,784.45,637.73,730+ DPD
+2024-11-30,509702,2024-11-25,2022-11-26,904711,Tamar Kiladze,,RB,Auto Loan,Transportation & Logistics,Racha-Lechkhumi,Banker-040,RiskMgr-12,RM-RAC-07,1220.92,819.95,400.97,730+ DPD
+2024-11-30,509901,2024-11-20,2022-11-21,906632,Luka Kiladze,,RB,Digital,IT & Digital Services,Adjara,Banker-024,RiskMgr-07,RM-ADJ-02,714.89,444.38,270.51,730+ DPD
+2024-11-30,510990,2024-11-15,2022-11-16,904585,Kutaisi Auto Parts #4585,GROUP-494,SMM,Developer,Real Estate & Construction,Tbilisi,Banker-092,RiskMgr-12,RM-TBI-01,32263.29,15343.19,16920.1,730+ DPD
+2024-12-31,506189,2024-12-29,2022-12-30,904985,Beka Lomidze,,RB,Digital,Retail/Household (Consumer),Tbilisi,Banker-081,RiskMgr-03,RM-TBI-01,636.72,268.46,368.26,730+ DPD
+2024-12-31,506688,2024-12-01,2022-12-02,904369,Kutaisi Auto Parts #4369,,SMM,Corporate Term Loan,Energy & Utilities,Tbilisi,Banker-005,RiskMgr-03,RM-TBI-01,23331.01,15295.32,8035.69,730+ DPD
+2024-12-31,506697,2024-12-16,2022-12-17,901601,Svaneti Tourism Ltd #1601,,CB,Corporate Term Loan,Real Estate & Construction,Tbilisi,Banker-023,RiskMgr-11,RM-TBI-01,177974.65,114750.1,63224.55,730+ DPD
+2024-12-31,506816,2024-12-21,2022-12-22,908115,Beka Kiladze,,RB,Consumer,Retail/Household (Consumer),Shida Kartli,Banker-026,RiskMgr-11,RM-SHI-08,1096.04,451.2,644.84,730+ DPD
+2024-12-31,510433,2024-12-26,2022-12-27,904145,Kartli Agro LLC #4145,,SMM,Agro,Agriculture & Agro-processing,Abkhazia (Nominal),Banker-061,RiskMgr-10,RM-ABK-12,18305.15,11742.66,6562.49,730+ DPD
+2024-12-31,511686,2024-12-26,2022-12-27,906929,Davit Tsereteli,,RB,Auto Loan,Retail/Household (Consumer),Kvemo Kartli,Banker-054,RiskMgr-04,RM-KVE-09,1313.29,742.1,571.19,730+ DPD
+2024-12-31,511753,2024-12-26,2022-12-27,905068,Tbilisi Med Center #5068,GROUP-570,SML,Corporate Term Loan,Transportation & Logistics,Tbilisi,Banker-142,RiskMgr-06,RM-TBI-01,2141.1,1456.86,684.24,730+ DPD
+2025-01-31,504840,2025-01-18,2023-01-19,901870,Sofio Sharashenidze,,RB,Consumer,Retail/Household (Consumer),Adjara,Banker-074,RiskMgr-02,RM-ADJ-02,669.55,351.11,318.44,730+ DPD
+2025-01-31,506694,2025-01-18,2023-01-19,906701,Ana Kapanadze,,RB,Mortgage,Retail/Household (Consumer),Tbilisi,Banker-160,RiskMgr-03,RM-TBI-01,1026.85,670.7,356.15,730+ DPD
+2025-01-31,507332,2025-01-29,2023-01-30,905153,Zurab Dzidziguri,,RB,Auto Loan,Transportation & Logistics,Imereti,Banker-055,RiskMgr-03,RM-IME-03,623.85,405.07,218.78,730+ DPD
+2025-01-31,508806,2025-01-29,2023-01-30,902797,Alazani Valley Farms #2797,GROUP-316,SML,Developer,Real Estate & Construction,Mtskheta-Mtianeti,Banker-126,RiskMgr-05,RM-MTS-10,2882.28,1625.27,1257.01,730+ DPD
+2025-01-31,509018,2025-01-23,2023-01-24,905704,Mariam Beridze,,RB,Digital,Financial & Professional Services,Abkhazia (Nominal),Banker-042,RiskMgr-11,RM-ABK-12,1492.55,859.32,633.23,730+ DPD
+2025-01-31,509801,2025-01-23,2023-01-24,906868,Caucasus Pharma #6868,,SML,Developer,Real Estate & Construction,Shida Kartli,Banker-152,RiskMgr-08,RM-SHI-08,3672.09,1600.56,2071.53,730+ DPD
+2025-01-31,510140,2025-01-23,2023-01-24,907821,Alazani Valley Farms #7821,,CB,Corporate Term Loan,Manufacturing & Industry,Tbilisi,Banker-150,RiskMgr-10,RM-TBI-01,88590.3,36818.92,51771.38,730+ DPD
+2025-01-31,511604,2025-01-13,2023-01-14,907022,Alazani Valley Farms #7022,,SMM,Corporate Term Loan,Real Estate & Construction,Adjara,Banker-134,RiskMgr-09,RM-ADJ-02,29606.93,12081.27,17525.66,730+ DPD
+2025-02-28,504499,2025-02-13,2023-02-14,907304,Rustavi Steel Works #7304,,CB,Corporate Term Loan,Manufacturing & Industry,Tbilisi,Banker-070,RiskMgr-09,RM-TBI-01,80617.07,43813.86,36803.21,730+ DPD
+2025-02-28,505651,2025-02-13,2023-02-14,903841,Zurab Dzidziguri,,RB,Mortgage,Retail/Household (Consumer),Tbilisi,Banker-175,RiskMgr-07,RM-TBI-01,177.64,107.17,70.47,730+ DPD
+2025-02-28,506256,2025-02-23,2023-02-24,901880,Rustavi Steel Works #1880,,SML,Developer,Real Estate & Construction,Samegrelo-Zemo Svaneti,Banker-011,RiskMgr-09,RM-SAM-05,2995.62,1635.65,1359.97,730+ DPD
+2025-02-28,508108,2025-02-23,2023-02-24,902723,Sofio Tsereteli,,RB,Auto Loan,Transportation & Logistics,Tbilisi,Banker-090,RiskMgr-01,RM-TBI-01,479.63,257.77,221.86,730+ DPD
+2025-02-28,511531,2025-02-18,2023-02-19,904272,Rustavi Steel Works #4272,,SML,Mortgage,Real Estate & Construction,Tbilisi,Banker-030,RiskMgr-01,RM-TBI-01,1649.68,661.64,988.04,730+ DPD
+2025-02-28,511797,2025-02-28,2023-03-01,906028,Kartli Agro LLC #6028,,SMM,Agro,Agriculture & Agro-processing,Shida Kartli,Banker-044,RiskMgr-05,RM-SHI-08,29974.9,15636.23,14338.67,730+ DPD
+2025-02-28,511886,2025-02-28,2023-03-01,904044,Irakli Gogoladze,,RB,Digital,Financial & Professional Services,Mtskheta-Mtianeti,Banker-067,RiskMgr-11,RM-MTS-10,1696.52,867.55,828.97,730+ DPD
+2025-03-31,501904,2025-03-20,2023-03-21,902085,Imereti Textiles #2085,,SMM,Developer,Real Estate & Construction,Tbilisi,Banker-016,RiskMgr-04,RM-TBI-01,10895.97,6787.63,4108.34,730+ DPD
+2025-03-31,504333,2025-03-31,2023-04-01,904185,Imereti Textiles #4185,GROUP-453,SML,Mortgage,Retail/Household (Consumer),Samtskhe-Javakheti,Banker-158,RiskMgr-03,RM-SAM-11,1494.21,911.2,583.01,730+ DPD
+2025-03-31,505249,2025-03-25,2023-03-26,900482,Kakheti Wine Cellars #482,,SML,Corporate Term Loan,Manufacturing & Industry,Kvemo Kartli,Banker-054,RiskMgr-06,RM-KVE-09,3765.59,1862.27,1903.32,730+ DPD
+2025-03-31,505970,2025-03-20,2023-03-21,900017,Levan Tsereteli,,RB,Auto Loan,Transportation & Logistics,Tbilisi,Banker-143,RiskMgr-03,RM-TBI-01,175.46,104.67,70.79,730+ DPD
+2025-03-31,509123,2025-03-25,2023-03-26,903438,Salome Tsereteli,,RB,Mortgage,Retail/Household (Consumer),Kvemo Kartli,Banker-133,RiskMgr-01,RM-KVE-09,566.38,238.32,328.06,730+ DPD
+2025-03-31,509356,2025-03-20,2023-03-21,903559,Kakheti Wine Cellars #3559,GROUP-392,CB,Corporate Term Loan,Manufacturing & Industry,Samtskhe-Javakheti,Banker-035,RiskMgr-01,RM-SAM-11,195117.27,119975.99,75141.28,730+ DPD
+2025-03-31,511609,2025-03-25,2023-03-26,907197,Vardzia Hospitality #7197,,SML,Agro,Agriculture & Agro-processing,Mtskheta-Mtianeti,Banker-172,RiskMgr-09,RM-MTS-10,2078.9,1288.02,790.88,730+ DPD
+2025-03-31,512071,2025-03-15,2023-03-16,908559,Nino Kapanadze,,RB,Consumer,Retail/Household (Consumer),Tbilisi,Banker-052,RiskMgr-02,RM-TBI-01,1055.71,476.26,579.45,730+ DPD
+2025-03-31,512349,2025-03-31,2023-04-01,904316,Gori Foodstuffs #4316,,SML,Developer,Real Estate & Construction,Tbilisi,Banker-046,RiskMgr-06,RM-TBI-01,3749.9,1630.19,2119.71,730+ DPD
+2025-03-31,512725,2025-03-20,2023-03-21,902417,Colchis Manufacturing #2417,,SMM,Developer,Real Estate & Construction,Shida Kartli,Banker-018,RiskMgr-11,RM-SHI-08,19088.02,9676.25,9411.77,730+ DPD
+2025-04-30,506057,2025-04-30,2023-05-01,907470,Alazani Valley Farms #7470,,CB,Developer,Real Estate & Construction,Adjara,Banker-065,RiskMgr-11,RM-ADJ-02,129544.15,67351.21,62192.94,730+ DPD
+2025-04-30,507562,2025-04-15,2023-04-16,903985,Alazani Valley Farms #3985,,SML,Developer,Real Estate & Construction,Imereti,Banker-132,RiskMgr-05,RM-IME-03,3250.11,1498.12,1751.99,730+ DPD
+2025-04-30,508279,2025-04-15,2023-04-16,906152,Nino Kiladze,,RB,Digital,Retail/Household (Consumer),Tbilisi,Banker-154,RiskMgr-09,RM-TBI-01,901.65,469.43,432.22,730+ DPD
+2025-04-30,508708,2025-04-30,2023-05-01,904114,Rioni Construction #4114,GROUP-448,SMM,Corporate Term Loan,Energy & Utilities,Tbilisi,Banker-070,RiskMgr-02,RM-TBI-01,24838.69,12237.54,12601.15,730+ DPD
+2025-04-30,508971,2025-04-15,2023-04-16,907212,Nino Abashidze,,RB,Mortgage,Real Estate & Construction,Tbilisi,Banker-013,RiskMgr-01,RM-TBI-01,1219.89,566.47,653.42,730+ DPD
+2025-04-30,510630,2025-04-25,2023-04-26,908481,Caucasus Pharma #8481,,SMM,Corporate Term Loan,Manufacturing & Industry,Tbilisi,Banker-019,RiskMgr-10,RM-TBI-01,10161.92,7019.68,3142.24,730+ DPD
+2025-04-30,512653,2025-04-20,2023-04-21,907480,Vardzia Hospitality #7480,,SML,Developer,Real Estate & Construction,Tbilisi,Banker-166,RiskMgr-03,RM-TBI-01,2498.96,1084.18,1414.78,730+ DPD
+2025-04-30,513134,2025-04-20,2023-04-21,902955,Tbilisi Med Center #2955,,SML,Developer,Real Estate & Construction,Imereti,Banker-068,RiskMgr-03,RM-IME-03,4139.33,1778.4,2360.93,730+ DPD
+2025-05-31,501760,2025-05-25,2023-05-26,903503,Vardzia Hospitality #3503,,SMM,Corporate Term Loan,Real Estate & Construction,Kvemo Kartli,Banker-073,RiskMgr-06,RM-KVE-09,31269.3,12575.62,18693.68,730+ DPD
+2025-05-31,503767,2025-05-31,2023-06-01,907080,Luka Mamaladze,,RB,Consumer,Retail/Household (Consumer),Shida Kartli,Banker-038,RiskMgr-06,RM-SHI-08,815.52,460.63,354.89,730+ DPD
+2025-05-31,504076,2025-05-25,2023-05-26,904989,Georgian Logistics Co #4989,GROUP-557,SMM,Corporate Term Loan,Transportation & Logistics,Abkhazia (Nominal),Banker-090,RiskMgr-01,RM-ABK-12,23862.25,12032.45,11829.8,730+ DPD
+2025-05-31,506817,2025-05-20,2023-05-21,901880,Rustavi Steel Works #1880,,CB,Corporate Term Loan,Real Estate & Construction,Shida Kartli,Banker-050,RiskMgr-08,RM-SHI-08,87678.06,60498.0,27180.06,730+ DPD
+2025-05-31,507806,2025-05-15,2023-05-16,908229,Tbilisi Med Center #8229,,CB,Corporate Term Loan,Manufacturing & Industry,Tbilisi,Banker-111,RiskMgr-06,RM-TBI-01,127533.71,64610.26,62923.45,730+ DPD
+2025-05-31,507853,2025-05-31,2023-06-01,906779,Zugdidi Retail Group #6779,GROUP-758,SML,Corporate Term Loan,Financial & Professional Services,Kvemo Kartli,Banker-009,RiskMgr-06,RM-KVE-09,3995.75,1655.17,2340.58,730+ DPD
+2025-05-31,509935,2025-05-15,2023-05-16,901475,Giorgi Mamaladze,,RB,Mortgage,Retail/Household (Consumer),Guria,Banker-180,RiskMgr-12,RM-GUR-06,1072.81,496.98,575.83,730+ DPD
+2025-05-31,510516,2025-05-20,2023-05-21,908863,Nino Abashidze,,RB,Digital,Financial & Professional Services,Tbilisi,Banker-056,RiskMgr-05,RM-TBI-01,1043.78,570.01,473.77,730+ DPD
+2025-05-31,510750,2025-05-20,2023-05-21,904737,Black Sea Shipping #4737,,SML,Developer,Real Estate & Construction,Adjara,Banker-170,RiskMgr-12,RM-ADJ-02,2658.67,1811.1,847.57,730+ DPD
+2025-05-31,510966,2025-05-20,2023-05-21,901611,Ana Kapanadze,,RB,Mortgage,Real Estate & Construction,Samtskhe-Javakheti,Banker-103,RiskMgr-07,RM-SAM-11,1108.03,566.29,541.74,730+ DPD
+2025-05-31,513305,2025-05-31,2023-06-01,907871,Gori Foodstuffs #7871,,SMM,Corporate Term Loan,Real Estate & Construction,Samtskhe-Javakheti,Banker-026,RiskMgr-10,RM-SAM-11,16276.89,9912.7,6364.19,730+ DPD
+2025-06-30,500242,2025-06-20,2023-06-21,906883,Vardzia Hospitality #6883,,SML,Corporate Term Loan,Energy & Utilities,Imereti,Banker-076,RiskMgr-06,RM-IME-03,2489.95,1623.46,866.49,730+ DPD
+2025-06-30,502728,2025-06-20,2023-06-21,900174,Rustavi Steel Works #174,,SMM,Corporate Term Loan,Real Estate & Construction,Samtskhe-Javakheti,Banker-011,RiskMgr-02,RM-SAM-11,13032.13,6170.68,6861.45,730+ DPD
+2025-06-30,504254,2025-06-25,2023-06-26,904908,Georgian Logistics Co #4908,,CB,Developer,Real Estate & Construction,Guria,Banker-048,RiskMgr-08,RM-GUR-06,129585.15,74305.92,55279.23,730+ DPD
+2025-06-30,508871,2025-06-15,2023-06-16,907035,Zurab Gogoladze,,RB,Auto Loan,Retail/Household (Consumer),Imereti,Banker-172,RiskMgr-12,RM-IME-03,1382.14,919.78,462.36,730+ DPD
+2025-06-30,513106,2025-06-25,2023-06-26,907007,Zugdidi Retail Group #7007,,SML,Corporate Term Loan,Real Estate & Construction,Tbilisi,Banker-172,RiskMgr-09,RM-TBI-01,2673.68,1195.51,1478.17,730+ DPD
+2025-06-30,513162,2025-06-25,2023-06-26,908335,Nika Kiladze,,RB,Digital,IT & Digital Services,Tbilisi,Banker-099,RiskMgr-09,RM-TBI-01,177.46,79.41,98.05,730+ DPD
+2025-06-30,513870,2025-06-25,2023-06-26,907299,Colchis Manufacturing #7299,,SMM,Developer,Real Estate & Construction,Tbilisi,Banker-124,RiskMgr-11,RM-TBI-01,6568.88,2841.21,3727.67,730+ DPD
+2025-06-30,513884,2025-06-15,2023-06-16,902474,Black Sea Shipping #2474,,SMM,Corporate Term Loan,Manufacturing & Industry,Tbilisi,Banker-065,RiskMgr-12,RM-TBI-01,6502.87,3840.65,2662.22,730+ DPD
+2025-07-31,506413,2025-07-26,2023-07-27,902903,Colchis Manufacturing #2903,,SMM,Corporate Term Loan,Financial & Professional Services,Imereti,Banker-044,RiskMgr-07,RM-IME-03,15829.9,7490.79,8339.11,730+ DPD
+2025-07-31,510450,2025-07-16,2023-07-17,903486,Rioni Construction #3486,,SML,Developer,Real Estate & Construction,Kvemo Kartli,Banker-102,RiskMgr-05,RM-KVE-09,2739.35,1417.92,1321.43,730+ DPD
+2025-07-31,510560,2025-07-01,2023-07-02,905095,Georgian Logistics Co #5095,GROUP-576,CB,Developer,Real Estate & Construction,Tbilisi,Banker-145,RiskMgr-12,RM-TBI-01,170260.38,115825.01,54435.37,730+ DPD
+2025-07-31,512170,2025-07-21,2023-07-22,908871,Tbilisi Med Center #8871,,SMM,Corporate Term Loan,Manufacturing & Industry,Imereti,Banker-013,RiskMgr-05,RM-IME-03,5203.88,3613.65,1590.23,730+ DPD
+2025-07-31,512661,2025-07-31,2023-08-01,906665,Imereti Textiles #6665,,SMM,Corporate Term Loan,Transportation & Logistics,Adjara,Banker-174,RiskMgr-06,RM-ADJ-02,30142.37,18671.76,11470.61,730+ DPD
+2025-07-31,512743,2025-07-01,2023-07-02,904811,Elene Gogoladze,,RB,Auto Loan,Retail/Household (Consumer),Samegrelo-Zemo Svaneti,Banker-082,RiskMgr-02,RM-SAM-05,734.3,375.57,358.73,730+ DPD
+2025-07-31,513941,2025-07-31,2023-08-01,908064,Mtkvari Energy Partners #8064,GROUP-897,SML,Corporate Term Loan,Manufacturing & Industry,Adjara,Banker-106,RiskMgr-09,RM-ADJ-02,3105.14,1871.58,1233.56,730+ DPD
+2025-07-31,514143,2025-07-16,2023-07-17,902509,GeoTech Solutions #2509,,CB,Developer,Real Estate & Construction,Kakheti,Banker-160,RiskMgr-06,RM-KAK-04,170378.83,94735.23,75643.6,730+ DPD
+2025-08-31,502772,2025-08-20,2023-08-21,902748,Tbilisi Med Center #2748,GROUP-310,SML,Corporate Term Loan,Real Estate & Construction,Shida Kartli,Banker-116,RiskMgr-07,RM-SHI-08,2570.6,1726.05,844.55,730+ DPD
+2025-08-31,507581,2025-08-25,2023-08-26,901453,Ana Gogoladze,,RB,Mortgage,Retail/Household (Consumer),Tbilisi,Banker-140,RiskMgr-04,RM-TBI-01,875.74,410.26,465.48,730+ DPD
+2025-08-31,507670,2025-08-31,2023-09-01,906012,Mtkvari Energy Partners #6012,,CB,Corporate Term Loan,Energy & Utilities,Tbilisi,Banker-046,RiskMgr-03,RM-TBI-01,122685.65,85250.0,37435.65,730+ DPD
+2025-08-31,511091,2025-08-25,2023-08-26,903527,Tbilisi Developers JSC #3527,GROUP-387,SMM,Developer,Financial & Professional Services,Samegrelo-Zemo Svaneti,Banker-017,RiskMgr-08,RM-SAM-05,37373.54,25637.98,11735.56,730+ DPD
+2025-08-31,512025,2025-08-31,2023-09-01,901551,GeoTech Solutions #1551,GROUP-168,SML,Agro,Agriculture & Agro-processing,Tbilisi,Banker-176,RiskMgr-01,RM-TBI-01,3893.31,2541.3,1352.01,730+ DPD
+2025-08-31,512973,2025-08-20,2023-08-21,904311,Batumi Trade Group #4311,,CB,Developer,Real Estate & Construction,Racha-Lechkhumi,Banker-051,RiskMgr-07,RM-RAC-07,99151.58,68396.64,30754.94,730+ DPD
+2025-08-31,514226,2025-08-25,2023-08-26,901938,Salome Gelashvili,,RB,Mortgage,Retail/Household (Consumer),Abkhazia (Nominal),Banker-042,RiskMgr-09,RM-ABK-12,1748.19,880.03,868.16,730+ DPD
+2025-08-31,514358,2025-08-25,2023-08-26,902904,Georgian Logistics Co #2904,,SML,Working Capital,Tourism & Hospitality,Kvemo Kartli,Banker-040,RiskMgr-02,RM-KVE-09,2031.93,1318.02,713.91,730+ DPD
+2025-08-31,514560,2025-08-15,2023-08-16,907366,Alazani Valley Farms #7366,,SML,Agro,Agriculture & Agro-processing,Tbilisi,Banker-116,RiskMgr-08,RM-TBI-01,2206.09,1320.44,885.65,730+ DPD
+2025-09-30,504187,2025-09-15,2023-09-16,903593,Tamar Mamaladze,,RB,Auto Loan,Retail/Household (Consumer),Racha-Lechkhumi,Banker-067,RiskMgr-03,RM-RAC-07,769.39,501.91,267.48,730+ DPD
+2025-09-30,510358,2025-09-20,2023-09-21,901265,Kakheti Wine Cellars #1265,,SML,Corporate Term Loan,Financial & Professional Services,Tbilisi,Banker-071,RiskMgr-05,RM-TBI-01,2645.34,1208.17,1437.17,730+ DPD
+2025-09-30,510518,2025-09-20,2023-09-21,902192,Imereti Textiles #2192,,SML,Mortgage,Retail/Household (Consumer),Imereti,Banker-153,RiskMgr-10,RM-IME-03,1591.24,943.71,647.53,730+ DPD
+2025-09-30,510543,2025-09-15,2023-09-16,904606,Rioni Construction #4606,GROUP-497,CB,Corporate Term Loan,Real Estate & Construction,Tbilisi,Banker-027,RiskMgr-05,RM-TBI-01,69500.39,30456.74,39043.65,730+ DPD
+2025-09-30,512302,2025-09-30,2023-10-01,902600,Colchis Manufacturing #2600,,SML,Developer,Real Estate & Construction,Kakheti,Banker-150,RiskMgr-01,RM-KAK-04,2512.59,1481.97,1030.62,730+ DPD
+2025-09-30,512518,2025-09-30,2023-10-01,904281,Mariam Chikvaidze,,RB,Mortgage,Retail/Household (Consumer),Tbilisi,Banker-107,RiskMgr-09,RM-TBI-01,276.16,142.53,133.63,730+ DPD
+2025-09-30,514030,2025-09-15,2023-09-16,901665,Mtkvari Energy Partners #1665,,SML,Agro,Agriculture & Agro-processing,Imereti,Banker-052,RiskMgr-07,RM-IME-03,3168.09,1570.9,1597.19,730+ DPD
+2025-09-30,514060,2025-09-30,2023-10-01,900121,Black Sea Shipping #121,,SML,Developer,Real Estate & Construction,Tbilisi,Banker-072,RiskMgr-07,RM-TBI-01,2114.04,1106.62,1007.42,730+ DPD
+2025-09-30,514437,2025-09-15,2023-09-16,903638,Svaneti Tourism Ltd #3638,GROUP-405,SMM,Developer,Real Estate & Construction,Adjara,Banker-137,RiskMgr-08,RM-ADJ-02,31593.27,20403.64,11189.63,730+ DPD
+2025-09-30,514776,2025-09-20,2023-09-21,905777,Kutaisi Auto Parts #5777,,SMM,Developer,Real Estate & Construction,Kakheti,Banker-084,RiskMgr-01,RM-KAK-04,26504.56,13036.27,13468.29,730+ DPD
+2025-10-31,506702,2025-10-25,2023-10-26,908750,Beka Lomidze,,RB,Mortgage,Real Estate & Construction,Imereti,Banker-007,RiskMgr-08,RM-IME-03,1038.15,689.85,348.3,730+ DPD
+2025-10-31,507936,2025-10-31,2023-11-01,902538,Kutaisi Auto Parts #2538,,CB,Corporate Term Loan,Real Estate & Construction,Tbilisi,Banker-039,RiskMgr-11,RM-TBI-01,70475.75,37308.4,33167.35,730+ DPD
+2025-10-31,509506,2025-10-20,2023-10-21,901392,Mtkvari Energy Partners #1392,,SML,Corporate Term Loan,Transportation & Logistics,Tbilisi,Banker-106,RiskMgr-12,RM-TBI-01,2940.99,1525.64,1415.35,730+ DPD
+2025-10-31,512156,2025-10-25,2023-10-26,900756,Giorgi Abashidze,,RB,Auto Loan,Retail/Household (Consumer),Samegrelo-Zemo Svaneti,Banker-012,RiskMgr-11,RM-SAM-05,583.74,372.1,211.64,730+ DPD
+2025-10-31,512643,2025-10-15,2023-10-16,900769,Mariam Kapanadze,,RB,Mortgage,Real Estate & Construction,Samtskhe-Javakheti,Banker-178,RiskMgr-01,RM-SAM-11,1361.39,607.58,753.81,730+ DPD
+2025-11-30,502834,2025-11-20,2023-11-21,900305,Zugdidi Retail Group #305,GROUP-031,SML,Corporate Term Loan,Real Estate & Construction,Guria,Banker-036,RiskMgr-05,RM-GUR-06,2719.95,1589.64,1130.31,730+ DPD
+2025-11-30,507218,2025-11-25,2023-11-26,902760,Nino Abashidze,,RB,Mortgage,Retail/Household (Consumer),Tbilisi,Banker-181,RiskMgr-11,RM-TBI-01,876.64,457.78,418.86,730+ DPD
+2025-11-30,508296,2025-11-20,2023-11-21,907988,Kutaisi Auto Parts #7988,,SMM,Corporate Term Loan,Manufacturing & Industry,Tbilisi,Banker-032,RiskMgr-05,RM-TBI-01,4206.98,2045.74,2161.24,730+ DPD
+2025-11-30,508499,2025-11-15,2023-11-16,908957,Georgian Logistics Co #8957,,SML,Corporate Term Loan,Transportation & Logistics,Tbilisi,Banker-130,RiskMgr-12,RM-TBI-01,2731.59,1709.21,1022.38,730+ DPD
+2025-11-30,514010,2025-11-29,,904402,Tamar Chikvaidze,,RB,Mortgage,Retail/Household (Consumer),Samegrelo-Zemo Svaneti,Banker-155,RiskMgr-10,RM-SAM-05,826.4,563.76,262.64,730+ DPD
+2025-11-30,514688,2025-11-20,2023-11-21,906159,Kakheti Wine Cellars #6159,,SMM,Developer,Real Estate & Construction,Tbilisi,Banker-039,RiskMgr-04,RM-TBI-01,14810.99,7461.07,7349.92,730+ DPD
+2025-11-30,514846,2025-11-25,2023-11-26,904567,Zugdidi Retail Group #4567,GROUP-490,SML,Corporate Term Loan,Real Estate & Construction,Mtskheta-Mtianeti,Banker-053,RiskMgr-01,RM-MTS-10,4280.36,1824.4,2455.96,730+ DPD
+2025-11-30,514881,2025-11-15,2023-11-16,903188,Gori Foodstuffs #3188,,SML,Agro,Agriculture & Agro-processing,Adjara,Banker-074,RiskMgr-11,RM-ADJ-02,4627.86,2977.28,1650.58,730+ DPD
+2025-12-31,500877,2025-12-30,2023-12-31,904848,Ana Lomidze,,RB,Mortgage,Real Estate & Construction,Tbilisi,Banker-047,RiskMgr-12,RM-TBI-01,1076.91,680.73,396.18,730+ DPD
+2025-12-31,503699,2025-12-30,2023-12-31,900223,Sofio Gelashvili,,RB,Mortgage,Retail/Household (Consumer),Tbilisi,Banker-101,RiskMgr-12,RM-TBI-01,941.68,612.66,329.02,730+ DPD
+2025-12-31,506972,2025-12-01,2023-12-02,905106,Caucasus Pharma #5106,,SML,Corporate Term Loan,Real Estate & Construction,Kvemo Kartli,Banker-095,RiskMgr-10,RM-KVE-09,1973.12,1151.43,821.69,730+ DPD
+2025-12-31,508400,2025-12-16,2023-12-17,904571,Georgian Logistics Co #4571,,SMM,Corporate Term Loan,Real Estate & Construction,Samegrelo-Zemo Svaneti,Banker-175,RiskMgr-09,RM-SAM-05,14149.06,8275.95,5873.11,730+ DPD
+2025-12-31,510342,2025-12-30,2023-12-31,901331,Sofio Gogoladze,,RB,Consumer,Retail/Household (Consumer),Tbilisi,Banker-148,RiskMgr-05,RM-TBI-01,396.61,209.09,187.52,730+ DPD
+2025-12-31,510998,2025-12-30,2023-12-31,901483,Rioni Construction #1483,,CB,Corporate Term Loan,Energy & Utilities,Tbilisi,Banker-048,RiskMgr-12,RM-TBI-01,74403.33,51709.91,22693.42,730+ DPD
+2025-12-31,512238,2025-12-30,2023-12-31,903941,Giorgi Gelashvili,,RB,Auto Loan,Retail/Household (Consumer),Tbilisi,Banker-097,RiskMgr-10,RM-TBI-01,1177.69,780.5,397.19,730+ DPD
+2025-12-31,512728,2025-12-16,2023-12-17,906395,Zurab Beridze,,RB,Auto Loan,Transportation & Logistics,Kvemo Kartli,Banker-136,RiskMgr-02,RM-KVE-09,1076.61,586.13,490.48,730+ DPD
+2025-12-31,513427,2025-12-30,2023-12-31,903620,Georgian Logistics Co #3620,,CB,Developer,Real Estate & Construction,Adjara,Banker-171,RiskMgr-03,RM-ADJ-02,90459.06,50267.81,40191.25,730+ DPD
+2025-12-31,513787,2025-12-26,2023-12-27,903901,Caucasus Pharma #3901,,CB,Developer,Real Estate & Construction,Tbilisi,Banker-021,RiskMgr-12,RM-TBI-01,59313.1,33355.48,25957.62,730+ DPD
+2025-12-31,514372,2025-12-26,2023-12-27,904571,Georgian Logistics Co #4571,,SMM,Agro,Agriculture & Agro-processing,Tbilisi,Banker-060,RiskMgr-12,RM-TBI-01,17174.91,7059.6,10115.31,730+ DPD
+2025-12-31,514425,2025-12-21,2023-12-22,905567,Batumi Trade Group #5567,,SMM,Developer,Real Estate & Construction,Tbilisi,Banker-174,RiskMgr-04,RM-TBI-01,11518.46,6089.76,5428.7,730+ DPD
+2025-12-31,514754,2025-12-01,2023-12-02,900969,Zugdidi Retail Group #969,,CB,Developer,Real Estate & Construction,Samtskhe-Javakheti,Banker-131,RiskMgr-10,RM-SAM-11,87970.51,42387.27,45583.24,730+ DPD
+2025-12-31,515098,2025-12-26,2023-12-27,902021,Kutaisi Auto Parts #2021,GROUP-223,SML,Corporate Term Loan,Real Estate & Construction,Kakheti,Banker-157,RiskMgr-10,RM-KAK-04,3935.86,2262.73,1673.13,730+ DPD
+2025-12-31,515431,2025-12-26,2023-12-27,901591,GeoTech Solutions #1591,GROUP-172,SML,Developer,Real Estate & Construction,Samtskhe-Javakheti,Banker-080,RiskMgr-01,RM-SAM-11,2980.34,1336.37,1643.97,730+ DPD
+2026-01-31,507897,2026-01-30,2024-01-31,907343,Kutaisi Auto Parts #7343,,SML,Developer,Real Estate & Construction,Tbilisi,Banker-114,RiskMgr-05,RM-TBI-01,3813.34,2398.97,1414.37,730+ DPD
+2026-01-31,508533,2026-01-24,2024-01-25,907977,Zugdidi Retail Group #7977,,SML,Mortgage,Retail/Household (Consumer),Tbilisi,Banker-177,RiskMgr-12,RM-TBI-01,1160.2,488.03,672.17,730+ DPD
+2026-01-31,509715,2026-01-19,2024-01-20,905877,Levan Lomidze,,RB,Mortgage,Real Estate & Construction,Abkhazia (Nominal),Banker-033,RiskMgr-04,RM-ABK-12,819.69,526.27,293.42,730+ DPD
+2026-01-31,511028,2026-01-30,2024-01-31,904831,Rustavi Steel Works #4831,,SML,Developer,Real Estate & Construction,Tbilisi,Banker-073,RiskMgr-04,RM-TBI-01,3739.87,2207.89,1531.98,730+ DPD
+2026-01-31,511515,2026-01-14,2024-01-15,906467,Luka Abashidze,,RB,Mortgage,Retail/Household (Consumer),Samegrelo-Zemo Svaneti,Banker-142,RiskMgr-08,RM-SAM-05,477.55,331.72,145.83,730+ DPD
+2026-01-31,513167,2026-01-19,2024-01-20,902960,Kartli Agro LLC #2960,GROUP-331,SMM,Corporate Term Loan,Transportation & Logistics,Tbilisi,Banker-024,RiskMgr-10,RM-TBI-01,12693.42,5237.11,7456.31,730+ DPD
+2026-01-31,513241,2026-01-24,2024-01-25,903825,Kakheti Wine Cellars #3825,GROUP-421,SML,Developer,Real Estate & Construction,Imereti,Banker-177,RiskMgr-06,RM-IME-03,1706.91,794.94,911.97,730+ DPD
+2026-01-31,515613,2026-01-14,2024-01-15,908939,Irakli Mamaladze,,RB,Auto Loan,Transportation & Logistics,Tbilisi,Banker-142,RiskMgr-01,RM-TBI-01,1472.47,929.15,543.32,730+ DPD
+2026-01-31,515710,2026-01-24,2024-01-25,908606,Tbilisi Developers JSC #8606,,CB,Developer,Trade & Distribution,Tbilisi,Banker-177,RiskMgr-06,RM-TBI-01,199332.41,130094.73,69237.68,730+ DPD
+2026-01-31,516096,2026-01-19,2024-01-20,901135,Imereti Textiles #1135,GROUP-110,CB,Developer,Real Estate & Construction,Tbilisi,Banker-179,RiskMgr-08,RM-TBI-01,201012.54,96688.63,104323.91,730+ DPD
+2026-01-31,516505,2026-01-19,2024-01-20,903447,Caucasus Pharma #3447,,SMM,Developer,Real Estate & Construction,Guria,Banker-041,RiskMgr-12,RM-GUR-06,14638.81,6088.78,8550.03,730+ DPD
+2026-01-31,517466,2026-01-19,2024-01-20,908393,Black Sea Shipping #8393,,SMM,Developer,Real Estate & Construction,Imereti,Banker-099,RiskMgr-08,RM-IME-03,23681.91,10398.79,13283.12,730+ DPD
+2026-01-31,518560,2026-01-30,2024-01-31,902547,Colchis Manufacturing #2547,GROUP-290,SMM,Developer,Real Estate & Construction,Tbilisi,Banker-099,RiskMgr-06,RM-TBI-01,37870.6,15753.58,22117.02,730+ DPD
+2026-02-28,502193,2025-06-29,,901772,Vardzia Hospitality #1772,,CB,Corporate Term Loan,Financial & Professional Services,Tbilisi,Banker-127,RiskMgr-10,RM-TBI-01,121142.82,61705.87,59436.95,730+ DPD
+2026-02-28,508905,2026-02-24,2024-02-25,905415,GeoTech Solutions #5415,GROUP-618,SMM,Developer,Real Estate & Construction,Samtskhe-Javakheti,Banker-067,RiskMgr-12,RM-SAM-11,15170.12,8567.42,6602.7,730+ DPD
+2026-02-28,509408,2026-02-19,2024-02-20,901654,Nika Gelashvili,,RB,Mortgage,Retail/Household (Consumer),Tbilisi,Banker-111,RiskMgr-10,RM-TBI-01,1032.03,502.19,529.84,730+ DPD
+2026-02-28,510365,2026-02-19,2024-02-20,908758,Mariam Lomidze,,RB,Digital,Financial & Professional Services,Shida Kartli,Banker-045,RiskMgr-09,RM-SHI-08,77.7,39.74,37.96,730+ DPD
+2026-02-28,513539,2026-02-19,2024-02-20,907610,Salome Sharashenidze,,RB,Digital,Financial & Professional Services,Abkhazia (Nominal),Banker-036,RiskMgr-09,RM-ABK-12,1202.53,778.12,424.41,730+ DPD
+2026-02-28,516167,2026-02-19,2024-02-20,902846,Rioni Construction #2846,,CB,Developer,Real Estate & Construction,Tbilisi,Banker-170,RiskMgr-07,RM-TBI-01,167742.55,76587.65,91154.9,730+ DPD
+2026-02-28,516630,2026-02-19,2024-02-20,904168,Tbilisi Developers JSC #4168,,CB,Corporate Term Loan,Real Estate & Construction,Kvemo Kartli,Banker-010,RiskMgr-10,RM-KVE-09,110587.1,61223.56,49363.54,730+ DPD
+2026-02-28,516885,2026-02-14,2024-02-15,902786,Vardzia Hospitality #2786,,SMM,Agro,Agriculture & Agro-processing,Tbilisi,Banker-079,RiskMgr-09,RM-TBI-01,10274.66,4658.14,5616.52,730+ DPD
+2026-02-28,517077,2026-02-19,2024-02-20,904031,Batumi Trade Group #4031,,CB,Corporate Term Loan,Real Estate & Construction,Kvemo Kartli,Banker-048,RiskMgr-05,RM-KVE-09,160283.27,91019.79,69263.48,730+ DPD
+2026-02-28,517537,2026-02-19,2024-02-20,903105,Kakheti Wine Cellars #3105,GROUP-347,SML,Developer,Trade & Distribution,Mtskheta-Mtianeti,Banker-042,RiskMgr-10,RM-MTS-10,3967.23,1728.43,2238.8,730+ DPD
+2026-02-28,517726,2026-02-19,2024-02-20,905888,Kutaisi Auto Parts #5888,,SML,Agro,Agriculture & Agro-processing,Abkhazia (Nominal),Banker-017,RiskMgr-03,RM-ABK-12,2265.73,1390.46,875.27,730+ DPD
+2026-02-28,518005,2026-02-24,2024-02-25,905112,Svaneti Tourism Ltd #5112,,SML,Corporate Term Loan,Manufacturing & Industry,Samtskhe-Javakheti,Banker-128,RiskMgr-07,RM-SAM-11,3425.87,2307.67,1118.2,730+ DPD
+2026-03-31,500712,2026-03-21,2024-03-21,902606,Kutaisi Auto Parts #2606,,SML,Corporate Term Loan,Real Estate & Construction,Adjara,Banker-032,RiskMgr-03,RM-ADJ-02,3616.51,2314.76,1301.75,730+ DPD
+2026-03-31,510786,2026-03-01,2024-03-01,900419,Davit Abashidze,,RB,Digital,IT & Digital Services,Tbilisi,Banker-055,RiskMgr-07,RM-TBI-01,525.49,238.05,287.44,730+ DPD
+2026-03-31,512689,2026-03-01,2024-03-01,901171,Tbilisi Developers JSC #1171,GROUP-122,SML,Corporate Term Loan,Transportation & Logistics,Shida Kartli,Banker-141,RiskMgr-02,RM-SHI-08,2764.36,1483.84,1280.52,730+ DPD
+2026-03-31,512694,2026-03-26,2024-03-26,908525,Mtkvari Energy Partners #8525,GROUP-932,SMM,Corporate Term Loan,Manufacturing & Industry,Samtskhe-Javakheti,Banker-135,RiskMgr-04,RM-SAM-11,26528.83,18469.22,8059.61,730+ DPD
+2026-03-31,512955,2026-03-01,2024-03-01,901934,Rustavi Steel Works #1934,,SMM,Developer,Real Estate & Construction,Samegrelo-Zemo Svaneti,Banker-053,RiskMgr-06,RM-SAM-05,39250.95,24273.84,14977.11,730+ DPD
+2026-03-31,514357,2026-03-16,2024-03-16,901795,Rustavi Steel Works #1795,,CB,Developer,Real Estate & Construction,Kakheti,Banker-126,RiskMgr-02,RM-KAK-04,91896.23,58271.89,33624.34,730+ DPD
+2026-03-31,514901,2026-03-26,2024-03-26,902203,Vardzia Hospitality #2203,,SML,Corporate Term Loan,Financial & Professional Services,Abkhazia (Nominal),Banker-070,RiskMgr-06,RM-ABK-12,3818.03,2273.28,1544.75,730+ DPD
+2026-03-31,516016,2026-03-16,2024-03-16,903787,Kakheti Wine Cellars #3787,,CB,Developer,Real Estate & Construction,Imereti,Banker-115,RiskMgr-01,RM-IME-03,153516.31,88142.44,65373.87,730+ DPD
+2026-03-31,516525,2026-03-26,2024-03-26,904554,Gori Foodstuffs #4554,,SMM,Developer,Real Estate & Construction,Tbilisi,Banker-070,RiskMgr-06,RM-TBI-01,17978.16,10458.27,7519.89,730+ DPD
+2026-03-31,517992,2026-03-01,2024-03-01,906041,Tbilisi Developers JSC #6041,GROUP-686,CB,Developer,Real Estate & Construction,Imereti,Banker-140,RiskMgr-06,RM-IME-03,107723.58,71020.55,36703.03,730+ DPD
+2026-03-31,518417,2026-03-26,2024-03-26,903440,Salome Mamaladze,,RB,Auto Loan,Retail/Household (Consumer),Imereti,Banker-039,RiskMgr-01,RM-IME-03,734.46,411.99,322.47,730+ DPD
+2026-04-30,501787,2026-04-01,2024-04-01,902916,Tamar Mamaladze,,RB,Mortgage,Real Estate & Construction,Samtskhe-Javakheti,Banker-144,RiskMgr-12,RM-SAM-11,1058.25,707.75,350.5,730+ DPD
+2026-04-30,510276,2026-04-16,2024-04-16,907703,Mariam Abashidze,,RB,Auto Loan,Transportation & Logistics,Tbilisi,Banker-125,RiskMgr-10,RM-TBI-01,741.26,393.16,348.1,730+ DPD
+2026-04-30,510394,2026-04-30,,902256,GeoTech Solutions #2256,,CB,Corporate Term Loan,Energy & Utilities,Samtskhe-Javakheti,Banker-014,RiskMgr-09,RM-SAM-11,150135.56,92749.96,57385.6,730+ DPD
+2026-04-30,511304,2026-04-21,2024-04-21,903085,GeoTech Solutions #3085,,CB,Developer,Real Estate & Construction,Kvemo Kartli,Banker-064,RiskMgr-10,RM-KVE-09,110247.67,52138.84,58108.83,730+ DPD
+2026-04-30,512032,2026-04-21,2024-04-21,901462,Luka Kiladze,,RB,Mortgage,Real Estate & Construction,Adjara,Banker-065,RiskMgr-12,RM-ADJ-02,1191.75,594.26,597.49,730+ DPD
+2026-04-30,513741,2026-04-26,2024-04-26,904904,Vardzia Hospitality #4904,,CB,Developer,Real Estate & Construction,Samtskhe-Javakheti,Banker-076,RiskMgr-09,RM-SAM-11,79430.72,46113.64,33317.08,730+ DPD
+2026-04-30,515061,2026-04-01,2024-04-01,907120,Mtkvari Energy Partners #7120,,CB,Corporate Term Loan,Real Estate & Construction,Tbilisi,Banker-101,RiskMgr-11,RM-TBI-01,38590.39,20847.56,17742.83,730+ DPD
+2026-04-30,516010,2026-04-21,2024-04-21,900611,Tbilisi Med Center #611,,CB,Developer,Real Estate & Construction,Tbilisi,Banker-022,RiskMgr-04,RM-TBI-01,73790.86,35655.26,38135.6,730+ DPD
+2026-04-30,516676,2026-04-21,2024-04-21,901473,Caucasus Pharma #1473,,CB,Corporate Term Loan,Manufacturing & Industry,Adjara,Banker-032,RiskMgr-01,RM-ADJ-02,84497.68,35357.99,49139.69,730+ DPD
+2026-04-30,517444,2026-04-16,2024-04-16,906516,Caucasus Pharma #6516,,SML,Agro,Agriculture & Agro-processing,Samegrelo-Zemo Svaneti,Banker-141,RiskMgr-09,RM-SAM-05,3053.43,1351.34,1702.09,730+ DPD
+2026-04-30,517536,2026-04-16,2024-04-16,905163,Tbilisi Med Center #5163,,CB,Developer,Real Estate & Construction,Kvemo Kartli,Banker-005,RiskMgr-10,RM-KVE-09,128382.01,55605.85,72776.16,730+ DPD
+2026-04-30,518724,2026-04-16,2024-04-16,903477,Rustavi Steel Works #3477,,CB,Developer,Real Estate & Construction,Tbilisi,Banker-072,RiskMgr-02,RM-TBI-01,92739.35,53590.42,39148.93,730+ DPD
+2026-05-31,503718,2026-05-16,2024-05-16,902807,Mariam Kapanadze,,RB,Mortgage,Retail/Household (Consumer),Tbilisi,Banker-041,RiskMgr-04,RM-TBI-01,18.72,10.59,8.13,730+ DPD
+2026-05-31,504399,2026-05-16,2024-05-16,902196,Davit Mamaladze,,RB,Mortgage,Real Estate & Construction,Samtskhe-Javakheti,Banker-027,RiskMgr-04,RM-SAM-11,659.14,441.69,217.45,730+ DPD
+2026-05-31,506941,2026-05-21,2024-05-21,900343,Svaneti Tourism Ltd #343,,SMM,Corporate Term Loan,Energy & Utilities,Adjara,Banker-103,RiskMgr-12,RM-ADJ-02,21605.86,10416.27,11189.59,730+ DPD
+2026-05-31,508716,2026-05-01,2024-05-01,902431,Mariam Sharashenidze,,RB,Mortgage,Real Estate & Construction,Tbilisi,Banker-116,RiskMgr-07,RM-TBI-01,587.64,280.03,307.61,730+ DPD
+2026-05-31,509140,2026-05-21,2024-05-21,900222,Tbilisi Med Center #222,,SML,Developer,Real Estate & Construction,Kakheti,Banker-057,RiskMgr-02,RM-KAK-04,1492.72,1016.42,476.3,730+ DPD
+2026-05-31,514067,2026-05-16,2024-05-16,905827,Gori Foodstuffs #5827,,SML,Consumer,Retail/Household (Consumer),Mtskheta-Mtianeti,Banker-051,RiskMgr-04,RM-MTS-10,1144.01,721.15,422.86,730+ DPD
+2026-05-31,514222,2026-05-26,2024-05-26,906325,GeoTech Solutions #6325,GROUP-715,SML,Developer,Real Estate & Construction,Tbilisi,Banker-010,RiskMgr-04,RM-TBI-01,2351.65,981.86,1369.79,730+ DPD
+2026-05-31,518322,2026-05-01,2024-05-01,903431,Zugdidi Retail Group #3431,,CB,Developer,Real Estate & Construction,Racha-Lechkhumi,Banker-134,RiskMgr-10,RM-RAC-07,91251.28,39042.9,52208.38,730+ DPD
+2026-05-31,518914,2026-05-01,2024-05-01,905159,Mtkvari Energy Partners #5159,,CB,Developer,Real Estate & Construction,Tbilisi,Banker-083,RiskMgr-07,RM-TBI-01,153887.41,83033.35,70854.06,730+ DPD
+2026-05-31,519236,2026-05-16,2024-05-16,906568,Colchis Manufacturing #6568,,CB,Corporate Term Loan,Transportation & Logistics,Kakheti,Banker-154,RiskMgr-05,RM-KAK-04,124925.44,86337.37,38588.07,730+ DPD
+2026-06-30,505150,2026-06-26,2024-06-26,905009,GeoTech Solutions #5009,,SMM,Corporate Term Loan,Transportation & Logistics,Guria,Banker-064,RiskMgr-01,RM-GUR-06,9446.89,4705.39,4741.5,730+ DPD
+2026-06-30,512031,2026-06-21,2024-06-21,905350,Georgian Logistics Co #5350,,SMM,Developer,Real Estate & Construction,Tbilisi,Banker-035,RiskMgr-04,RM-TBI-01,28650.68,17577.17,11073.51,730+ DPD
+2026-06-30,513008,2026-06-21,2024-06-21,900437,Zugdidi Retail Group #437,,SML,Developer,Real Estate & Construction,Mtskheta-Mtianeti,Banker-169,RiskMgr-05,RM-MTS-10,3290.2,1912.53,1377.67,730+ DPD
+2026-06-30,513171,2026-06-01,2024-06-01,907402,Rustavi Steel Works #7402,,SML,Developer,Real Estate & Construction,Tbilisi,Banker-104,RiskMgr-06,RM-TBI-01,2095.62,1148.66,946.96,730+ DPD
+2026-06-30,514082,2026-06-01,2024-06-01,904078,Gori Foodstuffs #4078,,CB,Corporate Term Loan,Financial & Professional Services,Kvemo Kartli,Banker-178,RiskMgr-07,RM-KVE-09,130121.19,56549.4,73571.79,730+ DPD
+2026-06-30,515293,2026-06-26,2024-06-26,908381,Gori Foodstuffs #8381,,SMM,Developer,Real Estate & Construction,Samtskhe-Javakheti,Banker-038,RiskMgr-05,RM-SAM-11,4483.07,2402.15,2080.92,730+ DPD
+2026-06-30,516163,2026-06-26,2024-06-26,905784,Gori Foodstuffs #5784,,CB,Developer,Real Estate & Construction,Tbilisi,Banker-146,RiskMgr-02,RM-TBI-01,95359.56,52693.59,42665.97,730+ DPD
+2026-06-30,516343,2026-06-26,2024-06-26,903247,GeoTech Solutions #3247,,CB,Corporate Term Loan,Energy & Utilities,Tbilisi,Banker-062,RiskMgr-05,RM-TBI-01,157804.6,96349.59,61455.01,730+ DPD
+2026-06-30,516708,2026-06-01,2024-06-01,905557,Georgian Logistics Co #5557,,CB,Developer,Real Estate & Construction,Tbilisi,Banker-157,RiskMgr-02,RM-TBI-01,150812.09,99124.38,51687.71,730+ DPD
+2026-06-30,516834,2026-06-26,2024-06-26,901444,Rioni Construction #1444,GROUP-152,CB,Developer,Real Estate & Construction,Kvemo Kartli,Banker-137,RiskMgr-03,RM-KVE-09,57364.44,23275.34,34089.1,730+ DPD
+2026-06-30,517898,2026-06-01,2024-06-01,901626,Rustavi Steel Works #1626,,SMM,Agro,Agriculture & Agro-processing,Racha-Lechkhumi,Banker-084,RiskMgr-04,RM-RAC-07,25141.9,10454.76,14687.14,730+ DPD
+2026-06-30,518231,2026-06-01,2024-06-01,900530,Tamar Abashidze,,RB,Digital,Retail/Household (Consumer),Samtskhe-Javakheti,Banker-150,RiskMgr-11,RM-SAM-11,963.81,446.72,517.09,730+ DPD
+2026-06-30,518817,2026-06-21,2024-06-21,908119,Nika Gogoladze,,RB,Digital,IT & Digital Services,Mtskheta-Mtianeti,Banker-013,RiskMgr-11,RM-MTS-10,984.11,573.8,410.31,730+ DPD
+2026-06-30,519406,2026-06-16,2024-06-16,903903,Kakheti Wine Cellars #3903,,SMM,Developer,Real Estate & Construction,Abkhazia (Nominal),Banker-152,RiskMgr-06,RM-ABK-12,33350.56,19161.5,14189.06,730+ DPD
+2026-07-31,501408,2026-07-27,2024-07-27,907456,Giorgi Abashidze,,RB,Mortgage,Retail/Household (Consumer),Kakheti,Banker-041,RiskMgr-11,RM-KAK-04,1001.5,404.93,596.57,730+ DPD
+2026-07-31,509448,2026-07-22,2024-07-22,903317,Salome Beridze,,RB,Mortgage,Retail/Household (Consumer),Tbilisi,Banker-047,RiskMgr-07,RM-TBI-01,388.52,229.48,159.04,730+ DPD
+2026-07-31,510728,2026-07-27,2024-07-27,904753,Luka Sharashenidze,,RB,Mortgage,Real Estate & Construction,Abkhazia (Nominal),Banker-097,RiskMgr-02,RM-ABK-12,348.79,182.43,166.36,730+ DPD
+2026-07-31,511334,2026-07-22,2024-07-22,906760,Ketevan Tsereteli,,RB,Consumer,Tourism & Hospitality,Samtskhe-Javakheti,Banker-128,RiskMgr-07,RM-SAM-11,264.15,133.21,130.94,730+ DPD
+2026-07-31,515605,2026-07-22,2024-07-22,905237,Gori Foodstuffs #5237,,SMM,Developer,Real Estate & Construction,Samegrelo-Zemo Svaneti,Banker-012,RiskMgr-10,RM-SAM-05,35620.08,20602.29,15017.79,730+ DPD
+2026-07-31,516021,2026-07-22,2024-07-22,902884,Batumi Trade Group #2884,,CB,Developer,Real Estate & Construction,Kvemo Kartli,Banker-053,RiskMgr-05,RM-KVE-09,57848.47,27444.22,30404.25,730+ DPD
+2026-07-31,518287,2026-07-27,2024-07-27,905339,Gori Foodstuffs #5339,GROUP-611,SMM,Corporate Term Loan,Energy & Utilities,Samtskhe-Javakheti,Banker-105,RiskMgr-11,RM-SAM-11,24538.8,15024.46,9514.34,730+ DPD
+2026-07-31,519375,2026-07-22,2024-07-22,907946,Rioni Construction #7946,,CB,Developer,Real Estate & Construction,Abkhazia (Nominal),Banker-028,RiskMgr-05,RM-ABK-12,130510.1,90837.8,39672.3,730+ DPD
+2026-07-31,519547,2026-07-27,2024-07-27,907458,Kutaisi Auto Parts #7458,,SMM,Corporate Term Loan,Energy & Utilities,Tbilisi,Banker-154,RiskMgr-05,RM-TBI-01,32991.25,17361.61,15629.64,730+ DPD
