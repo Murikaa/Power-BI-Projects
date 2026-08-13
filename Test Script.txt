@@ -1,0 +1,315 @@
+CREATE OR REPLACE PROCEDURE Insert_Into_Par_Summary_SME_v2 AS
+BEGIN
+EXECUTE IMMEDIATE 'TRUNCATE TABLE mrostomashvili.par_summary_sme_v8';
+
+insert into par_summary_sme_v8
+
+WITH TMR_ as (
+SELECT hist_date, deal_no, dd_Rest_e, initial_impairement, ifrs9_stage, problem_phase, overdue_Days, Par_bucket_cur
+FROM tkochladze_dev.SME_Portfolio_v t
+where hist_Date = (select max(hist_Date) from SME_Portfolio t )
+),
+ Stage_3_Refinanced As (
+  Select Distinct last_day(c.run_date) As run_date, c.Loan_Key
+  From Lnd_Product_Repayments@Xldr.Bg c
+       Join lnd_loan@xldr.bg l On c.repay_prod_key = l.loan_key
+  Where c.repay_prod_group = 'LND'
+        And last_day(c.run_date)   between add_months(trunc(sysdate), -14) and sysdate
+
+         And Exists(Select * From SME_Portfolio_v d
+                   Where 'LND' || l.loan_no = d.deal_no
+                   And d.hist_date = last_day(add_months(last_day(c.run_date),-1))
+                   And d.ifrs9_stage ='3' )
+)
+
+, NPR as (
+select
+distinct loan_key, last_day(start_date) as Ref_date, start_date, rank() over (partition by loan_key order by start_date asc) as RNK
+       from ( lnd_add_loan@xldr.bg )  b
+       where 1=1
+       and b.refinance_type in ( 'NPR')
+       and b.refinance_type is not null
+       and start_date > add_months(last_Day(sysdate - 1),-2)
+
+     )
+,
+
+PRO as (
+select
+distinct loan_key, last_day(start_date) as Ref_date,  start_date, rank() over (partition by loan_key order by start_date asc) as RNK
+       from ( lnd_add_loan@xldr.bg )  b
+       where 1=1
+       and b.refinance_type in ( 'PRO', 'NPL' )
+       and b.refinance_type is not null
+       and start_date > add_months(last_Day(sysdate - 1),-2)
+     )
+
+,dek as
+(
+SELECT
+hist_Date,
+loan_Segment,
+client_no,
+client_Short,
+deal_no,
+deal_key,
+Case when NVL(a.deal_product, 'A') IN ('TBU', 'SBU', 'SBS') then 'SM'
+     when NVL(a.deal_product, 'A') IN ('MFL') then 'FST'
+     When Nvl(a.deal_product, 'A') IN ('MC0', 'MC1', 'MA0', 'MC4', 'CBL', 'EBA', 'EBB', 'ECA', 'ECB', 'BAU', 'BBU', 'BCU'
+                                           ,'BN1', 'DEP', 'EBL', 'ECL', 'IPL', 'IT1', 'MR1', 'MR4', 'MR5', 'MRS', 'NOP', 'OTH', 'STF', 'VIP') and a.loan_segment = 'SML'
+                                           Then  'EXP'
+                                                Else 'Standard'
+                                                  end Product,
+ nvl(a.hist_date - nvl(a.overdue_date, a.hist_date),0)  as overdue_days,
+ case --when a.IFRS9_STAGE is null then '0'
+        when a.IFRS9_STAGE = 'POCI' and a.default_status = 1 then '3'
+        when a.IFRS9_STAGE = 'POCI' and a.default_status = 0 then '2'
+        ELSE a.IFRS9_STAGE END as IFRS9_STAGE
+        , SECTOR
+        , Eir_Ifrs_Bal_e
+        , airc_gel
+        , cr_line_limit
+        , dd_rest_e
+        , a.intrest_owed
+        , a.central_bank_rate
+ --max(dd_effect_rate) over(partition by a.deal_no) as max_rate
+ FROM dekada a
+where hist_Date   >= '31dec2024'
+and loan_segment in ('SMM', 'SML')
+)
+,
+
+CTE as (
+SELECT
+
+a.Hist_date,
+nvl(case when  cr.fixed_loan_segment = 'Medium' then 'SMM'
+         when  cr.fixed_loan_segment = 'Small'  then 'SML' end, '-') as fixed_loan_segment,
+a.loan_segment,
+a.Product,
+a.overdue_days,
+
+ sum(
+     case when a.hist_date > t.hist_date then nvl(a.eir_ifrs_bal_e,0) - nvl(t.initial_impairement,0)
+          when a.deal_no like '%DEB%' then 0
+          else nvl(a.eir_ifrs_bal_e,0) - nvl(a.airc_gel,0) end ) as eir_ifrs_bal_e,
+ sum(a.dd_rest_e + a.intrest_owed * a.central_bank_rate - nvl(t.initial_impairement,0)  ) as dd_rest_e_Int,
+
+ case when GROUP_PHASE = '4' then 'Rehab'
+      when GROUP_PHASE = '5' then 'Hard'
+      else 'Business' end as Phase
+
+ , nvl( a.IFRS9_STAGE, t.ifrs9_stage) as IFRS9_STAGE
+ , a.SECTOR
+ , case when nvl(prev.Par_bucket_cur,0) = '0' and a.overdue_days between 1  and 10 then '0-1'
+                            when nvl(prev.Par_bucket_cur,0) = '0' and a.overdue_days > 10              then '0-10'
+                            when nvl(prev.overdue_days,0) <= 30   and a.overdue_days between 31 and 60 then '1-30'
+                            when nvl(prev.overdue_Days,0) between 31 and 60 and a.overdue_days > 60    then '30-60'
+                            when nvl(prev.overdue_Days,0) between 61 and 90 and a.overdue_days > 90    then '60-90'
+                            else '-' end as PAR_Roll
+  , case when prev.problem_phase is null and GROUP_PHASE = '4' then 'Business_To_Rehab'
+         when prev.problem_phase is null and GROUP_PHASE = '5' then 'Business_To_Hard'
+         when prev.problem_phase = '4'   and GROUP_PHASE = '5' then 'Rehab_To_Hard'
+         else '-' end as Phase_Roll
+  , case when nvl(prev.ifrs9_stage,0)  = '1' and a.ifrs9_stage = '2' then 'Stage1-2'
+         when nvl(prev.ifrs9_stage,0) <> '3' and a.ifrs9_stage = '3' and r.loan_key is null then 'To_Stage_3'
+         when a.ifrs9_Stage is null and nvl(t.ifrs9_stage,0) <> '3' and a.overdue_days> 90 and t.overdue_days < 90  then 'To_Stage_3' -- Predict Before Dekada Stage Fill
+         when a.ifrs9_Stage is null and nvl(t.ifrs9_stage,0) <> '3' and pro.loan_key is not null                    then 'To_Stage_3' -- Predict Before Dekada Stage Fill
+
+         when a.ifrs9_Stage is null and nvl(t.ifrs9_stage,0) = '1' and a.overdue_days> 30 and a.overdue_days <=60 then 'Stage1-2' -- Predict Before Dekada Stage Fill
+         when a.ifrs9_Stage is null and nvl(t.ifrs9_stage,0) = '1' and NPR.loan_key is not null                   then 'Stage1-2' -- Predict Before Dekada Stage Fill
+
+         else '-' end as Stage_Roll
+  , case when a.overdue_days = 0 then 'OVD_0'
+         when a.overdue_days between 1  and 30 then 'OVD_1_30'
+         when a.overdue_days between 31 and 60 then 'OVD_31_60'
+         when a.overdue_days between 61 and 90 then 'OVD_61_90'
+         else '-' end as Roll_Denominator
+  , Nvl(prmd.utf8(gg.REG_DESCRIPTION_E),'NA') As Regions
+
+from dek a
+LEFT JOIN TMR_ t ON a.deal_no = t.deal_no
+LEFT JOIN SME_Portfolio_v prev ON a.deal_no = prev.deal_no and add_months(a.hist_date, -1) = prev.hist_date
+LEFT JOIN NPR ON NPR.loan_key = a.deal_key AND (a.hist_date) = NPR.Ref_date and NPR.RNK = 1
+LEFT JOIN PRO ON PRO.loan_key = a.deal_key AND (a.hist_date) = PRO.Ref_date and PRO.RNK = 1
+Left Join Stage_3_Refinanced r On a.deal_key = r.loan_key And r.run_date = a.hist_date
+
+LEFT JOIN SME_Portfolio_v cr ON a.deal_no = cr.deal_no and a.hist_date = cr.hist_date
+LEFT JOIN Regions gg On gg.Reg_ID = cr.RegionID
+LEFT JOIN (
+select CLIENT_KEY, FROM_DATE, END_DATE, GROUP_PHASE
+from   client_phases A
+where 1=1
+--and end_date='1-jan-4444'
+
+  ) K ON K.CLIENT_KEY = A.Client_No and a.hist_date between k.from_date and k.end_date
+
+Where 1 = 1
+And a.Hist_Date between add_months(trunc(sysdate), -14) and sysdate
+And A.HIST_DATE = LAST_DAY(A.HIST_DATE)
+and A.loan_segment in ('SMM','SML')
+And case when a.deal_no not like 'DEB%' then Nvl(a.Eir_Ifrs_Bal_e, 0) - Nvl(a.airc_gel,0) +nvl(a.cr_line_limit,0) else a.dd_rest_e end> 0
+--and max_rate = dd_effect_rate
+GROUP BY a.Hist_date ,
+nvl(case when  cr.fixed_loan_segment = 'Medium' then 'SMM'
+         when  cr.fixed_loan_segment = 'Small'  then 'SML' end, '-'),
+          a.loan_segment, a.Product, a.overdue_days,
+ case when GROUP_PHASE = '4' then 'Rehab'
+      when GROUP_PHASE = '5' then 'Hard'
+      else 'Business' end,
+          nvl( a.IFRS9_STAGE, t.ifrs9_stage),
+          a.SECTOR
+         , case when nvl(prev.Par_bucket_cur,0) = '0' and a.overdue_days between 1  and 10 then '0-1'
+                            when nvl(prev.Par_bucket_cur,0) = '0' and a.overdue_days > 10              then '0-10'
+                            when nvl(prev.overdue_days,0) <= 30   and a.overdue_days between 31 and 60 then '1-30'
+                            when nvl(prev.overdue_Days,0) between 31 and 60 and a.overdue_days > 60    then '30-60'
+                            when nvl(prev.overdue_Days,0) between 61 and 90 and a.overdue_days > 90    then '60-90'
+                            else '-' end ,
+
+         case when prev.problem_phase is null and GROUP_PHASE = '4' then 'Business_To_Rehab'
+         when prev.problem_phase is null and GROUP_PHASE = '5' then 'Business_To_Hard'
+         when prev.problem_phase = '4'   and GROUP_PHASE = '5' then 'Rehab_To_Hard'
+         else '-' end,
+            case when nvl(prev.ifrs9_stage,0)  = '1' and a.ifrs9_stage = '2' then 'Stage1-2'
+         when nvl(prev.ifrs9_stage,0) <> '3' and a.ifrs9_stage = '3' and r.loan_key is null then 'To_Stage_3'
+         when a.ifrs9_Stage is null and nvl(t.ifrs9_stage,0) <> '3' and a.overdue_days> 90 and t.overdue_days < 90  then 'To_Stage_3' -- Predict Before Dekada Stage Fill
+         when a.ifrs9_Stage is null and nvl(t.ifrs9_stage,0) <> '3' and pro.loan_key is not null                    then 'To_Stage_3' -- Predict Before Dekada Stage Fill
+
+         when a.ifrs9_Stage is null and nvl(t.ifrs9_stage,0) = '1' and a.overdue_days> 30 and a.overdue_days <=60 then 'Stage1-2' -- Predict Before Dekada Stage Fill
+         when a.ifrs9_Stage is null and nvl(t.ifrs9_stage,0) = '1' and NPR.loan_key is not null                   then 'Stage1-2' -- Predict Before Dekada Stage Fill
+
+         else '-' end,
+        case when a.overdue_days = 0 then 'OVD_0'
+         when a.overdue_days between 1  and 30 then 'OVD_1_30'
+         when a.overdue_days between 31 and 60 then 'OVD_31_60'
+         when a.overdue_days between 61 and 90 then 'OVD_61_90'
+         else '-' end
+         , Nvl(prmd.utf8(gg.REG_DESCRIPTION_E),'NA')
+             )
+
+select * from (
+select
+hist_date,
+fixed_loan_segment,
+loan_segment,
+Product,
+phase,
+IFRS9_STAGE,
+SECTOR,
+Regions,
+--eir_ifrs_bal_e,
+--dd_rest_e_Int,
+case when PAR_BUK like '%DD' then dd_rest_e_Int
+     else eir_ifrs_bal_e  end as eir_ifrs_bal_e,
+
+amount,
+Par_buk,
+case when PAR_BUK like '%DD' then 'dd_rest_e'
+     else 'IFRS' end as Calc_Type
+from (
+
+
+select
+hist_date,
+fixed_loan_segment,
+loan_segment,
+Product,
+phase,
+IFRS9_STAGE,
+SECTOR,
+Regions,
+sum(eir_ifrs_bal_e) as IFRS_EXPOSURE,
+sum(eir_ifrs_bal_e) as eir_ifrs_bal_e,
+SUM(dd_rest_e_Int) as dd_rest_e_Int,
+sum( case when overdue_days>90 then eir_ifrs_bal_e else 0 end) as Par_90,
+sum( case when overdue_days>30 then eir_ifrs_bal_e else 0 end) as Par_30,
+sum( case when overdue_days>10 then eir_ifrs_bal_e else 0 end) as Par_10,
+sum( case when overdue_days>0  then eir_ifrs_bal_e else 0 end) as Par_All,
+sum( case when overdue_days=0  then eir_ifrs_bal_e else 0 end) as No_par,
+sum( case when IFRS9_STAGE=2   then eir_ifrs_bal_e else 0 end) as Stage_2,
+sum( case when IFRS9_STAGE=3   then eir_ifrs_bal_e else 0 end) as Stage_3,
+
+
+SUM( case when PAR_ROLL IN ('0-1', '0-10')   then eir_ifrs_bal_e else 0 end) as ROLL_0_1,
+SUM( case when PAR_ROLL = '0-10'             then eir_ifrs_bal_e else 0 end) as ROLL_0_10,
+SUM( case when PAR_ROLL = '1-30'             then eir_ifrs_bal_e else 0 end) as ROLL_1_30,
+SUM( case when PAR_ROLL = '30-60'            then eir_ifrs_bal_e else 0 end) as ROLL_30_60,
+SUM( case when PAR_ROLL = '60-90'            then eir_ifrs_bal_e else 0 end) as ROLL_60_90,
+SUM(case when Stage_Roll = 'Stage1-2'   then eir_ifrs_bal_e else 0 end) as ROLL_Stage1_2,
+SUM(case when Stage_Roll = 'To_Stage_3' then eir_ifrs_bal_e else 0 end) as ROLL_To_Stage_3,
+SUM(case when Phase_Roll = 'Business_To_Rehab' then eir_ifrs_bal_e else 0 end) as ROLL_Business_To_Rehab,
+SUM(case when Phase_Roll = 'Business_To_Hard'  then eir_ifrs_bal_e else 0 end) as ROLL_Business_To_Hard,
+SUM(case when Phase_Roll = 'Rehab_To_Hard'     then eir_ifrs_bal_e else 0 end) as ROLL_Rehab_To_Hard,
+
+SUM(case when Roll_Denominator = 'OVD_0'     then eir_ifrs_bal_e else 0 end) as     OVD_0,
+SUM(case when Roll_Denominator = 'OVD_1_30'     then eir_ifrs_bal_e else 0 end) as  OVD_1_30,
+SUM(case when Roll_Denominator = 'OVD_31_60'     then eir_ifrs_bal_e else 0 end) as OVD_31_60,
+SUM(case when Roll_Denominator = 'OVD_61_90'     then eir_ifrs_bal_e else 0 end) as OVD_61_90,
+
+SUM(case when ifrs9_Stage = '1'  then eir_ifrs_bal_e else 0 end) as Denominator_stage_1,
+SUM(case when ifrs9_Stage  In ('1', '2')  then eir_ifrs_bal_e else 0 end) as Denominator_stage_1_and_2,
+SUM(case when Phase = 'Business' then eir_ifrs_bal_e else 0 end) as Denominator_Business,
+SUM(case when Phase = 'Rehab'    then eir_ifrs_bal_e else 0 end) as Denominator_Rehab,
+
+
+sum( case when overdue_days>90 then dd_rest_e_Int else 0 end) as Par_90_dd,
+sum( case when overdue_days>30 then dd_rest_e_Int else 0 end) as Par_30_dd,
+sum( case when overdue_days>10 then dd_rest_e_Int else 0 end) as Par_10_dd,
+sum( case when overdue_days>0  then dd_rest_e_Int else 0 end) as Par_All_dd,
+sum( case when overdue_days=0  then dd_rest_e_Int else 0 end) as No_par_dd,
+sum( case when IFRS9_STAGE=2   then dd_rest_e_Int else 0 end) as Stage_2_dd,
+sum( case when IFRS9_STAGE=3   then dd_rest_e_Int else 0 end) as Stage_3_dd,
+
+SUM( case when PAR_ROLL IN ('0-1', '0-10')    then dd_rest_e_Int else 0 end) as ROLL_0_1_dd,
+SUM( case when PAR_ROLL = '0-10'  then dd_rest_e_Int else 0 end) as ROLL_0_10_dd,
+SUM( case when PAR_ROLL = '1-30'  then dd_rest_e_Int else 0 end) as ROLL_1_30_dd,
+SUM( case when PAR_ROLL = '30-60' then dd_rest_e_Int else 0 end) as ROLL_30_60_dd,
+SUM( case when PAR_ROLL = '60-90' then dd_rest_e_Int else 0 end) as ROLL_60_90_dd,
+SUM(case when Stage_Roll = 'Stage1-2'   then dd_rest_e_Int else 0 end) as ROLL_Stage1_2_dd,
+SUM(case when Stage_Roll = 'To_Stage_3' then dd_rest_e_Int else 0 end) as ROLL_To_Stage_3_dd,
+SUM(case when Phase_Roll = 'Business_To_Rehab' then dd_rest_e_Int else 0 end) as ROLL_Business_To_Rehab_dd,
+SUM(case when Phase_Roll = 'Business_To_Hard'  then dd_rest_e_Int else 0 end) as ROLL_Business_To_Hard_dd,
+SUM(case when Phase_Roll = 'Rehab_To_Hard'     then dd_rest_e_Int else 0 end) as ROLL_Rehab_To_Hard_dd,
+
+
+SUM(case when Roll_Denominator = 'OVD_0'       then dd_rest_e_Int else 0 end) as     OVD_0_dd,
+SUM(case when Roll_Denominator = 'OVD_1_30'    then dd_rest_e_Int else 0 end) as  OVD_1_30_dd,
+SUM(case when Roll_Denominator = 'OVD_31_60'   then dd_rest_e_Int else 0 end) as OVD_31_60_dd,
+SUM(case when Roll_Denominator = 'OVD_61_90'   then dd_rest_e_Int else 0 end) as OVD_61_90_dd,
+
+SUM(case when ifrs9_Stage = '1'          then dd_rest_e_Int else 0 end) as Denominator_stage_1_dd,
+SUM(case when ifrs9_Stage  In ('1', '2') then dd_rest_e_Int else 0 end) as Denominator_stage_1_and_2_dd,
+SUM(case when Phase = 'Business' then dd_rest_e_Int else 0 end) as Denominator_Business_dd,
+SUM(case when Phase = 'Rehab'    then dd_rest_e_Int else 0 end) as Denominator_Rehab_dd
+
+from CTE a
+where 1=1 -- loan_segment= 'SMM'
+group by hist_date,
+fixed_loan_segment,
+loan_segment,
+Product,
+phase,
+IFRS9_STAGE,
+SECTOR,
+Regions
+)
+unpivot include nulls (
+amount for Par_buk in  (Par_90 ,   Par_30,    Par_10,    Par_all,    No_par,    Stage_2,    Stage_3,
+                        ROLL_0_1, ROLL_0_10, ROLL_1_30, ROLL_30_60, ROLL_60_90,
+                        ROLL_Stage1_2, ROLL_To_Stage_3, ROLL_Business_To_Rehab, ROLL_Business_To_Hard, ROLL_Rehab_To_Hard,
+                        OVD_0, OVD_1_30, OVD_31_60 , OVD_61_90 ,
+                        Denominator_stage_1, Denominator_stage_1_and_2, Denominator_Business, Denominator_Rehab,
+
+                        Par_90_dd, Par_30_dd, Par_10_dd, Par_All_dd, No_par_dd, Stage_2_dd, Stage_3_dd ,
+                        ROLL_0_1_dd, ROLL_0_10_dd, ROLL_1_30_dd, ROLL_30_60_dd, ROLL_60_90_dd,
+                        ROLL_Stage1_2_dd, ROLL_To_Stage_3_dd ,ROLL_Business_To_Rehab_dd, ROLL_Business_To_Hard_dd, ROLL_Rehab_To_Hard_dd,
+                        OVD_0_dd, OVD_1_30_dd, OVD_31_60_dd, OVD_61_90_dd,
+                        Denominator_stage_1_dd, Denominator_stage_1_and_2_dd , Denominator_Business_dd, Denominator_Rehab_dd
+                        )
+)
+)
+
+;
+
+
+END Insert_Into_Par_Summary_SME_v2;

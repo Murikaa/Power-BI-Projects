@@ -1,0 +1,85 @@
+create table REF_Check_Parent_Child_Mar2026 as 
+
+with Refinance_Loans AS
+
+(
+     Select  
+             to_char(RP.Loan_key) as LOAN_KEY
+            ,RP.REPAY_PROD_KEY
+            ,LAST_DAY(RP.RUN_DATE) AS RUN_DATE
+        --    ,AL.Deal_NO
+          --  ,'LND' || tO_CHAR(B.Loan_No)  AS Repay_Deal_NO
+            ,Repay_Amount*nvl(r.CCY_RATE,1)  as Repay_Amount_Ingel
+          --  ,AL.dd_rest_e  as Approved_Amount_InGel
+                                   
+From
+(LND_PRODUCT_REPAYMENTS)  RP
+Left Join ( loans ) B ON to_char(B.Loan_Key) = RP.REPAY_PROD_KEY
+left join ccy_rates r on r.CCY1=ccy and LAST_DAY(RUN_DATE)=r.effect_date
+
+)
+
+,Total_Repay AS
+(
+Select RL.Loan_key
+      ,RL.REPAY_PROD_KEY
+       ,RL.RUN_DATE
+     --  ,RL.Deal_NO
+     --  ,RL.Repay_Deal_NO
+       ,RL.Repay_Amount_Ingel
+     --  ,RL.Approved_Amount_InGel
+     --  ,RL.N
+       ,SUM( Repay_Amount_Ingel ) OVER (Partition BY  Loan_key ,RUN_DATE ) AS Repay_Amount_Calc_Ingel_Total 
+From
+Refinance_Loans RL
+)
+
+, db as (
+SELECT 
+      a.loan_key     as parent_loan_key, 
+      repay_prod_key as child_loan_key,
+      last_day(run_date) as run_date
+FROM Total_Repay a 
+order by a.loan_key, run_date desc
+)
+
+, cte_hierarchy as (
+  select 
+    -- Root ancestors
+    connect_by_root parent_loan_key  as base_loan_key,
+    -- Current node
+    parent_loan_key,
+    child_loan_key,
+
+    -- Paths for loan_key chain
+    sys_connect_by_path(child_loan_key, '/')  as loan_key_path
+
+  from db
+  connect by prior child_loan_key  = parent_loan_key 
+)
+,
+fltr_Portfolio as (
+SELECT * FROM cte_hierarchy a 
+Inner Join (Select Loan_key, Deal_No From Base_ref_Mar2026 ) AL ON a.base_loan_key = AL.Loan_key
+)
+
+,cte_d as (
+
+select 
+       h.base_loan_key, h.parent_loan_key, 
+       h.child_loan_key 
+ from fltr_Portfolio h
+join fltr_Portfolio e on h.loan_key_path like e.loan_key_path ||'%'
+group by-- h.base, h.parent_id, h.child_id,  
+      h.child_loan_key , h.base_loan_key, h.parent_loan_key
+order by --h.base, h.parent_id, h.child_id,  
+      h.child_loan_key , h.base_loan_key, h.parent_loan_key
+      
+) 
+SELECT 
+a.BASE_LOAN_KEY as BASE_Key, 
+PARENT_LOAN_KEY as PARENT_Key,  
+CHILD_LOAN_KEY as  CHILD_Key
+ FROM cte_d a 
+
+
